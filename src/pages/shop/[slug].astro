@@ -1,0 +1,15 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import { products, type Product } from '../../data/products';
+
+export const getStaticPaths = (() => products.map((product) => ({ params: { slug: product.slug }, props: { product } }))) satisfies GetStaticPaths;
+const { product } = Astro.props as { product: Product };
+---
+<BaseLayout title={product.title} description={product.summary} image={product.image} noindex>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Лавка', href: '/shop/' }, { label: product.title }]} />
+  <PageHero eyebrow={product.category} title={product.title} description={product.summary} />
+  <section class="section"><div class="container detail-grid"><div class="stack"><div class="placeholder-frame"><img src={product.image} alt={product.imageAlt} width="800" height="600" /></div><h2>Описание</h2><p class="lead">{product.description}</p><div class="notice">Карточка подготовлена для будущего товара и не является публичной офертой. Заказать или оплатить товар сейчас нельзя.</div></div><dl class="detail-list"><div><dt>Цена</dt><dd>{product.price}</dd></div><div><dt>Наличие</dt><dd>{product.availability}</dd></div><div><dt>Варианты</dt><dd>{product.variants}</dd></div><div><dt>Доставка</dt><dd>{product.delivery}</dd></div></dl></div></section>
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Button from '../components/ui/Button.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+---
+<BaseLayout title="Корзина" description="Основа будущей корзины лавки артефактов." noindex>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Корзина' }]} />
+  <PageHero eyebrow="Лавка" title="Корзина" description="Функциональность заказов появится на следующем этапе после выбора платёжного и товарного контура." />
+  <section class="section"><div class="narrow stack"><div class="legal-placeholder"><p class="eyebrow">Версия 1.0</p><h2>Корзина пока не активна</h2><p class="muted">На сайте нельзя добавить товар, оформить заказ или произвести оплату. Эта страница сохраняет будущий маршрут без имитации checkout.</p><div class="button-row"><Button href="/shop/" variant="ghost">Посмотреть категории</Button></div></div></div></section>
+</BaseLayout>

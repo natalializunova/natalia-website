@@ -1,0 +1,14 @@
+---
+import { elements } from '../../data/site';
+---
+<div class="grid grid--4">
+  {elements.map((element, index) => (
+    <article class="card element-card">
+      <span class="element-card__number">0{index + 1}</span>
+      <span class="element-card__symbol" aria-hidden="true">{element.symbol}</span>
+      <h3>{element.name}</h3>
+      <strong>{element.essence}</strong>
+      <p>{element.text}</p>
+    </article>
+  ))}
+</div>

@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+---
+<BaseLayout title="Об авторе" description="Страница автора проекта Натальи Лизуновой: путь, подход и будущая подтверждённая биография." noindex>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Об авторе' }]} />
+  <PageHero eyebrow="Наталья Лизунова" title="Об авторе" description="Здесь появятся личная история, профессиональный путь и подтверждённые сведения об авторе проекта." />
+  <section class="section"><div class="container split split--reverse"><div class="placeholder-frame"><img src="/images/placeholders/portrait.svg" alt="Место для будущего портрета Натальи Лизуновой" width="800" height="1000" /></div><div class="stack"><p class="eyebrow">Редакционная заметка</p><h2>Биография готовится</h2><p class="lead">Мы не публикуем предположения об образовании, опыте, квалификациях или сертификатах.</p><p class="muted">После интервью с автором здесь появятся проверенная биография, личная история возникновения проекта, подход к работе и документы — только если они важны для выбранных форматов.</p><div class="notice">Нужны материалы: портрет, краткая и полная биография, описание подхода, подтверждённое образование и реквизиты при необходимости.</div></div></div></section>
+  <section class="section section--surface"><div class="container grid grid--3"><article class="card card__body"><p class="card__meta">Будущий раздел</p><h3>Личная история</h3><p>Путь к теме проекта и важные поворотные точки.</p></article><article class="card card__body"><p class="card__meta">Будущий раздел</p><h3>Подход к работе</h3><p>Принципы, границы и формат взаимодействия.</p></article><article class="card card__body"><p class="card__meta">Будущий раздел</p><h3>Образование</h3><p>Только точные сведения и подтверждённые документы.</p></article></div></section>
+</BaseLayout>

@@ -1,0 +1,4 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'; import PageHero from '../components/sections/PageHero.astro'; import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+---
+<BaseLayout title="Публичная оферта" description="Редакционная страница будущей публичной оферты." noindex><Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Публичная оферта' }]} /><PageHero eyebrow="Юридическая информация" title="Публичная оферта" description="Условия продаж будут подготовлены после утверждения продуктов, реквизитов, оплаты, возвратов и доставки." /><section class="section"><div class="narrow legal-placeholder stack"><p class="eyebrow">Редакционная заглушка</p><h2>Продажи ещё не открыты</h2><p class="muted">Этот маршрут создан для будущего документа и не содержит фиктивных юридических условий. До публикации оферты сайт не принимает оплату и заказы.</p></div></section></BaseLayout>

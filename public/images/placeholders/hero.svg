@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" role="img" aria-labelledby="t d">
+  <title id="t">Композиция четырёх Стихий</title><desc id="d">Золотые символы внутри тёмной готической арки</desc>
+  <defs><radialGradient id="g"><stop stop-color="#54232F"/><stop offset="1" stop-color="#141416"/></radialGradient><filter id="n"><feTurbulence baseFrequency=".7" numOctaves="3"/><feBlend in="SourceGraphic" mode="soft-light"/></filter></defs>
+  <rect width="900" height="1200" fill="url(#g)"/><rect width="900" height="1200" opacity=".13" filter="url(#n)"/>
+  <path d="M160 1050V500C160 100 740 100 740 500v550" fill="none" stroke="#B59A65" stroke-width="3" opacity=".7"/>
+  <path d="M215 1050V510C215 185 685 185 685 510v540" fill="none" stroke="#B59A65" opacity=".3"/>
+  <circle cx="450" cy="500" r="150" fill="none" stroke="#EEE7DC" opacity=".16"/>
+  <path d="M450 305 495 455 645 500 495 545 450 695 405 545 255 500 405 455Z" fill="none" stroke="#B59A65" stroke-width="2"/>
+  <circle cx="450" cy="500" r="36" fill="#54232F" stroke="#EEE7DC" stroke-width="2"/>
+  <g fill="#B59A65" font-family="Georgia" font-size="44" text-anchor="middle"><text x="450" y="265">△</text><text x="450" y="790">▽</text><text x="185" y="520">○</text><text x="715" y="520">□</text></g>
+  <g fill="#EEE7DC" opacity=".5"><circle cx="310" cy="360" r="3"/><circle cx="595" cy="400" r="2"/><circle cx="340" cy="720" r="2"/><circle cx="610" cy="680" r="3"/><circle cx="450" cy="850" r="2"/></g>
+</svg>

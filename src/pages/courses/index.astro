@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import ContentCard from '../../components/ui/ContentCard.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import { courses } from '../../data/courses';
+---
+<BaseLayout title="Курсы" description="Авторские образовательные программы проекта «Ведьма во мне. Путь к себе»." noindex>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Курсы' }]} />
+  <PageHero eyebrow="Программы" title="Курсы" description="Раздел подготовлен для основной программы «Путь к себе» и будущих авторских курсов." />
+  <section class="section"><div class="container"><div class="grid grid--3">{courses.map((item) => <ContentCard href={`/courses/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.eyebrow} />)}</div><div class="notice" style="margin-top: 2rem;">Оплата, личный кабинет и доступ к урокам не подключены. Запись откроется только после утверждения программы.</div></div></section>
+</BaseLayout>

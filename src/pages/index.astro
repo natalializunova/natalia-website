@@ -1,0 +1,137 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import ContentCard from '../components/ui/ContentCard.astro';
+import ElementsGrid from '../components/sections/ElementsGrid.astro';
+import { courses } from '../data/courses';
+import { products } from '../data/products';
+import { services } from '../data/services';
+import { site } from '../data/site';
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()).slice(0, 3);
+const course = courses[0];
+---
+<BaseLayout title={site.name} description={site.description}>
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <p class="eyebrow">Авторский проект Натальи Лизуновой</p>
+        <h1>Ведьма во мне.<br /><em>Путь к себе</em></h1>
+        <p class="lead">Пространство о внутренней силе, самопознании и четырёх Стихиях — Земле, Воде, Огне и Воздухе.</p>
+        <div class="button-row">
+          <Button href="/courses/">Исследовать программы</Button>
+          <Button href="/about/" variant="ghost">Об авторе</Button>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__arch">
+          <img src="/images/placeholders/hero.svg" alt="Символическая композиция четырёх Стихий в готической арке" width="900" height="1200" />
+        </div>
+        <p class="hero__caption">Земля · Вода · Огонь · Воздух</p>
+      </div>
+    </div>
+    <div class="hero__line" aria-hidden="true"></div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">О проекте</p>
+        <h2>Не искать готовый образ. Вспоминать свой.</h2>
+      </div>
+      <div class="stack">
+        <p class="lead">«Ведьма во мне» — развивающееся авторское пространство о внимании к себе, внутренней опоре и символическом языке Стихий.</p>
+        <p class="muted">Сайт находится на этапе основания. Здесь постепенно появятся подтверждённые программы, практики, тексты и артефакты.</p>
+        <a class="text-link" href="/about-project/">Узнать философию проекта</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container">
+      <div class="section-heading section-heading--split">
+        <div><p class="eyebrow">Четыре Стихии</p><h2>Четыре способа слышать себя</h2></div>
+        <p class="lead">Стихии становятся метафорическим компасом: не обещают простых ответов, а помогают замечать разные стороны внутреннего опыта.</p>
+      </div>
+      <ElementsGrid />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split split--reverse">
+      <div class="placeholder-frame"><img src="/images/placeholders/portrait.svg" alt="Место для будущего портрета Натальи Лизуновой" width="800" height="1000" loading="lazy" /></div>
+      <div class="stack">
+        <p class="eyebrow">Об авторе</p>
+        <h2>Наталья Лизунова</h2>
+        <p class="lead">Автор проекта «Ведьма во мне. Путь к себе».</p>
+        <p class="muted">Личная история, образование, квалификации и профессиональный подход будут добавлены после согласования с автором. Мы намеренно не заменяем факты красивыми догадками.</p>
+        <div class="button-row"><Button href="/about/" variant="ghost">Мой путь</Button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container">
+      <div class="section-heading"><p class="eyebrow">Услуги и практики</p><h2>Пространство личной работы</h2><p class="lead">Ниже — редакционные заготовки будущих форматов, а не действующие коммерческие предложения.</p></div>
+      <div class="grid grid--3">{services.map((item) => <ContentCard href={`/services/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.eyebrow} />)}</div>
+      <div class="button-row"><Button href="/services/" variant="ghost">Весь каталог</Button></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div class="placeholder-frame"><img src={course.image} alt={course.imageAlt} width="800" height="1000" loading="lazy" /></div>
+      <div class="stack">
+        <p class="eyebrow">Основная программа</p>
+        <h2>{course.title}</h2>
+        <p class="lead">{course.summary}</p>
+        <p class="notice">Программа находится в разработке. На сайте пока нет оплаты и сбора заявок.</p>
+        <div class="button-row"><Button href={`/courses/${course.slug}/`}>Подробнее</Button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container">
+      <div class="section-heading"><p class="eyebrow">Лавка артефактов</p><h2>Предметы с историей и смыслом</h2><p class="lead">Категории будущей лавки. Ассортимент, состав и условия продаж ещё не опубликованы.</p></div>
+      <div class="grid grid--4">{products.map((item) => <ContentCard href={`/shop/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.category} />)}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading"><p class="eyebrow">Блог</p><h2>Последние материалы</h2><p class="lead">Наблюдения, символы и практики внимательного отношения к себе.</p></div>
+      <div class="grid grid--3">{posts.map((post) => <ContentCard href={`/blog/${post.id}/`} title={post.data.title} summary={post.data.description} image={post.data.image} imageAlt={post.data.imageAlt} meta={post.data.draft ? 'Черновик' : post.data.category} />)}</div>
+      <div class="button-row"><Button href="/blog/" variant="ghost">Перейти в блог</Button></div>
+    </div>
+  </section>
+
+  <section class="section contact-cta">
+    <div class="narrow stack">
+      <div class="ornament" aria-hidden="true"><span></span></div>
+      <p class="eyebrow">Контакты</p>
+      <h2>Оставим место для разговора</h2>
+      <p class="lead">Контактные данные появятся после подтверждения. Пока можно познакомиться со структурой будущей страницы связи.</p>
+      <div class="button-row"><Button href="/contact/">Перейти к контактам</Button></div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { position: relative; min-height: calc(100svh - 4.75rem); padding-block: clamp(3rem, 8vw, 7rem); overflow: hidden; }
+  .hero__grid { display: grid; align-items: center; gap: 3rem; }
+  .hero__content { position: relative; z-index: 2; }
+  .hero h1 em { color: var(--color-gold); font-weight: 400; }
+  .hero .lead { max-width: 39rem; margin-top: 1.75rem; }
+  .hero__visual { position: relative; width: min(100%, 30rem); margin-inline: auto; }
+  .hero__arch { position: relative; overflow: hidden; padding: 0.75rem; border: 1px solid var(--color-gold-muted); border-radius: var(--radius-arch); }
+  .hero__arch::before { position: absolute; inset: 1.4rem; z-index: 1; border: 1px solid rgb(181 154 101 / 32%); border-radius: var(--radius-arch); content: ''; }
+  .hero__arch img { width: 100%; aspect-ratio: 3 / 4; border-radius: var(--radius-arch); object-fit: cover; }
+  .hero__caption { margin-top: 1rem; color: var(--color-gold-muted); font-size: var(--text-xs); letter-spacing: 0.19em; text-align: center; text-transform: uppercase; }
+  .hero__line { position: absolute; right: 4%; bottom: 0; left: 4%; height: 1px; background: linear-gradient(90deg, transparent, var(--color-gold-muted), transparent); }
+  .contact-cta { border-top: 1px solid var(--color-border); background: radial-gradient(circle at center, rgb(84 35 47 / 24%), transparent 60%); text-align: center; }
+  .contact-cta .stack { justify-items: center; }
+  .contact-cta .eyebrow::before { display: none; }
+  @media (min-width: 54rem) { .hero__grid { grid-template-columns: 1.25fr 0.75fr; gap: 5rem; } }
+</style>

@@ -1,0 +1,19 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import Button from '../../components/ui/Button.astro';
+import { courses, type Course } from '../../data/courses';
+
+export const getStaticPaths = (() => courses.map((course) => ({ params: { slug: course.slug }, props: { course } }))) satisfies GetStaticPaths;
+const { course } = Astro.props as { course: Course };
+---
+<BaseLayout title={course.title} description={course.summary} image={course.image} noindex>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Курсы', href: '/courses/' }, { label: course.title }]} />
+  <PageHero eyebrow={course.eyebrow} title={course.title} description={course.summary} />
+  <section class="section"><div class="container split"><div class="placeholder-frame"><img src={course.image} alt={course.imageAlt} width="800" height="1000" /></div><div class="stack"><p class="eyebrow">О программе</p><h2>Пространство для исследования себя</h2><p class="lead">{course.description}</p><div class="notice">Страница демонстрирует будущую структуру курса. Содержание не является окончательной программой или обещанием результата.</div></div></div></section>
+  <section class="section section--surface"><div class="container"><div class="section-heading"><p class="eyebrow">Структура</p><h2>Предварительные модули</h2></div><div class="grid grid--3">{course.modules.map((module, index) => <article class="card card__body"><p class="card__meta">Модуль {index + 1}</p><h3>{module.title}</h3><p>{module.description}</p></article>)}</div></div></section>
+  <section class="section"><div class="container detail-grid"><div><p class="eyebrow">Для кого</p><h2>Предварительное описание</h2><ul class="muted">{course.audience.map((item) => <li>{item}</li>)}</ul></div><dl class="detail-list"><div><dt>Формат</dt><dd>{course.format}</dd></div><div><dt>Длительность</dt><dd>{course.duration}</dd></div><div><dt>Стоимость</dt><dd>{course.price}</dd></div><div><dt>Запись</dt><dd>Закрыта до утверждения программы</dd></div></dl></div></section>
+  <section class="section section--surface"><div class="narrow"><div class="section-heading"><p class="eyebrow">Вопросы</p><h2>FAQ</h2></div>{course.faq.map((item) => <details class="faq"><summary>{item.question}</summary><p>{item.answer}</p></details>)}<div class="button-row"><Button href="/contact/" variant="ghost">Контакты проекта</Button></div></div></section>
+</BaseLayout>

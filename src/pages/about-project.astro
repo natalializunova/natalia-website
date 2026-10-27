@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ElementsGrid from '../components/sections/ElementsGrid.astro';
+import Button from '../components/ui/Button.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+---
+<BaseLayout title="О проекте" description="Философия проекта «Ведьма во мне. Путь к себе» и четыре Стихии как язык самопознания.">
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'О проекте' }]} />
+  <PageHero eyebrow="Философия" title="О проекте" description="Пространство для внимательного разговора с собой — без готовых ролей, выдуманных обещаний и универсальных рецептов." />
+  <section class="section"><div class="container split"><div><p class="eyebrow">Суть</p><h2>Возвращение к внутренней опоре</h2></div><div class="stack"><p class="lead">Проект развивается вокруг идеи, что путь к себе начинается с честного внимания: к телу, чувствам, силе и свободе выбора.</p><p class="muted">Символический образ ведьмы здесь — не роль и не обещание сверхъестественного, а приглашение исследовать интуицию, знание и личную ответственность. Финальная авторская формулировка будет уточнена.</p></div></div></section>
+  <section class="section section--surface"><div class="container"><div class="section-heading"><p class="eyebrow">Четыре Стихии</p><h2>Язык наблюдения</h2><p class="lead">Каждая Стихия помогает назвать отдельную сторону опыта.</p></div><ElementsGrid /></div></section>
+  <section class="section"><div class="container"><div class="section-heading"><p class="eyebrow">Принципы</p><h2>Как будет устроено пространство</h2></div><div class="grid grid--3"><article class="card card__body"><p class="card__meta">01</p><h3>Бережность</h3><p>Ясные границы форматов и уважение к индивидуальному темпу.</p></article><article class="card card__body"><p class="card__meta">02</p><h3>Честность</h3><p>Без неподтверждённых обещаний, выдуманных отзывов и скрытых условий.</p></article><article class="card card__body"><p class="card__meta">03</p><h3>Ответственность</h3><p>Практики дополняют самопознание, но не подменяют медицинскую или психотерапевтическую помощь.</p></article></div><div class="button-row"><Button href="/courses/">Исследовать курсы</Button><Button href="/services/" variant="ghost">Смотреть практики</Button></div></div></section>
+</BaseLayout>

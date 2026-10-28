@@ -37,7 +37,7 @@ body::before {
 ::selection { background: var(--color-burgundy-light); color: var(--color-text); }
 
 a { color: inherit; }
-img { display: block; max-width: 100%; }
+img { display: block; max-width: 100%; height: auto; }
 button, input, textarea { font: inherit; }
 
 :focus-visible {

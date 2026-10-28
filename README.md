@@ -46,7 +46,7 @@ pnpm preview
 3. Отправьте ветку: `git push -u origin feature/<name>`.
 4. После проверки объедините её с `main` через pull request.
 
-Netlify использует `pnpm build`, публикует `dist/` и берёт production-ветку `main`. Переменные `SITE_URL` и `PUBLIC_SITE_INDEXABLE` задаются в интерфейсе Netlify. Preview Deploys должны оставаться закрытыми от индексации.
+Netlify использует команду `npm run build`, публикует каталог `dist/` и берёт production-ветку `main`. Переменные `SITE_URL` и `PUBLIC_SITE_INDEXABLE` задаются в интерфейсе Netlify. Preview Deploys должны оставаться закрытыми от индексации.
 
 ## Безопасный откат
 

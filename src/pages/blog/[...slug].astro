@@ -1,0 +1,26 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import ContentCard from '../../components/ui/ContentCard.astro';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, related: posts.filter((candidate) => candidate.id !== post.id).slice(0, 2) } }));
+}) satisfies GetStaticPaths;
+
+const { post, related } = Astro.props as { post: CollectionEntry<'blog'>; related: CollectionEntry<'blog'>[] };
+const { Content } = await render(post);
+const date = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(post.data.publishedAt);
+---
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.image} noindex={post.data.draft} type="article" publishedTime={post.data.publishedAt}>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Блог', href: '/blog/' }, { label: post.data.title }]} />
+  <article>
+    <header class="page-hero"><div class="narrow page-hero__inner"><p class="eyebrow">{post.data.draft ? 'Черновик · закрыт от индексации' : post.data.category}</p><h1>{post.data.title}</h1><p class="lead">{post.data.description}</p><p class="muted"><time datetime={post.data.publishedAt.toISOString()}>{date}</time> · {post.data.tags.join(' · ')}</p></div></header>
+    <div class="narrow article-image"><img src={post.data.image} alt={post.data.imageAlt} width="1000" height="700" /></div>
+    <div class="narrow prose article-body"><Content /></div>
+  </article>
+  {related.length > 0 && <section class="section section--surface"><div class="container"><div class="section-heading"><p class="eyebrow">Продолжить чтение</p><h2>Похожие материалы</h2></div><div class="grid grid--2">{related.map((item) => <ContentCard href={`/blog/${item.id}/`} title={item.data.title} summary={item.data.description} image={item.data.image} imageAlt={item.data.imageAlt} meta={item.data.draft ? 'Черновик' : item.data.category} />)}</div></div></section>}
+</BaseLayout>
+<style>.article-image { margin-top: var(--space-6); border: 1px solid var(--color-border); }.article-image img { width: 100%; aspect-ratio: 10 / 7; object-fit: cover; }.article-body { padding-block: var(--space-7); }</style>

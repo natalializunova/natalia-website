@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import ContentCard from '../../components/ui/ContentCard.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import Button from '../../components/ui/Button.astro';
+import { products } from '../../data/products';
+---
+<BaseLayout title="Лавка артефактов" description="Будущий каталог свечей, календарей, ритуальных наборов и других авторских артефактов." noindex>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Лавка' }]} />
+  <PageHero eyebrow="Каталог" title="Лавка артефактов" description="Основа будущего магазина без фиктивной оплаты, наличия и неподтверждённых цен." />
+  <section class="section"><div class="container"><div class="grid grid--4">{products.map((item) => <ContentCard href={`/shop/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.category} />)}</div><div class="button-row"><Button href="/cart/" variant="ghost">О будущей корзине</Button></div></div></section>
+</BaseLayout>

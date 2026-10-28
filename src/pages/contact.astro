@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+---
+<BaseLayout title="Контакты" description="Контактная страница проекта «Ведьма во мне. Путь к себе»." noindex>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Контакты' }]} />
+  <PageHero eyebrow="Связь" title="Контакты" description="Проверенные каналы связи будут добавлены после подтверждения автором." />
+  <section class="section"><div class="container detail-grid"><div class="stack"><p class="eyebrow">Каналы связи</p><h2>Скоро здесь можно будет написать</h2><p class="lead">Мы не публикуем непроверенные адреса и не создаём форму, которая только имитирует отправку сообщения.</p><div class="notice">Для запуска нужны: рабочий email, ссылка на Telegram, ссылки на социальные сети и решение по сервису обработки формы.</div></div><dl class="detail-list"><div><dt>Email</dt><dd>Будет добавлен</dd></div><div><dt>Telegram</dt><dd>Будет добавлен</dd></div><div><dt>Социальные сети</dt><dd>Будут добавлены</dd></div><div><dt>Форма связи</dt><dd>Появится после выбора обработчика и подготовки согласия на обработку данных</dd></div></dl></div></section>
+</BaseLayout>

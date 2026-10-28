@@ -1,0 +1,58 @@
+---
+import { navigation, site } from '../../data/site';
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/" aria-label={`${site.name} — на главную`}>
+      <span class="brand__mark" aria-hidden="true">✦</span>
+      <span>{site.shortName}</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Основная навигация">
+      <ul>
+        {navigation.map((item) => <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <a class="cart-link" href="/cart/" aria-label="Корзина — функциональность готовится">
+      <span aria-hidden="true">◇</span><span class="cart-link__text">Корзина</span>
+    </a>
+
+    <details class="mobile-nav">
+      <summary aria-label="Открыть меню"><span></span><span></span><span></span></summary>
+      <nav aria-label="Мобильная навигация">
+        <ul>
+          {navigation.map((item) => <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>)}
+          <li><a href="/cart/">Корзина</a></li>
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header { position: relative; z-index: 20; border-bottom: 1px solid var(--color-border); background: rgb(20 20 22 / 90%); backdrop-filter: blur(16px); }
+  .site-header__inner { display: flex; min-height: 4.75rem; align-items: center; gap: 1rem; }
+  .brand { display: flex; align-items: center; gap: 0.7rem; margin-right: auto; font-family: var(--font-display); font-size: 1rem; text-decoration: none; }
+  .brand__mark { color: var(--color-gold); }
+  .desktop-nav { display: none; }
+  .desktop-nav ul, .mobile-nav ul { margin: 0; padding: 0; list-style: none; }
+  .desktop-nav ul { display: flex; align-items: center; gap: clamp(0.8rem, 1.4vw, 1.5rem); }
+  .desktop-nav a { color: var(--color-muted); font-size: 0.73rem; text-decoration: none; transition: color var(--transition); }
+  .desktop-nav a:hover, .desktop-nav a[aria-current='page'] { color: var(--color-gold); }
+  .cart-link { display: none; gap: 0.35rem; color: var(--color-gold); font-size: 0.73rem; text-decoration: none; }
+  .mobile-nav summary { display: grid; width: 2.75rem; height: 2.75rem; place-content: center; gap: 0.3rem; border: 1px solid var(--color-border); cursor: pointer; list-style: none; }
+  .mobile-nav summary::-webkit-details-marker { display: none; }
+  .mobile-nav summary span { width: 1.1rem; height: 1px; background: var(--color-text); }
+  .mobile-nav nav { position: absolute; top: calc(100% + 1px); right: 0; left: 0; padding: 1rem; border-bottom: 1px solid var(--color-border); background: var(--color-bg); }
+  .mobile-nav a { display: block; padding: 0.85rem 0.5rem; border-bottom: 1px solid var(--color-border); color: var(--color-muted); text-decoration: none; }
+  .mobile-nav a[aria-current='page'] { color: var(--color-gold); }
+  @media (min-width: 70rem) {
+    .desktop-nav, .cart-link { display: flex; }
+    .mobile-nav { display: none; }
+    .brand { margin-right: 0.75rem; }
+  }
+</style>

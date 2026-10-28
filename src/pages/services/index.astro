@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import ContentCard from '../../components/ui/ContentCard.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import { services } from '../../data/services';
+---
+<BaseLayout title="Услуги и практики" description="Каталог будущих авторских услуг и практик Натальи Лизуновой." noindex>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Услуги и практики' }]} />
+  <PageHero eyebrow="Каталог" title="Услуги и практики" description="Архитектура каталога готова к наполнению. Представленные названия — редакционные заготовки, а не действующие предложения." />
+  <section class="section"><div class="container"><div class="notice">До публикации каждой услуги необходимо подтвердить описание, формат, границы, длительность, стоимость и способ записи.</div><div class="grid grid--3" style="margin-top: 2rem;">{services.map((item) => <ContentCard href={`/services/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.eyebrow} />)}</div></div></section>
+</BaseLayout>

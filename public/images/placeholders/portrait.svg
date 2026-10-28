@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="t">
+  <title id="t">Место для портрета автора</title><rect width="800" height="1000" fill="#202023"/>
+  <path d="M110 920V430C110 75 690 75 690 430v490" fill="#19191C" stroke="#B59A65" stroke-width="2"/>
+  <circle cx="400" cy="390" r="115" fill="#393436"/><path d="M210 870c15-210 120-320 190-320s175 110 190 320" fill="#393436"/>
+  <path d="M400 190v-65M367 142h66" stroke="#B59A65" opacity=".6"/><text x="400" y="945" fill="#ABA6A1" font-family="Arial" font-size="18" letter-spacing="4" text-anchor="middle">ПОРТРЕТ БУДЕТ ДОБАВЛЕН</text>
+</svg>

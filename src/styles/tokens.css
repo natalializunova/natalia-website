@@ -1,0 +1,38 @@
+:root {
+  --color-bg: #141416;
+  --color-surface: #202023;
+  --color-surface-soft: #19191c;
+  --color-burgundy: #54232f;
+  --color-burgundy-light: #704050;
+  --color-gold: #b59a65;
+  --color-gold-muted: #8e7954;
+  --color-text: #eee7dc;
+  --color-muted: #aba6a1;
+  --color-border: #393436;
+  --color-black: #09090a;
+
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-body: Inter, 'Segoe UI', Arial, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: clamp(1.05rem, 1vw + 0.8rem, 1.3rem);
+  --text-xl: clamp(1.5rem, 2vw + 1rem, 2.35rem);
+  --text-2xl: clamp(2.25rem, 5.5vw, 5.75rem);
+  --leading-body: 1.72;
+  --leading-display: 1.02;
+
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4.5rem;
+  --space-8: clamp(5rem, 9vw, 9rem);
+  --container: 76rem;
+  --container-narrow: 48rem;
+  --radius-sm: 0.25rem;
+  --radius-arch: 999px 999px 0.5rem 0.5rem;
+  --transition: 180ms ease;
+}

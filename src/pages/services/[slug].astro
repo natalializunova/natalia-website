@@ -1,0 +1,16 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/sections/PageHero.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import Button from '../../components/ui/Button.astro';
+import { services, type Service } from '../../data/services';
+
+export const getStaticPaths = (() => services.map((service) => ({ params: { slug: service.slug }, props: { service } }))) satisfies GetStaticPaths;
+const { service } = Astro.props as { service: Service };
+---
+<BaseLayout title={service.title} description={service.summary} image={service.image} noindex>
+  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Услуги', href: '/services/' }, { label: service.title }]} />
+  <PageHero eyebrow={service.eyebrow} title={service.title} description={service.summary} />
+  <section class="section"><div class="container detail-grid"><div class="stack"><div class="placeholder-frame"><img src={service.image} alt={service.imageAlt} width="800" height="600" /></div><h2>Описание</h2><p class="lead">{service.description}</p><h3>Для кого подходит</h3><ul class="muted">{service.suitableFor.map((item) => <li>{item}</li>)}</ul><div class="notice">Это редакционная страница. Услуга пока не доступна для записи.</div></div><div><dl class="detail-list"><div><dt>Формат</dt><dd>{service.format}</dd></div><div><dt>Длительность</dt><dd>{service.duration}</dd></div><div><dt>Стоимость</dt><dd>{service.price}</dd></div><div><dt>Статус</dt><dd>Подготовка содержания</dd></div></dl><div class="button-row"><Button href="/contact/" variant="ghost">Контакты проекта</Button></div></div></div></section>
+</BaseLayout>

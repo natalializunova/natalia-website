@@ -1,0 +1,58 @@
+---
+import { site as siteData } from '../../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+}
+
+const {
+  title,
+  description,
+  image = '/images/placeholders/hero.svg',
+  noindex = false,
+  type = 'website',
+  publishedTime,
+} = Astro.props;
+
+const indexable = import.meta.env.PUBLIC_SITE_INDEXABLE === 'true';
+const shouldIndex = indexable && !noindex;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const imageUrl = new URL(image, Astro.site ?? Astro.url.origin);
+const fullTitle = title === siteData.name ? title : `${title} — ${siteData.shortName}`;
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteData.name,
+  url: new URL('/', Astro.site ?? Astro.url.origin).href,
+  inLanguage: 'ru-RU',
+  description: siteData.description,
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<meta name="robots" content={shouldIndex ? 'index, follow' : 'noindex, follow'} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content={type} />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:site_name" content={siteData.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content="Декоративная обложка проекта" />
+{publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />

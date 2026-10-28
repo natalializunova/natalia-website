@@ -1,0 +1,4 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'; import PageHero from '../components/sections/PageHero.astro'; import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+---
+<BaseLayout title="Согласие на обработку персональных данных" description="Редакционная страница будущего согласия на обработку персональных данных." noindex><Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Согласие на обработку данных' }]} /><PageHero eyebrow="Юридическая информация" title="Согласие на обработку персональных данных" description="Финальный документ появится до подключения любых форм сбора данных." /><section class="section"><div class="narrow legal-placeholder stack"><p class="eyebrow">Редакционная заглушка</p><h2>Согласие не сформировано</h2><p class="muted">Текст должен соответствовать фактической форме, целям обработки и выбранным внешним сервисам. До его подготовки сайт не собирает данные через контактную форму.</p></div></section></BaseLayout>

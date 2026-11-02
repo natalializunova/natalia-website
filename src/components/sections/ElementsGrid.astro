@@ -64,13 +64,45 @@ const initialElement = elements[0];
     ))}
   </div>
 
+  <div class="element-bridge" aria-hidden="true">
+    {elements.map((element) => (
+      <span
+        data-element-bridge={element.key}
+        data-active={element.key === initialElement.key ? 'true' : 'false'}
+      ></span>
+    ))}
+  </div>
+
   <article
     class="element-panel"
     id="element-panel"
     role="tabpanel"
     aria-labelledby={`element-tab-${initialElement.key}`}
     aria-live="polite"
+    data-active-element={initialElement.key}
+    data-motion="on"
   >
+    <div class="element-panel__backdrops" aria-hidden="true">
+      {elements.map((element) => (
+        <figure
+          class="element-panel__backdrop"
+          data-element-panel-visual={element.key}
+          data-active={element.key === initialElement.key ? 'true' : 'false'}
+        >
+          <Image
+            src={images[element.key]}
+            alt=""
+            widths={[640, 960]}
+            sizes="(min-width: 58rem) 62rem, 100vw"
+            format="webp"
+            loading="lazy"
+          />
+        </figure>
+      ))}
+      <span class="element-panel__atmosphere"></span>
+      <span class="element-panel__scrim"></span>
+    </div>
+
     <header class="element-panel__header">
       <p class="element-panel__number" data-panel-number>{initialElement.number}</p>
       <div class="element-panel__intro">
@@ -114,6 +146,8 @@ const initialElement = elements[0];
     const tabs = [...root.querySelectorAll('[data-element-tab]')];
     const cards = [...root.querySelectorAll('[data-element-card]')];
     const motionButtons = [...root.querySelectorAll('[data-element-motion]')];
+    const bridgeSegments = [...root.querySelectorAll('[data-element-bridge]')];
+    const panelVisuals = [...root.querySelectorAll('[data-element-panel-visual]')];
     const panel = root.querySelector('#element-panel');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -149,9 +183,13 @@ const initialElement = elements[0];
       root.querySelector('[data-panel-imbalance]').replaceChildren(...createParagraphs(element.imbalance));
     };
 
+    let panelTransition;
+
     const selectElement = (key) => {
       const next = elements.find((element) => element.key === key);
       if (!next) return;
+      const activeCard = cards.find((card) => card.dataset.elementCard === key);
+      panelTransition?.cancel();
 
       tabs.forEach((tab) => {
         const selected = tab.dataset.elementTab === key;
@@ -159,14 +197,22 @@ const initialElement = elements[0];
         tab.tabIndex = selected ? 0 : -1;
       });
       cards.forEach((card) => card.dataset.active = String(card.dataset.elementCard === key));
+      bridgeSegments.forEach((segment) => segment.dataset.active = String(segment.dataset.elementBridge === key));
+      panelVisuals.forEach((visual) => visual.dataset.active = String(visual.dataset.elementPanelVisual === key));
+      panel.dataset.activeElement = key;
+      panel.dataset.motion = activeCard?.dataset.motion ?? 'off';
 
-      panel.getAnimations().forEach((animation) => animation.cancel());
       if (!reducedMotion.matches && panel.animate) {
-        const fade = panel.animate([{ opacity: 1 }, { opacity: 0.42 }], { duration: 90, easing: 'ease-out' });
-        fade.finished.then(() => {
-          updatePanel(next);
-          panel.animate([{ opacity: 0.42 }, { opacity: 1 }], { duration: 190, easing: 'ease-out' });
-        });
+        const previousHeight = panel.getBoundingClientRect().height;
+        panel.style.height = `${previousHeight}px`;
+        updatePanel(next);
+        const nextHeight = panel.scrollHeight;
+        panelTransition = panel.animate([
+          { height: `${previousHeight}px`, opacity: 0.46 },
+          { height: `${nextHeight}px`, opacity: 1 },
+        ], { duration: 300, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+        panelTransition.onfinish = () => { panel.style.height = ''; panelTransition = undefined; };
+        panelTransition.oncancel = () => { panel.style.height = ''; panelTransition = undefined; };
       } else {
         updatePanel(next);
       }
@@ -193,6 +239,7 @@ const initialElement = elements[0];
       button.setAttribute('aria-pressed', String(enabled));
       button.setAttribute('aria-label', `${enabled ? 'Остановить' : 'Включить'} движение стихии ${elementName}`);
       button.title = `${enabled ? 'Остановить' : 'Включить'} движение стихии ${elementName}`;
+      if (card.dataset.active === 'true') panel.dataset.motion = enabled ? 'on' : 'off';
     };
 
     motionButtons.forEach((button) => {
@@ -242,6 +289,9 @@ const initialElement = elements[0];
     isolation: isolate;
     overflow: hidden;
     background: var(--color-black);
+    opacity: 0.72;
+    filter: saturate(0.74) brightness(0.8);
+    transition: opacity 280ms ease, filter 280ms ease, transform 280ms ease;
   }
 
   .element-card::after {
@@ -255,9 +305,18 @@ const initialElement = elements[0];
   }
 
   .element-card[data-active='true']::after {
-    border-color: var(--color-gold-muted);
-    box-shadow: inset 0 0 0 1px rgb(181 154 101 / 12%);
+    border-color: var(--color-gold);
+    box-shadow: inset 0 0 0 1px rgb(181 154 101 / 25%), inset 0 -4rem 5rem rgb(181 154 101 / 10%);
   }
+
+  .element-card[data-active='true'] {
+    z-index: 2;
+    opacity: 1;
+    filter: saturate(1.08) brightness(1.06);
+    transform: translateY(-2px);
+  }
+
+  .element-card[data-active='true'] .element-card__name { text-shadow: 0 0 1.25rem rgb(211 177 105 / 45%); }
 
   .element-card__visual,
   .element-card__visual::before,
@@ -285,6 +344,7 @@ const initialElement = elements[0];
     height: 100%;
     object-fit: cover;
     transform: scale(1.08);
+    transition: filter 300ms ease;
   }
 
   .element-card__select {
@@ -336,7 +396,103 @@ const initialElement = elements[0];
   [data-motion='off'] .element-motion__play { display: block; }
   .element-motion:disabled { cursor: default; opacity: 0.62; }
 
-  .element-panel { padding: clamp(1.4rem, 3.5vw, 2.75rem); }
+  .element-bridge {
+    position: relative;
+    display: grid;
+    height: 1.65rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    background: rgb(9 9 10 / 96%);
+  }
+
+  .element-bridge::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(181 154 101 / 25%) 18%, rgb(181 154 101 / 25%) 82%, transparent);
+    content: '';
+  }
+
+  .element-bridge > span { position: relative; }
+  .element-bridge > span::before {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--color-gold), rgb(181 154 101 / 20%));
+    content: '';
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: opacity 260ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .element-bridge > span::after {
+    position: absolute;
+    bottom: -0.22rem;
+    left: 50%;
+    z-index: 3;
+    width: 0.42rem;
+    height: 0.42rem;
+    border: 1px solid var(--color-gold);
+    background: var(--color-black);
+    content: '';
+    opacity: 0;
+    transform: translateX(-50%) rotate(45deg) scale(0.35);
+    transition: opacity 240ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .element-bridge > span[data-active='true']::before { opacity: 1; transform: scaleY(1); }
+  .element-bridge > span[data-active='true']::after { opacity: 1; transform: translateX(-50%) rotate(45deg) scale(1); }
+
+  .element-panel {
+    --panel-accent: 181 154 101;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: clamp(1.4rem, 3.5vw, 2.75rem);
+    background: rgb(13 12 14 / 94%);
+    box-shadow: inset 0 1px 0 rgb(var(--panel-accent) / 20%), inset 0 0 5rem rgb(var(--panel-accent) / 6%);
+    transition: box-shadow 320ms ease;
+  }
+
+  .element-panel[data-active-element='water'] { --panel-accent: 147 176 190; }
+  .element-panel[data-active-element='fire'] { --panel-accent: 216 119 59; }
+  .element-panel[data-active-element='air'] { --panel-accent: 202 200 192; }
+
+  .element-panel__backdrops,
+  .element-panel__backdrop,
+  .element-panel__atmosphere,
+  .element-panel__scrim { position: absolute; inset: 0; pointer-events: none; }
+
+  .element-panel__backdrops { z-index: 0; overflow: hidden; }
+  .element-panel__backdrop { margin: 0; opacity: 0; transition: opacity 420ms ease; }
+  .element-panel__backdrop[data-active='true'] { opacity: 0.38; }
+  .element-panel__backdrop :global(img) { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.72) contrast(1.08); transform: scale(1.08); }
+
+  .element-panel__atmosphere {
+    z-index: 1;
+    opacity: 0.6;
+    mix-blend-mode: screen;
+    transition: background 420ms ease, opacity 420ms ease;
+  }
+
+  .element-panel[data-active-element='earth'] .element-panel__atmosphere { background: radial-gradient(circle at 80% 10%, rgb(212 181 110 / 24%), transparent 36%), linear-gradient(120deg, rgb(71 68 37 / 20%), transparent 48%); }
+  .element-panel[data-active-element='water'] .element-panel__atmosphere { background: repeating-radial-gradient(ellipse at 78% 18%, transparent 0 1.5rem, rgb(169 201 211 / 10%) 1.7rem 1.82rem, transparent 2.05rem 3.2rem), linear-gradient(105deg, transparent 15%, rgb(177 205 213 / 17%) 48%, transparent 76%); }
+  .element-panel[data-active-element='fire'] .element-panel__atmosphere { background: radial-gradient(ellipse at 82% 28%, rgb(241 129 48 / 27%), transparent 42%), radial-gradient(circle at 18% 82%, rgb(153 47 31 / 17%), transparent 36%); }
+  .element-panel[data-active-element='air'] .element-panel__atmosphere { background: linear-gradient(105deg, transparent 4%, rgb(230 228 218 / 15%) 36%, transparent 62%), radial-gradient(ellipse at 76% 14%, rgb(225 224 217 / 14%), transparent 46%); }
+
+  .element-panel__scrim {
+    z-index: 2;
+    background: linear-gradient(90deg, rgb(10 9 11 / 94%) 0%, rgb(10 9 11 / 88%) 54%, rgb(10 9 11 / 66%) 100%), linear-gradient(180deg, rgb(10 9 11 / 34%), rgb(10 9 11 / 86%));
+  }
+
+  .element-panel__header,
+  .element-panel__details,
+  .element-panel__archetypes { position: relative; z-index: 1; }
+
   .element-panel__header { display: grid; align-items: start; gap: clamp(1rem, 2.5vw, 2rem); }
   .element-panel__number { color: var(--color-gold-muted); font-family: var(--font-display); font-size: clamp(2.8rem, 7vw, 5.25rem); line-height: 0.85; }
   .element-panel__subtitle { color: var(--color-gold); font-size: var(--text-xs); font-weight: 650; letter-spacing: 0.13em; line-height: 1.5; text-transform: uppercase; }
@@ -363,6 +519,15 @@ const initialElement = elements[0];
   [data-visible='true'] .element-card[data-motion='on'][data-element-card='air'] :global(img) { animation: air-live 6.5s ease-in-out infinite alternate; }
   [data-visible='true'] .element-card[data-motion='on'][data-element-card='air'] .element-card__visual::before { background: linear-gradient(100deg, transparent 15%, rgb(238 231 220 / 22%) 46%, transparent 76%); mix-blend-mode: screen; animation: air-light 5s ease-in-out infinite alternate; }
 
+  [data-visible='true'] .element-panel[data-motion='on'][data-active-element='earth'] [data-element-panel-visual='earth'] :global(img) { animation: panel-earth 12s ease-in-out infinite alternate; }
+  [data-visible='true'] .element-panel[data-motion='on'][data-active-element='earth'] .element-panel__atmosphere { animation: panel-earth-light 7s ease-in-out infinite alternate; }
+  [data-visible='true'] .element-panel[data-motion='on'][data-active-element='water'] [data-element-panel-visual='water'] :global(img) { animation: panel-water 8s ease-in-out infinite alternate; }
+  [data-visible='true'] .element-panel[data-motion='on'][data-active-element='water'] .element-panel__atmosphere { animation: panel-water-ripple 5.5s ease-in-out infinite alternate; }
+  [data-visible='true'] .element-panel[data-motion='on'][data-active-element='fire'] [data-element-panel-visual='fire'] :global(img) { animation: panel-fire 3.8s ease-in-out infinite; }
+  [data-visible='true'] .element-panel[data-motion='on'][data-active-element='fire'] .element-panel__atmosphere { animation: panel-fire-glow 2.2s ease-in-out infinite alternate; }
+  [data-visible='true'] .element-panel[data-motion='on'][data-active-element='air'] [data-element-panel-visual='air'] :global(img) { animation: panel-air 10s ease-in-out infinite alternate; }
+  [data-visible='true'] .element-panel[data-motion='on'][data-active-element='air'] .element-panel__atmosphere { animation: panel-air-flow 7s ease-in-out infinite alternate; }
+
   @keyframes earth-live { from { filter: brightness(0.88) saturate(0.9); transform: scale(1.08) translate3d(-0.6%, 0.4%, 0); } to { filter: brightness(1.1) saturate(1.02); transform: scale(1.15) translate3d(0.8%, -0.6%, 0); } }
   @keyframes earth-light { from { opacity: 0.28; transform: translate3d(-5%, 3%, 0) scale(0.94); } to { opacity: 0.88; transform: translate3d(5%, -3%, 0) scale(1.08); } }
   @keyframes water-live { from { filter: brightness(0.88) contrast(1.05); transform: scale(1.16) translate3d(-2.5%, 0.8%, 0); } to { filter: brightness(1.09) contrast(1.12); transform: scale(1.2) translate3d(2.5%, -0.8%, 0); } }
@@ -371,6 +536,14 @@ const initialElement = elements[0];
   @keyframes fire-glow { from { opacity: 0.26; transform: scale(0.9); } to { opacity: 0.86; transform: scale(1.14); } }
   @keyframes air-live { from { filter: brightness(0.9) contrast(0.96); transform: scale(1.14) translate3d(-2.8%, 0.6%, 0); } to { filter: brightness(1.1) contrast(1.04); transform: scale(1.2) translate3d(2.8%, -0.8%, 0); } }
   @keyframes air-light { from { opacity: 0.18; transform: translateX(-14%); } to { opacity: 0.62; transform: translateX(14%); } }
+  @keyframes panel-earth { from { filter: saturate(0.66) brightness(0.86); transform: scale(1.08) translate3d(-0.5%, 0.4%, 0); } to { filter: saturate(0.84) brightness(1.03); transform: scale(1.12) translate3d(0.5%, -0.5%, 0); } }
+  @keyframes panel-earth-light { from { opacity: 0.36; transform: scale(0.96); } to { opacity: 0.74; transform: scale(1.06); } }
+  @keyframes panel-water { from { filter: saturate(0.7) brightness(0.88); transform: scale(1.14) translate3d(-2%, 0.4%, 0); } to { filter: saturate(0.84) brightness(1.02); transform: scale(1.17) translate3d(2%, -0.5%, 0); } }
+  @keyframes panel-water-ripple { from { opacity: 0.3; transform: translate3d(-3%, -1%, 0) scale(0.98); } to { opacity: 0.72; transform: translate3d(3%, 1%, 0) scale(1.04); } }
+  @keyframes panel-fire { 0%, 100% { filter: saturate(0.72) brightness(0.86); transform: scale(1.09); } 48% { filter: saturate(0.94) brightness(1.08); transform: scale(1.13) translate3d(0.5%, -0.8%, 0); } 72% { filter: saturate(0.82) brightness(0.96); transform: scale(1.11) translate3d(-0.3%, 0.3%, 0); } }
+  @keyframes panel-fire-glow { from { opacity: 0.34; transform: scale(0.94); } to { opacity: 0.8; transform: scale(1.08); } }
+  @keyframes panel-air { from { filter: saturate(0.55) brightness(0.9); transform: scale(1.14) translateX(-2.4%); } to { filter: saturate(0.68) brightness(1.05); transform: scale(1.18) translateX(2.4%); } }
+  @keyframes panel-air-flow { from { opacity: 0.25; transform: translateX(-7%) skewX(-2deg); } to { opacity: 0.68; transform: translateX(7%) skewX(2deg); } }
 
   @media (min-width: 58rem) {
     .element-panel__header { grid-template-columns: auto minmax(0, 1fr) minmax(10rem, 0.34fr); }
@@ -380,6 +553,8 @@ const initialElement = elements[0];
   @media (max-width: 63.99rem) {
     .element-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .element-card { min-height: 13rem; }
+    .element-bridge { height: 1.25rem; }
+    .element-panel__scrim { background: linear-gradient(90deg, rgb(10 9 11 / 91%), rgb(10 9 11 / 76%)), linear-gradient(180deg, rgb(10 9 11 / 43%), rgb(10 9 11 / 90%)); }
   }
 
   @media (max-width: 35rem) {
@@ -395,5 +570,7 @@ const initialElement = elements[0];
 
   @media (prefers-reduced-motion: reduce) {
     .element-card__visual :global(img), .element-card__visual::before { animation: none !important; transform: none !important; }
+    .element-panel__backdrop :global(img), .element-panel__atmosphere { animation: none !important; transform: none !important; }
+    .element-card, .element-card::after, .element-panel__backdrop, .element-bridge > span::before, .element-bridge > span::after { transition: none !important; }
   }
 </style>

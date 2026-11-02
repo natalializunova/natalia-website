@@ -17,9 +17,3 @@ export const navigation = [
   { href: '/contact/', label: 'Контакты' },
 ] as const;
 
-export const elements = [
-  { key: 'earth', name: 'Земля', symbol: '◫', essence: 'Стабильность', text: 'Опора, границы и возвращение к тому, что действительно важно.' },
-  { key: 'water', name: 'Вода', symbol: '⌇', essence: 'Эмоции', text: 'Чувствование, принятие и умение слышать движение внутри.' },
-  { key: 'fire', name: 'Огонь', symbol: '△', essence: 'Сила', text: 'Воля, действие и бережное знакомство с собственной энергией.' },
-  { key: 'air', name: 'Воздух', symbol: '○', essence: 'Свобода', text: 'Ясность, новый взгляд и пространство для выбора.' },
-] as const;

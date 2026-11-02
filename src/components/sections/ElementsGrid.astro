@@ -1,14 +1,252 @@
 ---
-import { elements } from '../../data/site';
+import { Image } from 'astro:assets';
+import earthImage from '../../assets/images/elements/earth.avif';
+import waterImage from '../../assets/images/elements/water.avif';
+import fireImage from '../../assets/images/elements/fire.avif';
+import airImage from '../../assets/images/elements/air.avif';
+import { elements } from '../../data/elements';
+
+const images = { earth: earthImage, water: waterImage, fire: fireImage, air: airImage };
+const initialElement = elements[0];
 ---
-<div class="grid grid--4">
-  {elements.map((element, index) => (
-    <article class="card element-card">
-      <span class="element-card__number">0{index + 1}</span>
-      <span class="element-card__symbol" aria-hidden="true">{element.symbol}</span>
-      <h3>{element.name}</h3>
-      <strong>{element.essence}</strong>
-      <p>{element.text}</p>
+
+<div class="elements-experience" data-elements-root data-visible="false">
+  <div class="elements-grid">
+    {elements.map((element) => (
+      <article class="element-card" data-element-card={element.key} data-active={element.key === initialElement.key ? 'true' : 'false'}>
+        <div class="element-card__visual">
+          <Image
+            src={images[element.key]}
+            alt={element.imageAlt}
+            widths={[480, 720, 960]}
+            sizes="(min-width: 42rem) 50vw, calc(100vw - 2rem)"
+            format="webp"
+            loading="lazy"
+          />
+          <span class="element-card__number" aria-hidden="true">{element.number}</span>
+        </div>
+        <div class="element-card__body">
+          <h3>{element.name}</h3>
+          <p class="element-card__subtitle">{element.subtitle}</p>
+          <p class="element-card__summary">{element.summary}</p>
+          <ul class="element-card__traits" aria-label={`Качества стихии ${element.name}`}>
+            {element.traits.map((trait) => <li>{trait}</li>)}
+          </ul>
+          <span class="element-card__action" aria-hidden="true">Исследовать стихию <span>→</span></span>
+        </div>
+        <button
+          class="element-card__trigger"
+          type="button"
+          aria-label={`Исследовать стихию ${element.name}`}
+          aria-controls="element-details"
+          aria-pressed={element.key === initialElement.key ? 'true' : 'false'}
+          data-element-trigger={element.key}
+        ></button>
+      </article>
+    ))}
+  </div>
+
+  <section class="element-details" id="element-details" aria-labelledby="element-details-heading">
+    <div class="element-details__heading">
+      <p class="eyebrow">Выберите стихию</p>
+      <h3 id="element-details-heading">Исследуйте природу каждой стихии</h3>
+      <p>У каждой стихии есть свои сильные стороны и проявления дисбаланса. Выберите стихию, чтобы узнать, как раскрывается её энергия.</p>
+    </div>
+
+    <div class="element-tabs" role="tablist" aria-label="Выбор стихии">
+      {elements.map((element) => (
+        <button
+          class="element-tab"
+          type="button"
+          role="tab"
+          id={`element-tab-${element.key}`}
+          aria-controls="element-panel"
+          aria-selected={element.key === initialElement.key ? 'true' : 'false'}
+          tabindex={element.key === initialElement.key ? 0 : -1}
+          data-element-tab={element.key}
+        >
+          {element.name}
+        </button>
+      ))}
+    </div>
+
+    <article
+      class="element-panel"
+      id="element-panel"
+      role="tabpanel"
+      aria-labelledby={`element-tab-${initialElement.key}`}
+      tabindex="0"
+    >
+      <div class="element-panel__intro">
+        <p class="element-panel__index" data-panel-number>{initialElement.number}</p>
+        <div>
+          <h4 data-panel-title>{initialElement.title}</h4>
+          <p data-panel-introduction>{initialElement.introduction}</p>
+        </div>
+      </div>
+      <div class="element-panel__columns">
+        <section>
+          <p class="element-panel__label">В гармонии</p>
+          <div class="element-panel__copy" data-panel-harmony>
+            {initialElement.harmony.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+        </section>
+        <section>
+          <p class="element-panel__label">В дисбалансе</p>
+          <div class="element-panel__copy" data-panel-imbalance>
+            {initialElement.imbalance.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+        </section>
+      </div>
+      <div class="element-panel__archetypes">
+        <p class="element-panel__label">Архетипы</p>
+        <p data-panel-archetypes>{initialElement.archetypes}</p>
+      </div>
     </article>
-  ))}
+  </section>
 </div>
+
+<script define:vars={{ elements }}>
+  const root = document.querySelector('[data-elements-root]');
+
+  if (root) {
+    const cards = [...root.querySelectorAll('[data-element-card]')];
+    const triggers = [...root.querySelectorAll('[data-element-trigger]')];
+    const tabs = [...root.querySelectorAll('[data-element-tab]')];
+    const panel = root.querySelector('#element-panel');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const paragraphs = (items) => items.map((item) => {
+      const paragraph = document.createElement('p');
+      paragraph.textContent = item;
+      return paragraph;
+    });
+
+    const render = (key, options = {}) => {
+      const next = elements.find((element) => element.key === key);
+      if (!next) return;
+
+      cards.forEach((card) => card.dataset.active = String(card.dataset.elementCard === key));
+      triggers.forEach((trigger) => trigger.setAttribute('aria-pressed', String(trigger.dataset.elementTrigger === key)));
+      tabs.forEach((tab) => {
+        const selected = tab.dataset.elementTab === key;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+
+      const updatePanel = () => {
+        panel.setAttribute('aria-labelledby', `element-tab-${key}`);
+        panel.querySelector('[data-panel-number]').textContent = next.number;
+        panel.querySelector('[data-panel-title]').textContent = next.title;
+        panel.querySelector('[data-panel-introduction]').textContent = next.introduction;
+        panel.querySelector('[data-panel-harmony]').replaceChildren(...paragraphs(next.harmony));
+        panel.querySelector('[data-panel-imbalance]').replaceChildren(...paragraphs(next.imbalance));
+        panel.querySelector('[data-panel-archetypes]').textContent = next.archetypes;
+      };
+
+      if (!reducedMotion.matches && panel.animate) {
+        const fadeOut = panel.animate([{ opacity: 1 }, { opacity: 0.35 }], { duration: 110, easing: 'ease-out' });
+        fadeOut.finished.then(() => {
+          updatePanel();
+          panel.animate([{ opacity: 0.35 }, { opacity: 1 }], { duration: 180, easing: 'ease-out' });
+        });
+      } else {
+        updatePanel();
+      }
+
+      if (options.scroll) {
+        panel.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'nearest' });
+      }
+    };
+
+    triggers.forEach((trigger) => trigger.addEventListener('click', () => render(trigger.dataset.elementTrigger, { scroll: true })));
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => render(tab.dataset.elementTab));
+      tab.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        let nextIndex = index;
+        if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = tabs.length - 1;
+        tabs[nextIndex].focus();
+        render(tabs[nextIndex].dataset.elementTab);
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(([entry]) => root.dataset.visible = String(entry.isIntersecting), { threshold: 0.12 });
+      observer.observe(root);
+    } else {
+      root.dataset.visible = 'true';
+    }
+  }
+</script>
+
+<style>
+  .elements-experience { display: grid; gap: clamp(3rem, 7vw, 6rem); }
+  .elements-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  .element-card { position: relative; overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface-soft); transition: border-color 240ms ease, transform 240ms ease, box-shadow 240ms ease; }
+  .element-card[data-active='true'] { border-color: var(--color-gold-muted); box-shadow: 0 1rem 3rem rgb(0 0 0 / 20%), inset 0 0 0 1px rgb(181 154 101 / 10%); }
+  .element-card:hover { border-color: var(--color-gold-muted); transform: translateY(-3px); }
+  .element-card__visual { position: relative; overflow: hidden; aspect-ratio: 4 / 3; border-bottom: 1px solid var(--color-border); background: var(--color-black); }
+  .element-card__visual::after { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgb(9 9 10 / 58%)); content: ''; pointer-events: none; }
+  .element-card__visual :global(img) { width: 100%; height: 100%; object-fit: cover; transform: scale(1.015); transition: filter 700ms ease, transform 1.4s ease; }
+  .element-card__number { position: absolute; top: 1rem; left: 1rem; z-index: 1; color: var(--color-text); font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1; text-shadow: 0 2px 1rem rgb(0 0 0 / 55%); }
+  .element-card__body { display: grid; gap: 0.9rem; min-height: 20.5rem; padding: clamp(1.25rem, 3vw, 2rem); }
+  .element-card__body h3 { font-size: clamp(1.8rem, 4vw, 2.65rem); }
+  .element-card__subtitle { color: var(--color-gold); font-size: var(--text-xs); font-weight: 650; letter-spacing: 0.1em; line-height: 1.5; text-transform: uppercase; }
+  .element-card__summary { color: var(--color-muted); line-height: 1.65; }
+  .element-card__traits { display: flex; flex-wrap: wrap; gap: 0.5rem; align-self: end; margin: 0; padding: 0; list-style: none; }
+  .element-card__traits li { padding: 0.35rem 0.65rem; border: 1px solid var(--color-border); color: var(--color-muted); font-size: var(--text-xs); letter-spacing: 0.06em; }
+  .element-card__action { display: flex; align-items: center; justify-content: space-between; padding-top: 0.85rem; border-top: 1px solid var(--color-border); color: var(--color-text); font-size: var(--text-sm); }
+  .element-card__action span { color: var(--color-gold); transition: transform 240ms ease; }
+  .element-card:hover .element-card__action span, .element-card[data-active='true'] .element-card__action span { transform: translateX(0.25rem); }
+  .element-card__trigger { position: absolute; inset: 0; z-index: 2; border: 0; background: transparent; cursor: pointer; }
+  .element-card__trigger:focus-visible { outline: 2px solid var(--color-gold); outline-offset: -0.5rem; }
+  .element-card[data-active='true']::after { position: absolute; right: 1rem; bottom: 1rem; width: 0.45rem; height: 0.45rem; z-index: 1; border: 1px solid var(--color-gold); transform: rotate(45deg); content: ''; }
+
+  [data-visible='true'] .element-card[data-active='true'][data-element-card='earth'] :global(img) { animation: earth-light 9s ease-in-out infinite alternate; }
+  [data-visible='true'] .element-card[data-active='true'][data-element-card='water'] :global(img) { animation: water-drift 8s ease-in-out infinite alternate; }
+  [data-visible='true'] .element-card[data-active='true'][data-element-card='fire'] :global(img) { animation: fire-light 3.8s ease-in-out infinite alternate; }
+  [data-visible='true'] .element-card[data-active='true'][data-element-card='air'] :global(img) { animation: air-drift 10s ease-in-out infinite alternate; }
+  @keyframes earth-light { from { filter: brightness(0.9); transform: scale(1.015); } to { filter: brightness(1.04); transform: scale(1.035); } }
+  @keyframes water-drift { from { filter: brightness(0.92); transform: scale(1.035) translate3d(-0.35%, 0, 0); } to { filter: brightness(1.03); transform: scale(1.045) translate3d(0.35%, -0.3%, 0); } }
+  @keyframes fire-light { 0%, 100% { filter: brightness(0.94) saturate(0.92); transform: scale(1.02); } 48% { filter: brightness(1.08) saturate(1.03); transform: scale(1.035) translateY(-0.2%); } }
+  @keyframes air-drift { from { filter: brightness(0.92); transform: scale(1.045) translate3d(-0.5%, 0, 0); } to { filter: brightness(1.03); transform: scale(1.055) translate3d(0.5%, -0.3%, 0); } }
+
+  .element-details { padding: clamp(1.4rem, 4vw, 3.25rem); border: 1px solid var(--color-border); background: linear-gradient(145deg, rgb(32 32 35 / 96%), rgb(20 20 22 / 98%)); }
+  .element-details__heading { display: grid; gap: 1rem; max-width: 49rem; }
+  .element-details__heading .eyebrow { margin-bottom: 0; }
+  .element-details__heading > p:last-child { color: var(--color-muted); }
+  .element-tabs { display: grid; grid-template-columns: repeat(2, 1fr); margin-block: clamp(2rem, 5vw, 3.5rem) 0; border-block: 1px solid var(--color-border); }
+  .element-tab { position: relative; padding: 1rem 0.5rem; border: 0; background: transparent; color: var(--color-muted); cursor: pointer; font-family: var(--font-display); font-size: 1.05rem; transition: color 240ms ease, background 240ms ease; }
+  .element-tab::after { position: absolute; right: 20%; bottom: -1px; left: 20%; height: 1px; transform: scaleX(0); background: var(--color-gold); content: ''; transition: transform 240ms ease; }
+  .element-tab:hover { color: var(--color-text); }
+  .element-tab[aria-selected='true'] { background: rgb(181 154 101 / 5%); color: var(--color-gold); }
+  .element-tab[aria-selected='true']::after { transform: scaleX(1); }
+  .element-panel { outline: none; }
+  .element-panel:focus-visible { outline: 1px solid var(--color-gold-muted); outline-offset: 0.5rem; }
+  .element-panel__intro { display: grid; gap: 1.25rem; padding-block: clamp(2rem, 5vw, 3.5rem); border-bottom: 1px solid var(--color-border); }
+  .element-panel__index { color: var(--color-gold-muted); font-family: var(--font-display); font-size: clamp(2.75rem, 8vw, 5.5rem); line-height: 0.85; }
+  .element-panel h4 { margin: 0; font-family: var(--font-display); font-size: clamp(1.55rem, 3vw, 2.4rem); font-weight: 400; line-height: 1.15; }
+  .element-panel__intro div > p { max-width: 52rem; margin-top: 1rem; color: var(--color-muted); font-size: var(--text-lg); line-height: 1.6; }
+  .element-panel__columns { display: grid; gap: 2.25rem; padding-block: clamp(2rem, 5vw, 3.5rem); }
+  .element-panel__columns section { display: grid; align-content: start; gap: 1rem; }
+  .element-panel__label { color: var(--color-gold); font-size: var(--text-xs); font-weight: 650; letter-spacing: 0.15em; text-transform: uppercase; }
+  .element-panel__copy { display: grid; gap: 0.9rem; color: var(--color-muted); }
+  .element-panel__archetypes { display: grid; gap: 0.65rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
+  .element-panel__archetypes > p:last-child { font-family: var(--font-display); font-size: var(--text-lg); }
+
+  @media (min-width: 42rem) {
+    .elements-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+    .element-tabs { grid-template-columns: repeat(4, 1fr); }
+    .element-panel__intro { grid-template-columns: 6rem 1fr; gap: 2rem; }
+    .element-panel__columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 5vw, 5rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .element-card__visual :global(img) { animation: none !important; transform: none !important; }
+  }
+</style>

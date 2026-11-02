@@ -179,13 +179,6 @@ p { margin: 0; }
 .split { display: grid; align-items: center; gap: var(--space-6); }
 .stack { display: grid; gap: var(--space-4); }
 
-.element-card { min-height: 18rem; padding: var(--space-4); }
-.element-card__number { color: var(--color-gold-muted); font-family: var(--font-display); font-size: 3rem; }
-.element-card__symbol { position: absolute; right: 1rem; bottom: -1rem; color: rgb(181 154 101 / 8%); font-family: var(--font-display); font-size: 9rem; line-height: 1; }
-.element-card h3 { margin-top: 2.75rem; }
-.element-card p { margin-top: 0.75rem; color: var(--color-muted); }
-.element-card strong { color: var(--color-gold); font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; }
-
 .breadcrumbs { padding-block: 1rem; color: var(--color-muted); font-size: var(--text-xs); }
 .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0; padding: 0; list-style: none; }
 .breadcrumbs li:not(:last-child)::after { margin-left: 0.45rem; color: var(--color-gold-muted); content: '/'; }

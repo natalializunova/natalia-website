@@ -1,5 +1,5 @@
 ---
-import { navigation, site } from '../../data/site';
+import { footerNavigation, site } from '../../data/site';
 ---
 
 <footer class="site-footer">
@@ -9,22 +9,12 @@ import { navigation, site } from '../../data/site';
       <p class="site-footer__name">{site.name}</p>
       <p>Авторское пространство Натальи Лизуновой. Содержание проекта находится в подготовке.</p>
     </div>
-    <div>
-      <h2>Разделы</h2>
-      <ul>{navigation.slice(0, 4).map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul>
-    </div>
-    <div>
-      <h2>Продолжение</h2>
-      <ul>{navigation.slice(4).map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul>
-    </div>
-    <div>
-      <h2>Документы</h2>
-      <ul>
-        <li><a href="/privacy/">Конфиденциальность</a></li>
-        <li><a href="/consent/">Согласие на обработку данных</a></li>
-        <li><a href="/offer/">Публичная оферта</a></li>
-      </ul>
-    </div>
+    {footerNavigation.map((section) => (
+      <div>
+        <h2>{section.title}</h2>
+        <ul>{section.items.map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul>
+      </div>
+    ))}
   </div>
   <div class="container site-footer__bottom">
     <p>© {new Date().getFullYear()} {site.author}. Материалы сайта защищены.</p>

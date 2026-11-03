@@ -4,13 +4,14 @@ import earthImage from '../../assets/images/elements/earth.avif';
 import waterImage from '../../assets/images/elements/water.avif';
 import fireImage from '../../assets/images/elements/fire.avif';
 import airImage from '../../assets/images/elements/air.avif';
+import ElementGlyph from '../ui/ElementGlyph.astro';
 import { elements } from '../../data/elements';
 
 const images = { earth: earthImage, water: waterImage, fire: fireImage, air: airImage };
 const initialElement = elements[0];
 ---
 
-<div class="elements-experience" data-elements-root data-visible="false">
+<div class="elements-experience" data-elements-root data-visible="false" data-active-element={initialElement.key}>
   <div class="element-cards" role="tablist" aria-label="Выберите стихию">
     {elements.map((element) => (
       <article
@@ -45,7 +46,14 @@ const initialElement = elements[0];
           <span class="element-card__copy">
             <span class="element-card__name">{element.name}</span>
             <span class="element-card__subtitle">{element.subtitle}</span>
-            <span class="element-card__traits" aria-hidden="true">{element.traits.join(' · ')}</span>
+            <span class="element-card__traits" aria-hidden="true">
+              {element.traits.map((trait, index) => (
+                <span class="element-card__trait">
+                  <ElementGlyph name={element.traitGlyphs[index]} />
+                  <span class="element-card__trait-label">{trait}</span>
+                </span>
+              ))}
+            </span>
           </span>
         </button>
 
@@ -64,14 +72,7 @@ const initialElement = elements[0];
     ))}
   </div>
 
-  <div class="element-bridge" aria-hidden="true">
-    {elements.map((element) => (
-      <span
-        data-element-bridge={element.key}
-        data-active={element.key === initialElement.key ? 'true' : 'false'}
-      ></span>
-    ))}
-  </div>
+  <div class="element-bridge" aria-hidden="true"><span></span></div>
 
   <article
     class="element-panel"
@@ -146,7 +147,6 @@ const initialElement = elements[0];
     const tabs = [...root.querySelectorAll('[data-element-tab]')];
     const cards = [...root.querySelectorAll('[data-element-card]')];
     const motionButtons = [...root.querySelectorAll('[data-element-motion]')];
-    const bridgeSegments = [...root.querySelectorAll('[data-element-bridge]')];
     const panelVisuals = [...root.querySelectorAll('[data-element-panel-visual]')];
     const panel = root.querySelector('#element-panel');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -197,8 +197,8 @@ const initialElement = elements[0];
         tab.tabIndex = selected ? 0 : -1;
       });
       cards.forEach((card) => card.dataset.active = String(card.dataset.elementCard === key));
-      bridgeSegments.forEach((segment) => segment.dataset.active = String(segment.dataset.elementBridge === key));
       panelVisuals.forEach((visual) => visual.dataset.active = String(visual.dataset.elementPanelVisual === key));
+      root.dataset.activeElement = key;
       panel.dataset.activeElement = key;
       panel.dataset.motion = activeCard?.dataset.motion ?? 'off';
 
@@ -269,12 +269,18 @@ const initialElement = elements[0];
 
 <style>
   .elements-experience {
+    --active-x: 12.5%;
+    --active-accent: 181 154 101;
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     background: linear-gradient(145deg, rgb(32 32 35 / 98%), rgb(14 14 16 / 99%));
     box-shadow: 0 2rem 5rem rgb(0 0 0 / 16%);
   }
+
+  .elements-experience[data-active-element='water'] { --active-x: 37.5%; --active-accent: 147 176 190; }
+  .elements-experience[data-active-element='fire'] { --active-x: 62.5%; --active-accent: 216 119 59; }
+  .elements-experience[data-active-element='air'] { --active-x: 87.5%; --active-accent: 202 200 192; }
 
   .element-cards {
     display: grid;
@@ -284,6 +290,7 @@ const initialElement = elements[0];
   }
 
   .element-card {
+    --card-accent: 181 154 101;
     position: relative;
     min-height: clamp(12.5rem, 20vw, 15.5rem);
     isolation: isolate;
@@ -293,6 +300,10 @@ const initialElement = elements[0];
     filter: saturate(0.74) brightness(0.8);
     transition: opacity 280ms ease, filter 280ms ease, transform 280ms ease;
   }
+
+  .element-card[data-element-card='water'] { --card-accent: 147 176 190; }
+  .element-card[data-element-card='fire'] { --card-accent: 216 119 59; }
+  .element-card[data-element-card='air'] { --card-accent: 202 200 192; }
 
   .element-card::after {
     position: absolute;
@@ -305,8 +316,9 @@ const initialElement = elements[0];
   }
 
   .element-card[data-active='true']::after {
-    border-color: var(--color-gold);
-    box-shadow: inset 0 0 0 1px rgb(181 154 101 / 25%), inset 0 -4rem 5rem rgb(181 154 101 / 10%);
+    border-color: rgb(var(--card-accent) / 72%);
+    border-bottom-color: rgb(var(--card-accent) / 18%);
+    box-shadow: inset 0 0 0 1px rgb(var(--card-accent) / 18%), inset 0 -5rem 5.5rem rgb(var(--card-accent) / 13%), 0 0 1.8rem rgb(var(--card-accent) / 10%);
   }
 
   .element-card[data-active='true'] {
@@ -316,7 +328,8 @@ const initialElement = elements[0];
     transform: translateY(-2px);
   }
 
-  .element-card[data-active='true'] .element-card__name { text-shadow: 0 0 1.25rem rgb(211 177 105 / 45%); }
+  .element-card[data-active='true'] .element-card__name { text-shadow: 0 0 1.25rem rgb(var(--card-accent) / 45%); }
+  .element-card[data-active='true'] .element-card__visual::after { background: linear-gradient(180deg, rgb(9 9 10 / 14%), rgb(9 9 10 / 10%) 30%, rgb(9 9 10 / 88%) 100%), radial-gradient(ellipse at 50% 104%, rgb(var(--card-accent) / 28%), transparent 58%); }
 
   .element-card__visual,
   .element-card__visual::before,
@@ -368,7 +381,11 @@ const initialElement = elements[0];
   .element-card__copy { display: grid; gap: 0.35rem; max-width: 17rem; }
   .element-card__name { font-family: var(--font-display); font-size: clamp(1.55rem, 3vw, 2.15rem); line-height: 1; }
   .element-card__subtitle { color: var(--color-gold); font-size: 0.66rem; font-weight: 650; letter-spacing: 0.1em; line-height: 1.45; text-transform: uppercase; }
-  .element-card__traits { color: rgb(238 231 220 / 68%); font-size: 0.68rem; line-height: 1.45; }
+  .element-card__traits { display: flex; flex-wrap: wrap; gap: 0.28rem 0.52rem; color: rgb(238 231 220 / 68%); font-size: 0.66rem; line-height: 1.35; }
+  .element-card__trait { display: inline-flex; align-items: center; gap: 0.24rem; color: rgb(238 231 220 / 64%); white-space: nowrap; transition: color 240ms ease, opacity 240ms ease; }
+  .element-card__trait :global(.trait-glyph) { color: rgb(205 176 113 / 82%); filter: drop-shadow(0 0 0.3rem rgb(181 154 101 / 20%)); }
+  .element-card[data-active='true'] .element-card__trait { color: rgb(244 237 225 / 82%); }
+  .element-card[data-active='true'] .element-card__trait :global(.trait-glyph) { color: rgb(var(--card-accent) / 96%); filter: drop-shadow(0 0 0.42rem rgb(var(--card-accent) / 34%)); }
 
   .element-motion {
     position: absolute;
@@ -398,69 +415,68 @@ const initialElement = elements[0];
 
   .element-bridge {
     position: relative;
-    display: grid;
-    height: 1.65rem;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    background: rgb(9 9 10 / 96%);
+    height: clamp(2.2rem, 3vw, 2.8rem);
+    z-index: 4;
+    margin-top: -1.15rem;
+    overflow: hidden;
+    background: linear-gradient(180deg, transparent 0%, rgb(10 9 11 / 58%) 42%, rgb(13 12 14 / 96%) 100%);
+    pointer-events: none;
   }
 
-  .element-bridge::after {
+  .element-bridge::before {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgb(181 154 101 / 25%) 18%, rgb(181 154 101 / 25%) 82%, transparent);
+    top: -1.3rem;
+    left: var(--active-x);
+    width: clamp(8rem, 23vw, 17rem);
+    height: 4.6rem;
+    background: radial-gradient(ellipse at 50% 0%, rgb(var(--active-accent) / 34%), rgb(var(--active-accent) / 12%) 36%, transparent 72%);
     content: '';
+    filter: blur(0.55rem);
+    opacity: 0.78;
+    transform: translateX(-50%);
+    transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), background 360ms ease;
   }
 
-  .element-bridge > span { position: relative; }
-  .element-bridge > span::before {
+  .element-bridge > span {
     position: absolute;
-    top: 0;
-    left: 50%;
-    width: 1px;
-    height: 100%;
-    background: linear-gradient(180deg, var(--color-gold), rgb(181 154 101 / 20%));
-    content: '';
-    opacity: 0;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: opacity 260ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    top: 1.05rem;
+    left: var(--active-x);
+    width: 0.38rem;
+    height: 0.38rem;
+    border: 1px solid rgb(var(--active-accent) / 76%);
+    background: rgb(13 12 14 / 88%);
+    box-shadow: 0 0 0.85rem rgb(var(--active-accent) / 32%);
+    transform: translateX(-50%) rotate(45deg);
+    transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), border-color 360ms ease, box-shadow 360ms ease;
   }
-
-  .element-bridge > span::after {
-    position: absolute;
-    bottom: -0.22rem;
-    left: 50%;
-    z-index: 3;
-    width: 0.42rem;
-    height: 0.42rem;
-    border: 1px solid var(--color-gold);
-    background: var(--color-black);
-    content: '';
-    opacity: 0;
-    transform: translateX(-50%) rotate(45deg) scale(0.35);
-    transition: opacity 240ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .element-bridge > span[data-active='true']::before { opacity: 1; transform: scaleY(1); }
-  .element-bridge > span[data-active='true']::after { opacity: 1; transform: translateX(-50%) rotate(45deg) scale(1); }
 
   .element-panel {
-    --panel-accent: 181 154 101;
+    --panel-accent: var(--active-accent);
     position: relative;
     isolation: isolate;
     overflow: hidden;
+    margin-top: -0.2rem;
     padding: clamp(1.4rem, 3.5vw, 2.75rem);
     background: rgb(13 12 14 / 94%);
-    box-shadow: inset 0 1px 0 rgb(var(--panel-accent) / 20%), inset 0 0 5rem rgb(var(--panel-accent) / 6%);
+    box-shadow: inset 0 0 6rem rgb(var(--panel-accent) / 7%);
     transition: box-shadow 320ms ease;
   }
 
-  .element-panel[data-active-element='water'] { --panel-accent: 147 176 190; }
-  .element-panel[data-active-element='fire'] { --panel-accent: 216 119 59; }
-  .element-panel[data-active-element='air'] { --panel-accent: 202 200 192; }
+  .element-panel::before {
+    position: absolute;
+    top: -6.5rem;
+    left: var(--active-x);
+    width: clamp(15rem, 32vw, 26rem);
+    height: 11rem;
+    z-index: 1;
+    background: radial-gradient(ellipse at 50% 0%, rgb(var(--panel-accent) / 25%), rgb(var(--panel-accent) / 8%) 40%, transparent 72%);
+    content: '';
+    filter: blur(0.9rem);
+    opacity: 0.82;
+    pointer-events: none;
+    transform: translateX(-50%);
+    transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), background 360ms ease;
+  }
 
   .element-panel__backdrops,
   .element-panel__backdrop,
@@ -491,7 +507,7 @@ const initialElement = elements[0];
 
   .element-panel__header,
   .element-panel__details,
-  .element-panel__archetypes { position: relative; z-index: 1; }
+  .element-panel__archetypes { position: relative; z-index: 3; }
 
   .element-panel__header { display: grid; align-items: start; gap: clamp(1rem, 2.5vw, 2rem); }
   .element-panel__number { color: var(--color-gold-muted); font-family: var(--font-display); font-size: clamp(2.8rem, 7vw, 5.25rem); line-height: 0.85; }
@@ -551,9 +567,13 @@ const initialElement = elements[0];
   }
 
   @media (max-width: 63.99rem) {
+    .elements-experience[data-active-element='earth'],
+    .elements-experience[data-active-element='fire'] { --active-x: 25%; }
+    .elements-experience[data-active-element='water'],
+    .elements-experience[data-active-element='air'] { --active-x: 75%; }
     .element-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .element-card { min-height: 13rem; }
-    .element-bridge { height: 1.25rem; }
+    .element-bridge { height: 2.15rem; }
     .element-panel__scrim { background: linear-gradient(90deg, rgb(10 9 11 / 91%), rgb(10 9 11 / 76%)), linear-gradient(180deg, rgb(10 9 11 / 43%), rgb(10 9 11 / 90%)); }
   }
 
@@ -563,7 +583,9 @@ const initialElement = elements[0];
     .element-card__number { font-size: 1.15rem; }
     .element-card__name { font-size: 1.45rem; }
     .element-card__subtitle { font-size: 0.58rem; letter-spacing: 0.07em; }
-    .element-card__traits { display: none; }
+    .element-card__traits { gap: 0.38rem; margin-top: 0.08rem; }
+    .element-card__trait-label { display: none; }
+    .element-card__trait :global(.trait-glyph) { width: 0.82rem; height: 0.82rem; }
     .element-motion { top: 0.55rem; right: 0.55rem; width: 1.8rem; height: 1.8rem; }
     .element-panel__number { display: none; }
   }
@@ -571,6 +593,6 @@ const initialElement = elements[0];
   @media (prefers-reduced-motion: reduce) {
     .element-card__visual :global(img), .element-card__visual::before { animation: none !important; transform: none !important; }
     .element-panel__backdrop :global(img), .element-panel__atmosphere { animation: none !important; transform: none !important; }
-    .element-card, .element-card::after, .element-panel__backdrop, .element-bridge > span::before, .element-bridge > span::after { transition: none !important; }
+    .element-card, .element-card::after, .element-panel__backdrop, .element-bridge::before, .element-bridge > span, .element-panel::before { transition: none !important; }
   }
 </style>

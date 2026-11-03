@@ -1,0 +1,160 @@
+---
+import { Image } from 'astro:assets';
+import sigilImage from '../../assets/images/author-sigil.png';
+
+type Props = {
+  width?: string;
+  height?: string;
+  scale?: number;
+  translateX?: string;
+  translateY?: string;
+  opacity?: number;
+  animationEnabled?: boolean;
+  alt?: string;
+};
+
+const {
+  width = '3.75rem',
+  height = width,
+  scale = 1,
+  translateX = '0px',
+  translateY = '0px',
+  opacity = 1,
+  animationEnabled = true,
+  alt = 'Авторский сигил Натальи Лизуновой: звезда, две змеи и лотос',
+} = Astro.props;
+
+const style = [
+  `--sigil-width:${width}`,
+  `--sigil-height:${height}`,
+  `--sigil-scale:${scale}`,
+  `--sigil-x:${translateX}`,
+  `--sigil-y:${translateY}`,
+  `--sigil-opacity:${opacity}`,
+].join(';');
+---
+
+<span class="author-sigil" data-animated={String(animationEnabled)} style={style}>
+  <span class="author-sigil__media">
+    <Image
+      class="author-sigil__image"
+      src={sigilImage}
+      alt={alt}
+      width={192}
+      height={192}
+      format="webp"
+      quality={88}
+      loading="eager"
+    />
+
+    <span class="author-sigil__star" aria-hidden="true"></span>
+
+    <svg class="author-sigil__life" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+      <path class="snake-light snake-light--bronze" d="M43 18 C30 22 25 35 27 50 C29 66 39 73 52 69 C62 66 68 74 61 82" />
+      <path class="snake-light snake-light--green" d="M57 18 C70 22 77 35 75 50 C73 65 63 71 54 63 C47 57 40 62 44 70" />
+      <path class="snake-tongue snake-tongue--left" d="M46.1 17.7 C47.5 17.8 48.3 16.8 49.3 16.5 M48.3 16.8 L48.5 15.9" />
+      <path class="snake-tongue snake-tongue--right" d="M53.9 17.7 C52.5 17.8 51.7 16.8 50.7 16.5 M51.7 16.8 L51.5 15.9" />
+    </svg>
+  </span>
+</span>
+
+<style>
+  .author-sigil {
+    display: inline-grid;
+    width: var(--sigil-width);
+    height: var(--sigil-height);
+    flex: 0 0 auto;
+    opacity: var(--sigil-opacity);
+    transform: translate(var(--sigil-x), var(--sigil-y)) scale(var(--sigil-scale));
+    transform-origin: center;
+  }
+
+  .author-sigil__media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgb(181 154 101 / 46%);
+    border-radius: 50%;
+    background: var(--color-black);
+    box-shadow: 0 0 0 1px rgb(9 9 10 / 82%), 0 0 1.15rem rgb(181 154 101 / 17%);
+    isolation: isolate;
+  }
+
+  .author-sigil__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.035);
+  }
+
+  .author-sigil__star {
+    position: absolute;
+    inset: 12% 15% 10%;
+    z-index: 2;
+    background: radial-gradient(circle at 50% 43%, rgb(255 235 174 / 42%), rgb(211 177 105 / 13%) 28%, transparent 61%);
+    clip-path: polygon(50% 0%, 59% 34%, 100% 24%, 70% 50%, 100% 75%, 59% 66%, 50% 100%, 41% 66%, 0 75%, 30% 50%, 0 24%, 41% 34%);
+    mix-blend-mode: screen;
+    opacity: 0.34;
+    pointer-events: none;
+  }
+
+  .author-sigil__life { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+
+  .snake-light {
+    fill: none;
+    stroke: rgb(242 210 139 / 46%);
+    stroke-dasharray: 4 14;
+    stroke-linecap: round;
+    stroke-width: 0.7;
+    filter: drop-shadow(0 0 0.22rem rgb(226 185 100 / 36%));
+    opacity: 0.48;
+  }
+
+  .snake-light--green { stroke: rgb(172 197 142 / 40%); animation-delay: -3.5s; }
+
+  .snake-tongue {
+    fill: none;
+    stroke: rgb(210 164 102 / 82%);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 0.34;
+    filter: drop-shadow(0 0 0.15rem rgb(211 177 105 / 38%));
+    transform-box: fill-box;
+  }
+
+  .snake-tongue--left { transform-origin: left center; }
+  .snake-tongue--right { transform-origin: right center; }
+
+  .author-sigil[data-animated='true'] .author-sigil__star { animation: star-breathe 4.8s ease-in-out infinite, star-flicker 7.2s steps(1, end) infinite; }
+  .author-sigil[data-animated='true'] .snake-light { animation: snake-light-flow 9s linear infinite; }
+  .author-sigil[data-animated='true'] .snake-tongue--left { animation: tongue-left 5.6s ease-in-out infinite; }
+  .author-sigil[data-animated='true'] .snake-tongue--right { animation: tongue-right 5.6s ease-in-out -0.18s infinite; }
+
+  @keyframes star-breathe {
+    0%, 100% { opacity: 0.22; filter: brightness(0.94) blur(0.15px); transform: scale(0.96); }
+    48% { opacity: 0.48; filter: brightness(1.16) blur(0); transform: scale(1.035); }
+  }
+
+  @keyframes star-flicker {
+    0%, 22%, 25%, 71%, 74%, 100% { }
+    23%, 72% { opacity: 0.31; }
+  }
+
+  @keyframes snake-light-flow { to { stroke-dashoffset: -36; } }
+
+  @keyframes tongue-left {
+    0%, 100% { transform: rotate(-2deg) translateX(-0.25px); }
+    48% { transform: rotate(4deg) translateX(0.85px); }
+  }
+
+  @keyframes tongue-right {
+    0%, 100% { transform: rotate(2deg) translateX(0.25px); }
+    48% { transform: rotate(-4deg) translateX(-0.85px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .author-sigil__star, .snake-light, .snake-tongue { animation: none !important; }
+  }
+</style>

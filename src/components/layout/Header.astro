@@ -1,6 +1,6 @@
 ---
 import { navigation, site } from '../../data/site';
-import BrandSigil from '../ui/BrandSigil.astro';
+import AuthorSigil from '../ui/AuthorSigil.astro';
 const currentPath = Astro.url.pathname;
 const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath.startsWith(href);
 ---
@@ -8,7 +8,7 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
 <header class="site-header">
   <div class="container site-header__inner">
     <a class="brand" href="/" aria-label={`${site.name} — на главную`}>
-      <BrandSigil src={site.sigilSrc} alt={site.sigilAlt} />
+      <AuthorSigil {...site.sigil} />
       <span>{site.shortName}</span>
     </a>
 

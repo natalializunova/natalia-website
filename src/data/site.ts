@@ -2,8 +2,16 @@ export const site = {
   name: 'Ведьма во мне. Путь к себе',
   shortName: 'Ведьма во мне',
   author: 'Наталья Лизунова',
-  sigilSrc: null as string | null,
-  sigilAlt: 'Авторский сигил Натальи Лизуновой',
+  sigil: {
+    width: 'clamp(3.15rem, 4.8vw, 3.9rem)',
+    height: 'clamp(3.15rem, 4.8vw, 3.9rem)',
+    scale: 1,
+    translateX: '0px',
+    translateY: '0px',
+    opacity: 1,
+    animationEnabled: true,
+    alt: 'Авторский сигил Натальи Лизуновой: звезда, две змеи и лотос',
+  },
   description:
     'Авторское пространство о внутренней силе, самопознании и пути к себе через образы четырёх Стихий.',
 };

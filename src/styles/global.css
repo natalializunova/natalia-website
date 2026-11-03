@@ -89,6 +89,7 @@ h1, h2, h3 {
   font-weight: 400;
   letter-spacing: -0.025em;
   line-height: var(--leading-display);
+  text-wrap: balance;
 }
 h1 { font-size: var(--text-2xl); }
 h2 { font-size: var(--text-xl); }

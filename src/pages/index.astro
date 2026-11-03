@@ -19,17 +19,18 @@ const course = courses[0];
     <div class="container hero__grid">
       <div class="hero__visual">
         <div class="hero__arch">
-          <Image src={heroImage} alt="Старинная каменная арка с видом на лес и спокойную воду на рассвете" widths={[480, 720, 900]} sizes="(min-width: 54rem) 48vw, calc(100vw - 2rem)" format="webp" loading="eager" fetchpriority="high" />
+          <div class="hero__arch-inner">
+            <Image src={heroImage} alt="Старинная каменная арка с видом на лес и спокойную воду на рассвете" widths={[480, 720, 900]} sizes="(min-width: 54rem) 48vw, calc(100vw - 2rem)" format="webp" loading="eager" fetchpriority="high" />
+          </div>
         </div>
-        <p class="hero__caption">Земля · Вода · Огонь · Воздух</p>
+        <p class="hero__caption">Выбери свой путь</p>
       </div>
       <div class="hero__content">
-        <p class="eyebrow">Ведьма во мне. Путь к себе</p>
-        <h1>Вернуться к своему внутреннему знанию</h1>
-        <p class="lead">«Путь к себе» — пространство самопознания, исследования внутреннего мира и связи с природой. Через символы, практики и знакомство с четырьмя Стихиями здесь открывается возможность глубже услышать и понять себя.</p>
+        <h1>Повернись к своему внутреннему свету</h1>
+        <p class="lead">«Путь к себе» — это тропа к своему внутреннему миру. К своим истинным желаниям, своему счастью и гармонии. Путь к себе проложен через освобождение к Принятию.</p>
         <div class="button-row">
           <Button href="/about-project/">О проекте</Button>
-          <Button href="/about/" variant="ghost">Познакомиться с автором</Button>
+          <Button href="/about/" variant="ghost">Обо мне</Button>
         </div>
       </div>
     </div>
@@ -43,8 +44,9 @@ const course = courses[0];
         <h2>Не искать готовый образ. Вспоминать свой.</h2>
       </div>
       <div class="stack">
-        <p class="lead">«Ведьма во мне» — развивающееся авторское пространство о внимании к себе, внутренней опоре и символическом языке Стихий.</p>
-        <p class="muted">Сайт находится на этапе основания. Здесь постепенно появятся подтверждённые программы, практики, тексты и артефакты.</p>
+        <p class="lead">Путь через четыре Стихии — это базовый метод. Он подсказывает, какой вектор выбрать, но пройти по нему необходимо самостоятельно.</p>
+        <p class="muted">Используя мой Авторский курс, практики и символы, вы прикоснетесь к тайным знаниям, утерянным в эпохах веков.</p>
+        <p class="muted">Этот путь требует осознанности, и здесь нет места времени. Только вы, настоящий момент и ваша истинная суть.</p>
         <a class="text-link" href="/about-project/">Узнать философию проекта</a>
       </div>
     </div>
@@ -64,7 +66,7 @@ const course = courses[0];
     <div class="container split split--reverse">
       <div class="placeholder-frame"><img src="/images/placeholders/portrait.svg" alt="Место для будущего портрета Натальи Лизуновой" width="800" height="1000" loading="lazy" /></div>
       <div class="stack">
-        <p class="eyebrow">Об авторе</p>
+        <p class="eyebrow">Обо мне</p>
         <h2>Наталья Лизунова</h2>
         <p class="lead">Автор проекта «Ведьма во мне. Путь к себе».</p>
         <p class="muted">Личная история, образование, квалификации и профессиональный подход будут добавлены после согласования с автором. Мы намеренно не заменяем факты красивыми догадками.</p>
@@ -103,7 +105,7 @@ const course = courses[0];
 
   <section class="section">
     <div class="container">
-      <div class="section-heading"><p class="eyebrow">Блог</p><h2>Последние материалы</h2><p class="lead">Наблюдения, символы и практики внимательного отношения к себе.</p></div>
+      <div class="section-heading"><p class="eyebrow">Мой блог</p><h2>Последние материалы</h2><p class="lead">Наблюдения, символы и практики внимательного отношения к себе.</p></div>
       <div class="grid grid--3">{posts.map((post) => <ContentCard href={`/blog/${post.id}/`} title={post.data.title} summary={post.data.description} image={post.data.image} imageAlt={post.data.imageAlt} meta={post.data.draft ? 'Черновик' : post.data.category} />)}</div>
       <div class="button-row"><Button href="/blog/" variant="ghost">Перейти в блог</Button></div>
     </div>
@@ -124,13 +126,45 @@ const course = courses[0];
   .hero { position: relative; min-height: calc(100svh - 4.75rem); padding-block: clamp(3rem, 8vw, 7rem); overflow: hidden; }
   .hero__grid { display: grid; align-items: center; gap: 3rem; }
   .hero__content { position: relative; z-index: 2; order: -1; }
-  .hero h1 { max-width: 11ch; }
+  .hero h1 { max-width: 12ch; text-shadow: 0 0.8rem 2.8rem rgb(181 154 101 / 12%); }
   .hero .lead { max-width: 39rem; margin-top: 1.75rem; }
   .hero__visual { position: relative; width: min(100%, 37rem); margin-inline: auto; }
-  .hero__arch { position: relative; overflow: hidden; padding: 0.75rem; border: 1px solid var(--color-gold-muted); border-radius: var(--radius-arch); }
-  .hero__arch::before { position: absolute; inset: 1.4rem; z-index: 1; border: 1px solid rgb(181 154 101 / 32%); border-radius: var(--radius-arch); content: ''; }
+  .hero__arch {
+    position: relative;
+    isolation: isolate;
+    padding: clamp(0.72rem, 1.8vw, 1rem);
+    border: 1px solid rgb(181 154 101 / 58%);
+    border-radius: var(--radius-arch);
+    background: linear-gradient(145deg, rgb(181 154 101 / 15%), rgb(30 27 27 / 96%) 24%, rgb(9 9 10 / 98%) 72%, rgb(142 121 84 / 13%));
+    box-shadow: 0 0 0 1px rgb(9 9 10 / 90%), 0 0 0 0.38rem rgb(181 154 101 / 6%), inset 0 0 2.2rem rgb(181 154 101 / 8%), 0 1.8rem 4.5rem rgb(0 0 0 / 28%), 0 0 2.8rem rgb(181 154 101 / 10%);
+  }
+  .hero__arch::before {
+    position: absolute;
+    inset: 0.38rem;
+    z-index: 2;
+    border: 1px solid rgb(181 154 101 / 32%);
+    border-radius: var(--radius-arch);
+    box-shadow: inset 0 0 0 0.28rem rgb(9 9 10 / 42%), inset 0 0 0 0.34rem rgb(181 154 101 / 10%);
+    content: '';
+    pointer-events: none;
+  }
+  .hero__arch::after {
+    position: absolute;
+    top: 0.47rem;
+    left: 50%;
+    z-index: 3;
+    width: 0.72rem;
+    height: 0.72rem;
+    border: 1px solid rgb(205 176 113 / 64%);
+    background: #171518;
+    box-shadow: 0 0 1rem rgb(181 154 101 / 22%);
+    content: '';
+    transform: translateX(-50%) rotate(45deg);
+  }
+  .hero__arch-inner { position: relative; overflow: hidden; padding: 0.38rem; border: 1px solid rgb(181 154 101 / 30%); border-radius: var(--radius-arch); background: var(--color-black); }
+  .hero__arch-inner::after { position: absolute; inset: 0.38rem; border: 1px solid rgb(205 176 113 / 22%); border-radius: var(--radius-arch); box-shadow: inset 0 0 2.5rem rgb(0 0 0 / 28%); content: ''; pointer-events: none; }
   .hero__arch :global(img) { width: 100%; height: auto; aspect-ratio: 3 / 4; border-radius: var(--radius-arch); object-fit: cover; }
-  .hero__caption { margin-top: 1rem; color: var(--color-gold-muted); font-size: var(--text-xs); letter-spacing: 0.19em; text-align: center; text-transform: uppercase; }
+  .hero__caption { margin-top: 1.3rem; color: var(--color-gold); font-family: var(--font-display); font-size: clamp(0.9rem, 1.3vw, 1.05rem); font-style: italic; letter-spacing: 0.12em; text-align: center; }
   .hero__line { position: absolute; right: 4%; bottom: 0; left: 4%; height: 1px; background: linear-gradient(90deg, transparent, var(--color-gold-muted), transparent); }
   .contact-cta { border-top: 1px solid var(--color-border); background: radial-gradient(circle at center, rgb(84 35 47 / 24%), transparent 60%); text-align: center; }
   .contact-cta .stack { justify-items: center; }

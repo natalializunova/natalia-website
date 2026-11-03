@@ -2,18 +2,40 @@ export const site = {
   name: 'Ведьма во мне. Путь к себе',
   shortName: 'Ведьма во мне',
   author: 'Наталья Лизунова',
+  sigilSrc: null as string | null,
+  sigilAlt: 'Авторский сигил Натальи Лизуновой',
   description:
     'Авторское пространство о внутренней силе, самопознании и пути к себе через образы четырёх Стихий.',
 };
 
 export const navigation = [
   { href: '/', label: 'Главная' },
-  { href: '/about-project/', label: 'О проекте' },
-  { href: '/about/', label: 'Об авторе' },
-  { href: '/services/', label: 'Услуги и практики' },
-  { href: '/courses/', label: 'Курсы' },
-  { href: '/shop/', label: 'Лавка' },
-  { href: '/blog/', label: 'Блог' },
-  { href: '/contact/', label: 'Контакты' },
+  { href: '/about/', label: 'Обо мне' },
+  { href: '/blog/', label: 'Мой блог' },
+  { href: '/courses/', label: 'О курсе' },
+  { href: '/shop/', label: 'Лавка артефактов' },
+] as const;
+
+export const footerNavigation = [
+  {
+    title: 'Основные разделы',
+    items: navigation,
+  },
+  {
+    title: 'Проект и работа',
+    items: [
+      { href: '/about-project/', label: 'О проекте' },
+      { href: '/services/', label: 'Услуги и практики' },
+      { href: '/contact/', label: 'Контакты' },
+    ],
+  },
+  {
+    title: 'Документы',
+    items: [
+      { href: '/privacy/', label: 'Политика конфиденциальности' },
+      { href: '/consent/', label: 'Обработка персональных данных' },
+      { href: '/offer/', label: 'Публичная оферта' },
+    ],
+  },
 ] as const;
 

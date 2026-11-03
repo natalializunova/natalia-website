@@ -1,5 +1,4 @@
 export type ElementKey = 'earth' | 'water' | 'fire' | 'air';
-export type TraitGlyph = 'foundation' | 'measure' | 'sprout' | 'empathy' | 'intuition' | 'sensitivity' | 'charisma' | 'resolve' | 'vitality' | 'intellect' | 'freedom' | 'curiosity';
 
 export type ElementProfile = {
   key: ElementKey;
@@ -8,7 +7,6 @@ export type ElementProfile = {
   subtitle: string;
   summary: string;
   traits: readonly string[];
-  traitGlyphs: readonly TraitGlyph[];
   imageAlt: string;
   title: string;
   introduction: string;
@@ -25,7 +23,6 @@ export const elements: readonly ElementProfile[] = [
     subtitle: 'Стабильность, структура и созидание',
     summary: 'Люди Земли — надёжная опора. Они умеют создавать порядок, воплощать идеи в реальность и доводить начатое до конца.',
     traits: ['Надёжность', 'Практичность', 'Созидание'],
-    traitGlyphs: ['foundation', 'measure', 'sprout'],
     imageAlt: 'Древние камни, покрытые мхом, в мягком золотистом свете',
     title: 'Стихия Земли: Стабильность, структура и созидание',
     introduction: 'Люди Земли — это фундамент нашего мира. На них всегда можно положиться. Они практичны, реалистичны, прочно стоят на ногах и ценят материальный комфорт.',
@@ -47,7 +44,6 @@ export const elements: readonly ElementProfile[] = [
     subtitle: 'Чувства, интуиция и глубина',
     summary: 'Люди Воды тонко чувствуют мир и окружающих. Их сила — в эмоциональной глубине, интуиции и способности понимать скрытые смыслы.',
     traits: ['Эмпатия', 'Интуиция', 'Чувствительность'],
-    traitGlyphs: ['empathy', 'intuition', 'sensitivity'],
     imageAlt: 'Тёмная поверхность воды с мягкими волнами и золотистыми отражениями',
     title: 'Стихия Воды: Чувства, интуиция и глубина',
     introduction: 'Люди Воды живут в мире эмоций, тонких ощущений и скрытых смыслов. Они обладают природным магнетизмом, мягкостью и невероятной психологической гибкостью.',
@@ -71,7 +67,6 @@ export const elements: readonly ElementProfile[] = [
     subtitle: 'Энергия, страсть и действие',
     summary: 'Люди Огня — прирождённые лидеры и вдохновители. Они смело идут вперёд, загораются идеями и способны вести за собой других.',
     traits: ['Харизма', 'Решительность', 'Энергия'],
-    traitGlyphs: ['charisma', 'resolve', 'vitality'],
     imageAlt: 'Живое пламя и тлеющие угли на глубоком тёмном фоне',
     title: 'Стихия Огня: Энергия, страсть и действие',
     introduction: 'Люди Огня — это прирождённые лидеры, двигатели прогресса и мотиваторы.',
@@ -95,7 +90,6 @@ export const elements: readonly ElementProfile[] = [
     subtitle: 'Интеллект, свобода и коммуникация',
     summary: 'Люди Воздуха — генераторы идей и исследователи нового. Они ценят свободу, знания, общение и нестандартное мышление.',
     traits: ['Интеллект', 'Свобода', 'Любознательность'],
-    traitGlyphs: ['intellect', 'freedom', 'curiosity'],
     imageAlt: 'Лёгкий туман между горными скалами в мягком рассветном свете',
     title: 'Стихия Воздуха: Интеллект, свобода и коммуникация',
     introduction: 'Люди Воздуха живут в мире идей, смыслов и возможностей. Они стремятся к свободе, знаниям и живому обмену мыслями.',

@@ -1,0 +1,26 @@
+---
+import type { ElementKey } from '../../data/elements';
+
+type Props = { element: ElementKey };
+const { element } = Astro.props;
+---
+
+<svg class="alchemy-glyph" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+  {element === 'fire' && <path d="M32 7 57 54H7L32 7Z" />}
+  {element === 'air' && <><path d="M32 7 57 54H7L32 7Z" /><path d="M16.5 38h31" /></>}
+  {element === 'water' && <path d="M7 10h50L32 57 7 10Z" />}
+  {element === 'earth' && <><path d="M7 10h50L32 57 7 10Z" /><path d="M16.5 29h31" /></>}
+</svg>
+
+<style>
+  .alchemy-glyph {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.35;
+  }
+</style>

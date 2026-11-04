@@ -304,7 +304,7 @@ const initialElement = elements[0];
   .element-card {
     --card-accent: 181 154 101;
     position: relative;
-    min-height: clamp(12.5rem, 20vw, 15.5rem);
+    min-height: clamp(14rem, 22vw, 17.25rem);
     isolation: isolate;
     overflow: hidden;
     background: var(--color-black);
@@ -464,7 +464,7 @@ const initialElement = elements[0];
     isolation: isolate;
     overflow: hidden;
     margin-top: -0.2rem;
-    padding: clamp(1.4rem, 3.5vw, 2.75rem);
+    padding: clamp(1.75rem, 4.4vw, 3.6rem);
     background: rgb(13 12 14 / 94%);
     box-shadow: inset 0 0 6rem rgb(var(--panel-accent) / 7%);
     transition: box-shadow 320ms ease;
@@ -517,12 +517,12 @@ const initialElement = elements[0];
   .element-panel__details,
   .element-panel__archetypes { position: relative; z-index: 3; }
 
-  .element-panel__header { display: grid; align-items: start; gap: clamp(1rem, 2.5vw, 2rem); }
+  .element-panel__header { display: grid; align-items: start; gap: clamp(1.4rem, 3.2vw, 2.8rem); }
   .element-panel__number { color: var(--color-gold-muted); font-family: var(--font-display); font-size: clamp(2.8rem, 7vw, 5.25rem); line-height: 0.85; }
   .element-panel__subtitle { color: var(--color-gold); font-size: var(--text-xs); font-weight: 650; letter-spacing: 0.13em; line-height: 1.5; text-transform: uppercase; }
   .element-panel__intro h3 { max-width: 25ch; margin-top: 0.45rem; font-size: clamp(1.65rem, 3.2vw, 2.6rem); line-height: 1.12; }
-  .element-panel__summary { max-width: 55rem; margin-top: 1rem; color: var(--color-text); font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.55; }
-  .element-panel__introduction { max-width: 55rem; margin-top: 0.7rem; color: var(--color-muted); line-height: 1.65; }
+  .element-panel__summary { max-width: 55rem; margin-top: 1.2rem; color: var(--color-text); font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.62; }
+  .element-panel__introduction { max-width: 55rem; margin-top: 0.9rem; color: var(--color-muted); line-height: 1.76; }
   .element-panel__identity { display: grid; grid-template-columns: clamp(4.5rem, 7vw, 5.8rem) minmax(0, 1fr); align-items: center; gap: clamp(0.85rem, 2vw, 1.35rem); min-width: 0; }
   .element-panel__sigil-stage { position: relative; width: 100%; aspect-ratio: 1; color: rgb(205 176 113 / 92%); filter: drop-shadow(0 0 0.9rem rgb(var(--panel-accent) / 20%)); }
   .element-panel__sigil { position: absolute; inset: 0; opacity: 0; transform: scale(0.82) rotate(-5deg); transition: opacity 320ms ease, transform 420ms cubic-bezier(0.22, 1, 0.36, 1), color 320ms ease; }
@@ -533,12 +533,12 @@ const initialElement = elements[0];
   .element-panel__traits { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0; padding: 0; list-style: none; }
   .element-panel__traits li { padding: 0.36rem 0.62rem; border: 1px solid var(--color-border); color: var(--color-muted); font-size: var(--text-xs); }
 
-  .element-panel__details { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); margin-top: clamp(1.75rem, 4vw, 3rem); }
-  .element-panel__section { padding-top: 1.25rem; border-top: 1px solid var(--color-border); }
+  .element-panel__details { display: grid; gap: clamp(2rem, 5vw, 4.5rem); margin-top: clamp(2.25rem, 5vw, 4rem); }
+  .element-panel__section { padding-top: 1.6rem; border-top: 1px solid var(--color-border); }
   .element-panel__label { color: var(--color-gold); font-size: var(--text-xs); font-weight: 650; letter-spacing: 0.13em; text-transform: uppercase; }
   .element-panel__label span { color: var(--color-gold-muted); font-weight: 400; }
-  .element-panel__paragraphs { display: grid; gap: 0.75rem; margin-top: 0.9rem; color: var(--color-muted); font-size: 0.96rem; line-height: 1.62; }
-  .element-panel__archetypes { display: grid; gap: 0.6rem; margin-top: clamp(1.5rem, 3vw, 2.25rem); padding-top: 1.15rem; border-top: 1px solid var(--color-border); }
+  .element-panel__paragraphs { display: grid; gap: 1rem; margin-top: 1.1rem; color: var(--color-muted); font-size: 0.98rem; line-height: 1.75; }
+  .element-panel__archetypes { display: grid; gap: 0.8rem; margin-top: clamp(2rem, 4vw, 3rem); padding-top: 1.45rem; border-top: 1px solid var(--color-border); }
   .element-panel__archetypes > p:last-child { font-family: var(--font-display); font-size: var(--text-lg); }
 
   [data-visible='true'] .element-card[data-motion='on'][data-element-card='earth'] :global(img) { animation: earth-live 7s ease-in-out infinite alternate; }
@@ -588,13 +588,13 @@ const initialElement = elements[0];
     .elements-experience[data-active-element='water'],
     .elements-experience[data-active-element='air'] { --active-x: 75%; }
     .element-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .element-card { min-height: 13rem; }
+    .element-card { min-height: 14.25rem; }
     .element-bridge { height: 2.15rem; }
     .element-panel__scrim { background: linear-gradient(90deg, rgb(10 9 11 / 91%), rgb(10 9 11 / 76%)), linear-gradient(180deg, rgb(10 9 11 / 43%), rgb(10 9 11 / 90%)); }
   }
 
   @media (max-width: 35rem) {
-    .element-card { min-height: 11.75rem; }
+    .element-card { min-height: 12.5rem; }
     .element-card__select { padding: 0.75rem; }
     .element-card__number { font-size: 1.15rem; }
     .element-card__name { font-size: 1.45rem; }

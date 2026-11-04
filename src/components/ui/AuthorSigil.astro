@@ -127,14 +127,17 @@ const style = [
   .snake-tongue--left { transform-origin: left center; }
   .snake-tongue--right { transform-origin: right center; }
 
-  .author-sigil[data-animated='true'] .author-sigil__star { animation: star-breathe 4.8s ease-in-out infinite, star-flicker 7.2s steps(1, end) infinite; }
-  .author-sigil[data-animated='true'] .snake-light { animation: snake-light-flow 9s linear infinite; }
-  .author-sigil[data-animated='true'] .snake-tongue--left { animation: tongue-left 5.6s ease-in-out infinite; }
-  .author-sigil[data-animated='true'] .snake-tongue--right { animation: tongue-right 5.6s ease-in-out -0.18s infinite; }
+  .author-sigil[data-animated='true'] .author-sigil__media { animation: sigil-presence 8s ease-in-out infinite alternate; }
+  .author-sigil[data-animated='true'] .author-sigil__star { animation: star-breathe 3.8s ease-in-out infinite, star-flicker 6.4s steps(1, end) infinite; }
+  .author-sigil[data-animated='true'] .snake-light { animation: snake-light-flow 6.5s linear infinite, snake-breathe 7s ease-in-out infinite alternate; }
+  .author-sigil[data-animated='true'] .snake-tongue--left { animation: tongue-left 4.2s ease-in-out infinite; }
+  .author-sigil[data-animated='true'] .snake-tongue--right { animation: tongue-right 4.2s ease-in-out -0.14s infinite; }
+
+  @keyframes sigil-presence { from { box-shadow: 0 0 0 1px rgb(9 9 10 / 82%), 0 0 1rem rgb(181 154 101 / 14%); } to { box-shadow: 0 0 0 1px rgb(9 9 10 / 82%), 0 0 1.8rem rgb(181 154 101 / 31%); } }
 
   @keyframes star-breathe {
-    0%, 100% { opacity: 0.22; filter: brightness(0.94) blur(0.15px); transform: scale(0.96); }
-    48% { opacity: 0.48; filter: brightness(1.16) blur(0); transform: scale(1.035); }
+    0%, 100% { opacity: 0.26; filter: brightness(0.96) blur(0.15px); transform: scale(0.95); }
+    48% { opacity: 0.66; filter: brightness(1.28) blur(0); transform: scale(1.07); }
   }
 
   @keyframes star-flicker {
@@ -143,18 +146,19 @@ const style = [
   }
 
   @keyframes snake-light-flow { to { stroke-dashoffset: -36; } }
+  @keyframes snake-breathe { from { opacity: 0.38; transform: translateY(0); } to { opacity: 0.72; transform: translateY(-0.45px); } }
 
   @keyframes tongue-left {
     0%, 100% { transform: rotate(-2deg) translateX(-0.25px); }
-    48% { transform: rotate(4deg) translateX(0.85px); }
+    48% { transform: rotate(5deg) translateX(1.25px); }
   }
 
   @keyframes tongue-right {
     0%, 100% { transform: rotate(2deg) translateX(0.25px); }
-    48% { transform: rotate(-4deg) translateX(-0.85px); }
+    48% { transform: rotate(-5deg) translateX(-1.25px); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .author-sigil__star, .snake-light, .snake-tongue { animation: none !important; }
+    .author-sigil__media, .author-sigil__star, .snake-light, .snake-tongue { animation: none !important; }
   }
 </style>

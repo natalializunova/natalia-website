@@ -35,20 +35,22 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
 </header>
 
 <style>
-  .site-header { position: relative; z-index: 20; border-bottom: 1px solid var(--color-border); background: rgb(20 20 22 / 90%); backdrop-filter: blur(16px); }
-  .site-header__inner { display: flex; min-height: 4.75rem; align-items: center; gap: 1rem; }
-  .brand { display: flex; align-items: center; gap: 0.7rem; margin-right: auto; font-family: var(--font-display); font-size: 1rem; text-decoration: none; }
+  .site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--color-border); background: rgb(20 20 22 / 88%); box-shadow: 0 0.8rem 2.5rem rgb(0 0 0 / 16%); backdrop-filter: blur(18px); }
+  .site-header__inner { display: flex; min-height: 4.6rem; align-items: center; gap: 1rem; }
+  .brand { display: flex; align-items: center; gap: 0.8rem; margin-right: auto; font-family: var(--font-display); font-size: clamp(1rem, 1.25vw, 1.12rem); letter-spacing: 0.01em; text-decoration: none; }
   .desktop-nav { display: none; }
   .desktop-nav ul, .mobile-nav ul { margin: 0; padding: 0; list-style: none; }
   .desktop-nav ul { display: flex; align-items: center; gap: clamp(0.8rem, 1.4vw, 1.5rem); }
-  .desktop-nav a { color: var(--color-muted); font-size: 0.72rem; letter-spacing: 0.025em; text-decoration: none; transition: color var(--transition); }
+  .desktop-nav a { position: relative; padding-block: 0.75rem; color: var(--color-muted); font-family: var(--font-display); font-size: clamp(0.84rem, 1vw, 0.96rem); letter-spacing: 0.025em; text-decoration: none; transition: color var(--transition); }
+  .desktop-nav a::after { position: absolute; right: 50%; bottom: 0.34rem; left: 50%; height: 1px; background: linear-gradient(90deg, transparent, var(--color-gold), transparent); content: ''; opacity: 0; transition: right var(--transition), left var(--transition), opacity var(--transition); }
   .desktop-nav a:hover, .desktop-nav a[aria-current='page'] { color: var(--color-gold); }
-  .cart-link { display: none; gap: 0.35rem; color: var(--color-gold); font-size: 0.73rem; text-decoration: none; }
+  .desktop-nav a:hover::after, .desktop-nav a[aria-current='page']::after { right: 0; left: 0; opacity: 1; }
+  .cart-link { display: none; align-items: center; gap: 0.4rem; color: var(--color-gold); font-family: var(--font-display); font-size: clamp(0.84rem, 1vw, 0.96rem); text-decoration: none; }
   .mobile-nav summary { display: grid; width: 2.75rem; height: 2.75rem; place-content: center; gap: 0.3rem; border: 1px solid var(--color-border); cursor: pointer; list-style: none; }
   .mobile-nav summary::-webkit-details-marker { display: none; }
   .mobile-nav summary span { width: 1.1rem; height: 1px; background: var(--color-text); }
   .mobile-nav nav { position: absolute; top: calc(100% + 1px); right: 0; left: 0; padding: 1rem; border-bottom: 1px solid var(--color-border); background: var(--color-bg); }
-  .mobile-nav a { display: block; padding: 0.85rem 0.5rem; border-bottom: 1px solid var(--color-border); color: var(--color-muted); text-decoration: none; }
+  .mobile-nav a { display: block; padding: 0.9rem 0.5rem; border-bottom: 1px solid var(--color-border); color: var(--color-muted); font-family: var(--font-display); font-size: 1.05rem; text-decoration: none; }
   .mobile-nav a[aria-current='page'] { color: var(--color-gold); }
   @media (min-width: 70rem) {
     .desktop-nav, .cart-link { display: flex; }

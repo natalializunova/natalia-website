@@ -10,6 +10,7 @@ type Props = {
   translateY?: string;
   opacity?: number;
   animationEnabled?: boolean;
+  variant?: 'original' | 'radiant';
   alt?: string;
 };
 
@@ -21,6 +22,7 @@ const {
   translateY = '0px',
   opacity = 1,
   animationEnabled = true,
+  variant = 'original',
   alt = 'Авторский сигил Натальи Лизуновой: звезда, две змеи и лотос',
 } = Astro.props;
 
@@ -34,7 +36,7 @@ const style = [
 ].join(';');
 ---
 
-<span class="author-sigil" data-animated={String(animationEnabled)} style={style}>
+<span class="author-sigil" data-animated={String(animationEnabled)} data-variant={variant} style={style}>
   <span class="author-sigil__media">
     <Image
       class="author-sigil__image"
@@ -132,6 +134,9 @@ const style = [
   .author-sigil[data-animated='true'] .snake-light { animation: snake-light-flow 6.5s linear infinite, snake-breathe 7s ease-in-out infinite alternate; }
   .author-sigil[data-animated='true'] .snake-tongue--left { animation: tongue-left 4.2s ease-in-out infinite; }
   .author-sigil[data-animated='true'] .snake-tongue--right { animation: tongue-right 4.2s ease-in-out -0.14s infinite; }
+  .author-sigil[data-variant='radiant'] .author-sigil__media { box-shadow: 0 0 0 1px rgb(9 9 10 / 82%), 0 0 2rem rgb(216 184 108 / 38%); }
+  .author-sigil[data-variant='radiant'] .author-sigil__star { opacity: 0.62; filter: brightness(1.25); }
+  .author-sigil[data-variant='radiant'] .snake-light { stroke-width: 0.9; opacity: 0.7; }
 
   @keyframes sigil-presence { from { box-shadow: 0 0 0 1px rgb(9 9 10 / 82%), 0 0 1rem rgb(181 154 101 / 14%); } to { box-shadow: 0 0 0 1px rgb(9 9 10 / 82%), 0 0 1.8rem rgb(181 154 101 / 31%); } }
 

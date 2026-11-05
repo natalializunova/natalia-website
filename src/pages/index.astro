@@ -20,9 +20,9 @@ const course = courses[0];
       </div>
       <div class="hero__content">
         <h1>Повернись к своему внутреннему свету</h1>
-        <p class="lead">«Путь к себе» — это тропа к своему внутреннему миру. К своим истинным желаниям, своему счастью и гармонии. Путь к себе проложен через освобождение к Принятию.</p>
+        <p class="lead">Тысячи лет назад наши далекие предки обращались к Стихиям не просто как к природным явлениям, а как к первоосновам мироздания, поддерживаемым Божественными Силами. Магия Стихий была естественным продолжением жизни и используется по сей день.</p>
         <div class="button-row">
-          <Button href="/about-project/">О проекте</Button>
+          <Button href="/courses/path-to-self/">О курсе</Button>
           <Button href="/about/" variant="ghost">Обо мне</Button>
         </div>
       </div>
@@ -33,15 +33,17 @@ const course = courses[0];
   <section class="section philosophy-section">
     <div class="container philosophy-shell">
       <div class="philosophy-shell__title">
-        <p class="eyebrow">О проекте</p>
-        <h2>Не искать готовый образ. Вспоминать свой.</h2>
-        <div class="philosophy-shell__mirror" aria-hidden="true"><span></span></div>
+        <p class="eyebrow">О курсе</p>
+        <div class="philosophy-shell__mirror">
+          <span aria-hidden="true"></span>
+          <h2>Не искать готовый образ.<br />Вспоминать свой.</h2>
+        </div>
       </div>
       <div class="stack philosophy-shell__copy">
         <p class="lead">Путь через четыре Стихии — это базовый метод. Он подсказывает, какой вектор выбрать, но пройти по нему необходимо самостоятельно.</p>
         <p class="muted">Используя мой Авторский курс, практики и символы, вы прикоснетесь к тайным знаниям, утерянным в эпохах веков.</p>
         <p class="muted">Этот путь требует осознанности, и здесь нет места времени. Только вы, настоящий момент и ваша истинная суть.</p>
-        <div class="button-row"><Button href="/about-project/" variant="ghost">Узнать философию проекта</Button></div>
+        <div class="button-row"><Button href="/courses/path-to-self/" variant="ghost">Подробнее о курсе</Button></div>
       </div>
     </div>
   </section>
@@ -50,7 +52,7 @@ const course = courses[0];
     <div class="container">
       <div class="section-heading section-heading--split">
         <div><p class="eyebrow">Четыре Стихии</p><h2>Четыре способа слышать себя</h2></div>
-        <p class="lead">В каждом из нас от рождения заложены все четыре первоэлемента, но проявляются они у всех по-разному.</p>
+        <p class="lead elements-section__prompt">Попробуй узнать себя</p>
       </div>
       <ElementsGrid />
     </div>
@@ -101,7 +103,7 @@ const course = courses[0];
 
 <style>
   .hero { position: relative; min-height: calc(100svh - 4.75rem); padding-block: clamp(1.5rem, 4.5vw, 4.5rem) clamp(3rem, 6vw, 6rem); overflow: hidden; }
-  .hero__grid { display: grid; align-items: center; gap: 3rem; }
+  .hero__grid { display: grid; width: min(calc(100% - 2rem), 90rem); align-items: center; gap: 3rem; }
   .hero__content { position: relative; z-index: 2; order: -1; }
   .hero h1 { max-width: 12ch; text-shadow: 0 0.8rem 2.8rem rgb(181 154 101 / 12%); }
   .hero .lead { max-width: 39rem; margin-top: 1.75rem; }
@@ -112,19 +114,20 @@ const course = courses[0];
   .philosophy-shell::before { position: absolute; inset: 0.8rem; border: 1px solid rgb(181 154 101 / 10%); content: ''; pointer-events: none; }
   .philosophy-shell::after { position: absolute; top: 0; bottom: 0; left: 48%; width: 1px; background: linear-gradient(transparent, rgb(181 154 101 / 30%), transparent); content: ''; opacity: 0.55; }
   .philosophy-shell__title, .philosophy-shell__copy { position: relative; z-index: 1; }
-  .philosophy-shell__title h2 { max-width: 15ch; }
-  .philosophy-shell__mirror { display: grid; width: clamp(5rem, 9vw, 7.5rem); aspect-ratio: 0.72; margin-top: 2rem; place-items: center; border: 1px solid rgb(181 154 101 / 38%); border-radius: 50% 50% 44% 44%; box-shadow: inset 0 0 2.4rem rgb(181 154 101 / 7%), 0 0 2.5rem rgb(84 35 47 / 16%); }
+  .philosophy-shell__mirror { position: relative; display: grid; min-height: clamp(18rem, 32vw, 25rem); margin-top: 1.4rem; place-items: center; padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3.5rem); border: 1px solid rgb(216 184 108 / 46%); border-radius: 50% 50% 44% 44%; background: radial-gradient(ellipse at 55% 34%, rgb(149 90 67 / 17%), transparent 35%), linear-gradient(145deg, #141215, #020203 68%); box-shadow: inset 0 0 5rem rgb(0 0 0 / 86%), inset 0 0 1.2rem rgb(216 184 108 / 7%), 0 0 3rem rgb(84 35 47 / 18%); text-align: center; }
   .philosophy-shell__mirror::before, .philosophy-shell__mirror::after { position: absolute; border: 1px solid rgb(181 154 101 / 19%); border-radius: inherit; content: ''; }
-  .philosophy-shell__mirror::before { inset: 0.45rem; }
-  .philosophy-shell__mirror::after { inset: 1rem; background: radial-gradient(circle at 62% 35%, rgb(238 231 220 / 10%), transparent 28%), linear-gradient(135deg, rgb(84 35 47 / 21%), rgb(9 9 10 / 72%)); }
-  .philosophy-shell__mirror span { width: 0.65rem; height: 0.65rem; z-index: 1; border: 1px solid var(--color-gold-muted); transform: rotate(45deg); }
+  .philosophy-shell__mirror::before { inset: 0.55rem; box-shadow: inset 0 0 0 0.3rem rgb(5 5 6 / 80%); }
+  .philosophy-shell__mirror::after { inset: 1.15rem; background: radial-gradient(circle at 62% 35%, rgb(238 231 220 / 7%), transparent 28%), linear-gradient(135deg, rgb(84 35 47 / 14%), rgb(2 2 3 / 78%)); }
+  .philosophy-shell__mirror span { position: absolute; top: 1.5rem; width: 0.65rem; height: 0.65rem; z-index: 2; border: 1px solid var(--color-gold-muted); transform: rotate(45deg); }
+  .philosophy-shell__mirror h2 { position: relative; z-index: 2; max-width: 13ch; color: var(--color-gold-bright); font-size: clamp(1.75rem, 3.8vw, 3.3rem); text-shadow: 0 0 1.8rem rgb(216 184 108 / 24%); }
   .philosophy-shell__copy { align-content: center; }
   .philosophy-shell__copy .button-row { margin-top: 0.85rem; }
   .elements-section { padding-block: clamp(4.5rem, 8vw, 7.5rem); }
+  .elements-section__prompt { max-width: 18rem; margin-left: auto; color: var(--color-sand); font-family: var(--font-display); font-style: italic; text-align: right; }
   @media (min-width: 54rem) {
-    .hero__grid { grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); gap: clamp(3rem, 6vw, 7rem); }
+    .hero__grid { grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); gap: clamp(4rem, 8vw, 9rem); }
     .hero__content { order: 0; }
   }
   @media (min-width: 48rem) { .philosophy-shell { grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); align-items: center; } }
-  @media (max-width: 47.99rem) { .philosophy-shell::after { display: none; } .philosophy-shell__mirror { margin-top: 1.5rem; } }
+  @media (max-width: 47.99rem) { .philosophy-shell::after { display: none; } .philosophy-shell__mirror { min-height: 19rem; margin-top: 1.5rem; } .elements-section__prompt { margin-left: 0; text-align: left; } }
 </style>

@@ -40,6 +40,18 @@ a { color: inherit; }
 img { display: block; max-width: 100%; height: auto; }
 button, input, textarea { font: inherit; }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 :focus-visible {
   outline: 2px solid var(--color-gold);
   outline-offset: 4px;

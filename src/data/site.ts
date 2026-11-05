@@ -3,8 +3,8 @@ export const site = {
   shortName: 'Ведьма во мне',
   author: 'Наталья Лизунова',
   sigil: {
-    width: 'clamp(3.35rem, 5vw, 4.15rem)',
-    height: 'clamp(3.35rem, 5vw, 4.15rem)',
+    width: 'clamp(3.65rem, 5.5vw, 4.8rem)',
+    height: 'clamp(3.65rem, 5.5vw, 4.8rem)',
     scale: 1,
     translateX: '0px',
     translateY: '0px',

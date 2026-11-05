@@ -9,7 +9,7 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
   <div class="container site-header__inner">
     <a class="brand" href="/" aria-label={`${site.name} — на главную`}>
       <AuthorSigil {...site.sigil} />
-      <span>{site.shortName}</span>
+      <span class="sr-only">{site.name}</span>
     </a>
 
     <nav class="desktop-nav" aria-label="Основная навигация">
@@ -19,7 +19,11 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
     </nav>
 
     <a class="cart-link" href="/cart/" aria-label="Корзина — функциональность готовится">
-      <span aria-hidden="true">◇</span><span class="cart-link__text">Корзина</span>
+      <svg viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+        <path d="M4 5.5h2.4l2.1 11.2h11.1l2.2-7.4H7.2M10.3 21.5a1.5 1.5 0 1 0 0 .01M19 21.5a1.5 1.5 0 1 0 0 .01" />
+      </svg>
+      <span class="sr-only">Корзина</span>
+      <span class="cart-link__count" data-cart-count hidden>0</span>
     </a>
 
     <details class="mobile-nav">
@@ -35,26 +39,32 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
 </header>
 
 <style>
-  .site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--color-border); background: rgb(20 20 22 / 88%); box-shadow: 0 0.8rem 2.5rem rgb(0 0 0 / 16%); backdrop-filter: blur(18px); }
-  .site-header__inner { display: flex; min-height: 4.6rem; align-items: center; gap: 1rem; }
-  .brand { display: flex; align-items: center; gap: 0.8rem; margin-right: auto; font-family: var(--font-display); font-size: clamp(1rem, 1.25vw, 1.12rem); letter-spacing: 0.01em; text-decoration: none; }
+  .site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid rgb(185 154 95 / 18%); background: linear-gradient(180deg, #0c0c0d 0%, #050506 72%, #090809 100%); box-shadow: inset 0 1px rgb(255 255 255 / 3%), 0 1rem 3.2rem rgb(0 0 0 / 24%); }
+  .site-header::after { position: absolute; right: 0; bottom: 0; left: 0; height: 1px; background: linear-gradient(90deg, transparent, rgb(216 184 108 / 32%), transparent); content: ''; pointer-events: none; }
+  .site-header__inner { display: flex; width: min(calc(100% - 1.25rem), 90rem); min-height: 5.15rem; align-items: center; gap: 0.85rem; }
+  .brand { display: flex; align-items: center; margin-right: auto; text-decoration: none; }
   .desktop-nav { display: none; }
   .desktop-nav ul, .mobile-nav ul { margin: 0; padding: 0; list-style: none; }
-  .desktop-nav ul { display: flex; align-items: center; gap: clamp(0.8rem, 1.4vw, 1.5rem); }
-  .desktop-nav a { position: relative; padding-block: 0.75rem; color: var(--color-muted); font-family: var(--font-display); font-size: clamp(0.84rem, 1vw, 0.96rem); letter-spacing: 0.025em; text-decoration: none; transition: color var(--transition); }
+  .desktop-nav ul { display: flex; align-items: center; gap: clamp(1.15rem, 1.8vw, 2rem); }
+  .desktop-nav a { position: relative; padding-block: 1rem; color: var(--color-muted); font-size: clamp(0.88rem, 1vw, 1rem); font-weight: 500; letter-spacing: 0.015em; text-decoration: none; white-space: nowrap; transition: color var(--transition); }
   .desktop-nav a::after { position: absolute; right: 50%; bottom: 0.34rem; left: 50%; height: 1px; background: linear-gradient(90deg, transparent, var(--color-gold), transparent); content: ''; opacity: 0; transition: right var(--transition), left var(--transition), opacity var(--transition); }
   .desktop-nav a:hover, .desktop-nav a[aria-current='page'] { color: var(--color-gold); }
   .desktop-nav a:hover::after, .desktop-nav a[aria-current='page']::after { right: 0; left: 0; opacity: 1; }
-  .cart-link { display: none; align-items: center; gap: 0.4rem; color: var(--color-gold); font-family: var(--font-display); font-size: clamp(0.84rem, 1vw, 0.96rem); text-decoration: none; }
-  .mobile-nav summary { display: grid; width: 2.75rem; height: 2.75rem; place-content: center; gap: 0.3rem; border: 1px solid var(--color-border); cursor: pointer; list-style: none; }
+  .cart-link { position: relative; display: flex; width: 2.8rem; height: 2.8rem; flex: 0 0 auto; align-items: center; justify-content: center; border: 1px solid rgb(185 154 95 / 22%); color: var(--color-gold-bright); text-decoration: none; transition: border-color var(--transition), background var(--transition), color var(--transition); }
+  .cart-link:hover { border-color: var(--color-gold); background: rgb(185 154 95 / 8%); color: var(--color-text); }
+  .cart-link svg { width: 1.35rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.35; }
+  .cart-link__count { position: absolute; top: -0.35rem; right: -0.35rem; display: grid; min-width: 1.15rem; min-height: 1.15rem; place-items: center; border-radius: 50%; background: var(--color-burgundy-light); color: var(--color-text); font-size: 0.62rem; font-weight: 700; }
+  .cart-link__count[hidden] { display: none; }
+  .mobile-nav summary { display: grid; width: 2.8rem; height: 2.8rem; place-content: center; gap: 0.3rem; border: 1px solid rgb(185 154 95 / 22%); cursor: pointer; list-style: none; }
   .mobile-nav summary::-webkit-details-marker { display: none; }
   .mobile-nav summary span { width: 1.1rem; height: 1px; background: var(--color-text); }
-  .mobile-nav nav { position: absolute; top: calc(100% + 1px); right: 0; left: 0; padding: 1rem; border-bottom: 1px solid var(--color-border); background: var(--color-bg); }
+  .mobile-nav nav { position: absolute; top: calc(100% + 1px); right: 0; left: 0; padding: 1rem; border-bottom: 1px solid var(--color-border); background: #080809; box-shadow: 0 1.4rem 3rem rgb(0 0 0 / 40%); }
   .mobile-nav a { display: block; padding: 0.9rem 0.5rem; border-bottom: 1px solid var(--color-border); color: var(--color-muted); font-family: var(--font-display); font-size: 1.05rem; text-decoration: none; }
   .mobile-nav a[aria-current='page'] { color: var(--color-gold); }
   @media (min-width: 70rem) {
-    .desktop-nav, .cart-link { display: flex; }
+    .desktop-nav { display: flex; }
     .mobile-nav { display: none; }
-    .brand { margin-right: 0.75rem; }
+    .site-header__inner { min-height: 6.15rem; gap: clamp(1rem, 1.5vw, 1.75rem); }
+    .brand { margin-right: clamp(1.5rem, 3vw, 3.5rem); }
   }
 </style>

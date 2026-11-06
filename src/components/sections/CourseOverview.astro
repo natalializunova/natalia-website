@@ -1,0 +1,141 @@
+---
+import type { Course } from '../../data/courses';
+
+interface Props {
+  course: Course;
+}
+
+const { course } = Astro.props;
+---
+
+<section class="section course-overview" aria-labelledby="course-story-title">
+  <div class="narrow course-overview__inner">
+    <div class="course-overview__story">
+      <p class="eyebrow">Авторский путь</p>
+      <h2 id="course-story-title">Опыт, превращённый в практику</h2>
+      <div class="course-overview__copy">
+        {course.authorParagraphs.slice(1).map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+
+    <aside class="course-outcomes" aria-labelledby="course-outcomes-title">
+      <p class="course-outcomes__mark" aria-hidden="true">✦</p>
+      <h2 id="course-outcomes-title">Пройдя курс, вы научитесь:</h2>
+      <ul>
+        {course.outcomes.map((outcome) => <li>{outcome}</li>)}
+      </ul>
+      <p class="course-outcomes__result">{course.result}</p>
+    </aside>
+
+    <div class="course-overview__closing">
+      <p>{course.closingParagraphs[0]}</p>
+      <p class="course-overview__invitation">{course.closingParagraphs[1]}</p>
+      <p class="course-overview__signature">{course.closingParagraphs[2]}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section course-faq" aria-labelledby="course-faq-title">
+  <div class="narrow">
+    <div class="section-heading">
+      <p class="eyebrow">Вопросы о программе</p>
+      <h2 id="course-faq-title">Частые вопросы</h2>
+    </div>
+
+    <div class="course-faq__list">
+      {course.faq.map((item, index) => (
+        <details class="course-faq__item" name="course-faq">
+          <summary>
+            <span class="course-faq__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <span>{item.question}</span>
+            <span class="course-faq__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="course-faq__answer">
+            {item.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            {item.intro && <p>{item.intro}</p>}
+            {item.practices && (
+              <ul>
+                {item.practices.map((practice) => (
+                  <li><strong>{practice.title}</strong> {practice.description}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .course-overview {
+    background:
+      radial-gradient(circle at 82% 12%, rgb(84 35 47 / 24%), transparent 28rem),
+      radial-gradient(circle at 8% 76%, rgb(181 154 101 / 6%), transparent 24rem);
+  }
+
+  .course-overview__inner { display: grid; gap: clamp(2.5rem, 6vw, 4.75rem); }
+  .course-overview__story { display: grid; gap: var(--space-4); }
+  .course-overview__copy { display: grid; gap: 1.25rem; color: var(--color-muted); line-height: 1.84; }
+  .course-overview__copy p { white-space: pre-line; }
+
+  .course-outcomes {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    border: 1px solid var(--color-border);
+    background:
+      linear-gradient(135deg, rgb(181 154 101 / 8%), transparent 45%),
+      rgb(9 9 10 / 54%);
+  }
+
+  .course-outcomes::after {
+    position: absolute;
+    inset: 0.65rem;
+    border: 1px solid rgb(181 154 101 / 10%);
+    content: '';
+    pointer-events: none;
+  }
+
+  .course-outcomes__mark { margin-bottom: 1rem; color: var(--color-gold); font-size: 1.35rem; }
+  .course-outcomes h2 { max-width: 34rem; }
+  .course-outcomes ul { display: grid; gap: 1rem; margin: 1.75rem 0 0; padding: 0; list-style: none; }
+  .course-outcomes li { position: relative; padding-left: 1.5rem; color: var(--color-text); line-height: 1.72; }
+  .course-outcomes li::before { position: absolute; top: 0.65em; left: 0; width: 0.42rem; height: 0.42rem; border: 1px solid var(--color-gold); content: ''; transform: rotate(45deg); }
+  .course-outcomes__result { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); color: var(--color-sand); font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.6; }
+
+  .course-overview__closing { display: grid; gap: 1.25rem; color: var(--color-muted); line-height: 1.8; }
+  .course-overview__invitation { color: var(--color-gold-bright); font-family: var(--font-display); font-size: var(--text-lg); }
+  .course-overview__signature { color: var(--color-sand); font-family: var(--font-display); font-size: var(--text-lg); font-style: italic; }
+
+  .course-faq { border-top: 1px solid var(--color-border); background: rgb(20 20 22 / 58%); }
+  .course-faq__list { border-top: 1px solid var(--color-border); }
+  .course-faq__item { border-bottom: 1px solid var(--color-border); }
+  .course-faq__item summary { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; padding-block: 1.35rem; cursor: pointer; font-family: var(--font-display); font-size: clamp(1.1rem, 2vw, 1.35rem); list-style: none; }
+  .course-faq__item summary::-webkit-details-marker { display: none; }
+  .course-faq__number { color: var(--color-gold-muted); font-family: var(--font-body); font-size: var(--text-xs); letter-spacing: 0.14em; }
+  .course-faq__icon { position: relative; width: 1rem; height: 1rem; color: var(--color-gold); }
+  .course-faq__icon::before,
+  .course-faq__icon::after { position: absolute; top: 50%; left: 50%; width: 100%; height: 1px; background: currentColor; content: ''; transform: translate(-50%, -50%); transition: transform var(--transition), opacity var(--transition); }
+  .course-faq__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .course-faq__item[open] .course-faq__icon::after { opacity: 0; transform: translate(-50%, -50%) rotate(0); }
+  .course-faq__item[open] summary { color: var(--color-gold-bright); }
+  .course-faq__answer { display: grid; gap: 1rem; max-width: 52rem; padding: 0 0 1.75rem clamp(2rem, 5vw, 3rem); color: var(--color-muted); line-height: 1.78; animation: faq-reveal 220ms ease-out; }
+  .course-faq__answer ul { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+  .course-faq__answer li { padding-left: 1rem; border-left: 1px solid var(--color-gold-muted); }
+  .course-faq__answer strong { color: var(--color-gold-bright); font-weight: 600; }
+
+  @keyframes faq-reveal {
+    from { opacity: 0; transform: translateY(-0.35rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 41.99rem) {
+    .course-faq__item summary { gap: 0.7rem; }
+    .course-faq__answer { padding-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .course-faq__answer { animation: none; }
+  }
+</style>

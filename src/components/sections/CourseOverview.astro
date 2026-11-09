@@ -1,15 +1,15 @@
 ---
-import { Image } from 'astro:assets';
 import type { Course } from '../../data/courses';
 import Button from '../ui/Button.astro';
 import AuthorSigil from '../ui/AuthorSigil.astro';
-import LivingHeroScene from './LivingHeroScene.astro';
+import CourseAtmosphereMedia from '../ui/CourseAtmosphereMedia.astro';
 import CourseInquiryForm from './CourseInquiryForm.astro';
-import earthImage from '../../assets/images/elements/earth.avif';
-import waterImage from '../../assets/images/elements/water.avif';
-import fireImage from '../../assets/images/elements/fire.avif';
-import airImage from '../../assets/images/elements/air.avif';
-import portalImage from '../../assets/images/hero-arch.png';
+import mirrorImage from '../../assets/images/course/black-mirror-woman.png';
+import philosophyImage from '../../assets/images/course/inner-path.png';
+import elementsImage from '../../assets/images/course/living-elements.png';
+import candleImage from '../../assets/images/course/candle-magic.png';
+import protectionImage from '../../assets/images/course/protection-circle.png';
+import placeOfPowerImage from '../../assets/images/course/place-of-power.png';
 
 interface Props {
   course: Course;
@@ -18,7 +18,12 @@ interface Props {
 const { course } = Astro.props;
 const audience = course.faq[0];
 const practices = course.faq[1]?.practices ?? [];
-const practiceVisuals = ['elements', 'fire', 'sigil', 'portal'] as const;
+const practiceVisuals = [
+  { src: elementsImage, alt: 'Живой природный алтарь четырёх Стихий', variant: 'nature' as const, position: 'center' },
+  { src: candleImage, alt: 'Свечи для практики свечной магии', variant: 'candle' as const, position: 'center' },
+  { src: protectionImage, alt: 'Сакральный круг энергетической защиты', variant: 'protection' as const, position: 'center' },
+  { src: placeOfPowerImage, alt: 'Уединённое горное место Силы', variant: 'sanctuary' as const, position: 'center' },
+];
 ---
 
 <section class="course-hero" aria-labelledby="course-title">
@@ -34,8 +39,13 @@ const practiceVisuals = ['elements', 'fire', 'sigil', 'portal'] as const;
       <p class="course-hero__note">Путь начинается с импульса, узнавания и действия — в собственном темпе, без готовых схем.</p>
     </div>
     <div class="course-hero__visual">
-      <LivingHeroScene />
-      <p class="course-hero__caption" aria-hidden="true">Земля · Вода · Огонь · Воздух</p>
+      <CourseAtmosphereMedia
+        src={mirrorImage}
+        alt="Женщина смотрит в древнее чёрное зеркало"
+        variant="mirror"
+        position="center 42%"
+        eager={true}
+      />
     </div>
   </div>
 </section>
@@ -45,7 +55,14 @@ const practiceVisuals = ['elements', 'fire', 'sigil', 'portal'] as const;
     <div class="course-philosophy__heading">
       <p class="eyebrow">Философия курса</p>
       <h2 id="course-philosophy-title">Магия как состояние и способ видеть</h2>
-      <div class="course-philosophy__seal" aria-hidden="true"><span></span></div>
+      <div class="course-philosophy__visual">
+        <CourseAtmosphereMedia
+          src={philosophyImage}
+          alt="Внутренний путь к свету и собственному знанию"
+          variant="journey"
+          position="center"
+        />
+      </div>
     </div>
     <div class="course-philosophy__copy">
       <p>{course.authorParagraphs[2]}</p>
@@ -72,18 +89,14 @@ const practiceVisuals = ['elements', 'fire', 'sigil', 'portal'] as const;
     <div class="course-practices__grid">
       {practices.map((practice, index) => (
         <article class="course-practice">
-          <div class:list={['course-practice__visual', `course-practice__visual--${practiceVisuals[index]}`]}>
-            {index === 0 && (
-              <div class="course-practice__elements" aria-label="Земля, Вода, Огонь и Воздух">
-                <Image src={earthImage} alt="Земля" width={260} height={260} format="webp" loading="eager" />
-                <Image src={waterImage} alt="Вода" width={260} height={260} format="webp" loading="eager" />
-                <Image src={fireImage} alt="Огонь" width={260} height={260} format="webp" loading="eager" />
-                <Image src={airImage} alt="Воздух" width={260} height={260} format="webp" loading="eager" />
-              </div>
-            )}
-            {index === 1 && <Image src={fireImage} alt="Живое пламя свечной практики" widths={[420, 640]} sizes="(min-width: 64rem) 36vw, 100vw" format="webp" loading="eager" />}
-            {index === 2 && <AuthorSigil width="clamp(8rem, 18vw, 13rem)" animationEnabled={true} variant="radiant" />}
-            {index === 3 && <Image src={portalImage} alt="Древняя арка — образ личного места Силы" widths={[420, 640]} sizes="(min-width: 64rem) 36vw, 100vw" format="webp" loading="eager" />}
+          <div class="course-practice__visual">
+            <CourseAtmosphereMedia
+              src={practiceVisuals[index].src}
+              alt={practiceVisuals[index].alt}
+              variant={practiceVisuals[index].variant}
+              position={practiceVisuals[index].position}
+              eager={true}
+            />
             <span class="course-practice__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
           </div>
           <div class="course-practice__copy">
@@ -197,18 +210,19 @@ const practiceVisuals = ['elements', 'fire', 'sigil', 'portal'] as const;
   .course-hero h1 { max-width: 10ch; font-size: clamp(4rem, 9vw, 8.5rem); }
   .course-hero__lead { max-width: 38rem; margin-top: 1.5rem; color: var(--color-sand); font-family: var(--font-display); font-size: clamp(1.35rem, 2.6vw, 2.1rem); line-height: 1.42; }
   .course-hero__note { max-width: 36rem; margin-top: 1.25rem; color: var(--color-muted); line-height: 1.75; }
-  .course-hero__caption { margin-top: -0.5rem; color: var(--color-gold-muted); font-size: var(--text-xs); letter-spacing: 0.18em; text-align: center; text-transform: uppercase; }
+  .course-hero__visual { position: relative; min-height: clamp(30rem, 66vw, 45rem); padding: clamp(0.5rem, 1.4vw, 0.9rem); border: 1px solid rgb(216 184 108 / 34%); background: linear-gradient(145deg, rgb(216 184 108 / 15%), rgb(84 35 47 / 20%) 38%, rgb(5 5 6 / 92%)); box-shadow: 0 2.5rem 7rem rgb(0 0 0 / 48%), inset 0 0 2rem rgb(216 184 108 / 7%); }
+  .course-hero__visual::before,
+  .course-hero__visual::after { position: absolute; z-index: 4; width: 2.6rem; height: 2.6rem; border-color: var(--color-gold-muted); content: ''; pointer-events: none; }
+  .course-hero__visual::before { top: 0.25rem; left: 0.25rem; border-top: 1px solid; border-left: 1px solid; }
+  .course-hero__visual::after { right: 0.25rem; bottom: 0.25rem; border-right: 1px solid; border-bottom: 1px solid; }
+  .course-hero__visual :global(.course-media) { height: 100%; min-height: inherit; }
 
   .course-philosophy { background: radial-gradient(circle at 88% 26%, rgb(84 35 47 / 18%), transparent 28rem); }
   .course-philosophy__grid { display: grid; gap: clamp(2.5rem, 7vw, 7rem); }
   .course-philosophy__heading { align-self: start; }
   .course-philosophy__heading h2 { max-width: 12ch; }
-  .course-philosophy__seal { position: relative; display: grid; width: 8rem; height: 8rem; margin-top: 3rem; place-items: center; border: 1px solid rgb(181 154 101 / 24%); border-radius: 50%; }
-  .course-philosophy__seal::before,
-  .course-philosophy__seal::after,
-  .course-philosophy__seal span { position: absolute; width: 3.1rem; height: 3.1rem; border: 1px solid var(--color-gold-muted); content: ''; transform: rotate(45deg); }
-  .course-philosophy__seal::after { transform: rotate(0); }
-  .course-philosophy__seal span { width: 0.55rem; height: 0.55rem; background: var(--color-gold); }
+  .course-philosophy__visual { min-height: clamp(17rem, 33vw, 25rem); margin-top: 2.5rem; border: 1px solid rgb(181 154 101 / 22%); box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 26%); }
+  .course-philosophy__visual :global(.course-media) { min-height: inherit; }
   .course-philosophy__copy { display: grid; gap: 1.5rem; color: var(--color-muted); line-height: 1.86; }
   .course-philosophy__copy p { white-space: pre-line; }
   .course-philosophy blockquote { position: relative; margin: 1.2rem 0; padding: clamp(1.5rem, 4vw, 2.6rem); border: 1px solid var(--color-border); background: linear-gradient(140deg, rgb(5 5 6 / 96%), rgb(32 22 25 / 86%)); box-shadow: inset 0 0 3rem rgb(0 0 0 / 48%); }
@@ -218,13 +232,8 @@ const practiceVisuals = ['elements', 'fire', 'sigil', 'portal'] as const;
   .course-practices { border-block: 1px solid var(--color-border); background: rgb(5 5 6 / 34%); }
   .course-practices__grid { display: grid; gap: clamp(2rem, 5vw, 4rem); }
   .course-practice { display: grid; overflow: hidden; border: 1px solid var(--color-border); background: linear-gradient(145deg, rgb(29 27 28 / 94%), rgb(12 11 12 / 94%)); }
-  .course-practice__visual { position: relative; display: grid; min-height: 19rem; overflow: hidden; place-items: center; background: var(--color-black); }
-  .course-practice__visual::after { position: absolute; inset: 0.75rem; border: 1px solid rgb(181 154 101 / 18%); content: ''; pointer-events: none; }
-  .course-practice__visual :global(> img) { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.72) contrast(1.08) brightness(0.72); transition: transform 700ms ease, filter 700ms ease; }
-  .course-practice:hover .course-practice__visual :global(> img) { filter: saturate(0.9) contrast(1.06) brightness(0.84); transform: scale(1.035); }
-  .course-practice__elements { display: grid; width: 100%; height: 100%; grid-template-columns: repeat(2, 1fr); }
-  .course-practice__elements :global(img) { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.72) contrast(1.1) brightness(0.68); }
-  .course-practice__visual--sigil { background: radial-gradient(circle, rgb(84 35 47 / 35%), transparent 54%), var(--color-black); }
+  .course-practice__visual { position: relative; min-height: 19rem; overflow: hidden; background: var(--color-black); }
+  .course-practice__visual :global(.course-media) { min-height: inherit; }
   .course-practice__number { position: absolute; top: 1.25rem; left: 1.25rem; z-index: 2; color: var(--color-gold); font-size: var(--text-xs); letter-spacing: 0.14em; }
   .course-practice__copy { display: grid; gap: 0.9rem; padding: clamp(1.5rem, 4vw, 2.5rem); }
   .course-practice__copy p { color: var(--color-muted); line-height: 1.75; }
@@ -300,14 +309,12 @@ const practiceVisuals = ['elements', 'fire', 'sigil', 'portal'] as const;
   @media (max-width: 41.99rem) {
     .course-hero h1 { font-size: clamp(3.7rem, 20vw, 5.4rem); }
     .course-hero__visual { margin-inline: -0.5rem; }
-    .course-philosophy__seal { width: 6rem; height: 6rem; }
     .course-practice__visual { min-height: 16rem; }
     .course-faq__item summary { gap: 0.7rem; }
     .course-faq__answer { padding-left: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .course-practice__visual :global(> img),
     .course-faq__answer { animation: none; transition: none; }
   }
 </style>

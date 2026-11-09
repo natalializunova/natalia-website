@@ -1,36 +1,143 @@
 ---
+import { Image } from 'astro:assets';
 import type { Course } from '../../data/courses';
+import Button from '../ui/Button.astro';
+import AuthorSigil from '../ui/AuthorSigil.astro';
+import LivingHeroScene from './LivingHeroScene.astro';
+import CourseInquiryForm from './CourseInquiryForm.astro';
+import earthImage from '../../assets/images/elements/earth.avif';
+import waterImage from '../../assets/images/elements/water.avif';
+import fireImage from '../../assets/images/elements/fire.avif';
+import airImage from '../../assets/images/elements/air.avif';
+import portalImage from '../../assets/images/hero-arch.png';
 
 interface Props {
   course: Course;
 }
 
 const { course } = Astro.props;
+const audience = course.faq[0];
+const practices = course.faq[1]?.practices ?? [];
+const practiceVisuals = ['elements', 'fire', 'sigil', 'portal'] as const;
 ---
 
-<section class="section course-overview" aria-labelledby="course-story-title">
-  <div class="narrow course-overview__inner">
-    <div class="course-overview__story">
-      <p class="eyebrow">Авторский путь</p>
-      <h2 id="course-story-title">Опыт, превращённый в практику</h2>
-      <div class="course-overview__copy">
-        {course.authorParagraphs.slice(1).map((paragraph) => <p>{paragraph}</p>)}
+<section class="course-hero" aria-labelledby="course-title">
+  <div class="container course-hero__grid">
+    <div class="course-hero__copy">
+      <p class="eyebrow">Авторский курс</p>
+      <h1 id="course-title">{course.title}</h1>
+      <p class="course-hero__lead">{course.summary}</p>
+      <div class="button-row">
+        <Button href="#course-inquiry">Хочу пройти курс</Button>
+        <Button href="#course-program" variant="ghost">Узнать о программе</Button>
       </div>
+      <p class="course-hero__note">Путь начинается с импульса, узнавания и действия — в собственном темпе, без готовых схем.</p>
+    </div>
+    <div class="course-hero__visual">
+      <LivingHeroScene />
+      <p class="course-hero__caption" aria-hidden="true">Земля · Вода · Огонь · Воздух</p>
+    </div>
+  </div>
+</section>
+
+<section class="section course-philosophy" id="course-program" aria-labelledby="course-philosophy-title">
+  <div class="container course-philosophy__grid">
+    <div class="course-philosophy__heading">
+      <p class="eyebrow">Философия курса</p>
+      <h2 id="course-philosophy-title">Магия как состояние и способ видеть</h2>
+      <div class="course-philosophy__seal" aria-hidden="true"><span></span></div>
+    </div>
+    <div class="course-philosophy__copy">
+      <p>{course.authorParagraphs[2]}</p>
+      <p>{course.authorParagraphs[4]}</p>
+      <blockquote>
+        <span aria-hidden="true">“</span>
+        <p>Магия — это умение увидеть свое бытие. Это касание материи Духом.</p>
+      </blockquote>
+      <p>{course.authorParagraphs[5]}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section course-practices" aria-labelledby="course-practices-title">
+  <div class="container">
+    <div class="section-heading section-heading--split">
+      <div>
+        <p class="eyebrow">Практики курса</p>
+        <h2 id="course-practices-title">Четыре направления работы</h2>
+      </div>
+      <p class="lead">Практики выстроены вокруг Стихий, огня, личных границ и собственного места Силы.</p>
     </div>
 
-    <aside class="course-outcomes" aria-labelledby="course-outcomes-title">
-      <p class="course-outcomes__mark" aria-hidden="true">✦</p>
-      <h2 id="course-outcomes-title">Пройдя курс, вы научитесь:</h2>
-      <ul>
-        {course.outcomes.map((outcome) => <li>{outcome}</li>)}
-      </ul>
-      <p class="course-outcomes__result">{course.result}</p>
-    </aside>
+    <div class="course-practices__grid">
+      {practices.map((practice, index) => (
+        <article class="course-practice">
+          <div class:list={['course-practice__visual', `course-practice__visual--${practiceVisuals[index]}`]}>
+            {index === 0 && (
+              <div class="course-practice__elements" aria-label="Земля, Вода, Огонь и Воздух">
+                <Image src={earthImage} alt="Земля" width={260} height={260} format="webp" loading="eager" />
+                <Image src={waterImage} alt="Вода" width={260} height={260} format="webp" loading="eager" />
+                <Image src={fireImage} alt="Огонь" width={260} height={260} format="webp" loading="eager" />
+                <Image src={airImage} alt="Воздух" width={260} height={260} format="webp" loading="eager" />
+              </div>
+            )}
+            {index === 1 && <Image src={fireImage} alt="Живое пламя свечной практики" widths={[420, 640]} sizes="(min-width: 64rem) 36vw, 100vw" format="webp" loading="eager" />}
+            {index === 2 && <AuthorSigil width="clamp(8rem, 18vw, 13rem)" animationEnabled={true} variant="radiant" />}
+            {index === 3 && <Image src={portalImage} alt="Древняя арка — образ личного места Силы" widths={[420, 640]} sizes="(min-width: 64rem) 36vw, 100vw" format="webp" loading="eager" />}
+            <span class="course-practice__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          </div>
+          <div class="course-practice__copy">
+            <h3>{practice.title.replace(/\.$/, '')}</h3>
+            <p>{practice.description}</p>
+          </div>
+        </article>
+      ))}
+    </div>
 
-    <div class="course-overview__closing">
-      <p>{course.closingParagraphs[0]}</p>
-      <p class="course-overview__invitation">{course.closingParagraphs[1]}</p>
-      <p class="course-overview__signature">{course.closingParagraphs[2]}</p>
+    <div class="course-outcomes">
+      <div>
+        <p class="eyebrow">В результате</p>
+        <h2>Пройдя курс, вы научитесь:</h2>
+      </div>
+      <div>
+        <ul>{course.outcomes.map((outcome) => <li>{outcome}</li>)}</ul>
+        <p class="course-outcomes__result">{course.result}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section course-audience" aria-labelledby="course-audience-title">
+  <div class="container course-audience__grid">
+    <div class="course-audience__intro">
+      <p class="eyebrow">Для кого этот курс</p>
+      <h2 id="course-audience-title">Когда прежний сценарий больше не подходит</h2>
+      <div class="course-audience__themes" aria-label="Ключевые темы">
+        <span>Поиск своего пути</span>
+        <span>Потребность в переменах</span>
+        <span>Понимание себя</span>
+        <span>Внутренняя целостность</span>
+      </div>
+    </div>
+    <div class="course-audience__copy">
+      {audience.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </div>
+</section>
+
+<section class="section course-author" aria-labelledby="course-author-title">
+  <div class="container course-author__grid">
+    <div class="course-author__emblem" aria-hidden="true">
+      <AuthorSigil width="clamp(12rem, 26vw, 20rem)" animationEnabled={true} variant="radiant" alt="" />
+      <span class="course-author__orbit"></span>
+    </div>
+    <div class="course-author__copy">
+      <p class="eyebrow">Авторский подход</p>
+      <h2 id="course-author-title">Опыт, пропущенный через себя</h2>
+      <p>{course.authorParagraphs[0]}</p>
+      <p>{course.authorParagraphs[1]}</p>
+      <blockquote>«В магии нет волшебной таблетки»</blockquote>
+      <p>{course.authorParagraphs[3]}</p>
     </div>
   </div>
 </section>
@@ -38,10 +145,9 @@ const { course } = Astro.props;
 <section class="section course-faq" aria-labelledby="course-faq-title">
   <div class="narrow">
     <div class="section-heading">
-      <p class="eyebrow">Вопросы о программе</p>
-      <h2 id="course-faq-title">Частые вопросы</h2>
+      <p class="eyebrow">Подробнее о программе</p>
+      <h2 id="course-faq-title">Вопросы о курсе</h2>
     </div>
-
     <div class="course-faq__list">
       {course.faq.map((item, index) => (
         <details class="course-faq__item" name="course-faq">
@@ -54,11 +160,7 @@ const { course } = Astro.props;
             {item.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
             {item.intro && <p>{item.intro}</p>}
             {item.practices && (
-              <ul>
-                {item.practices.map((practice) => (
-                  <li><strong>{practice.title}</strong> {practice.description}</li>
-                ))}
-              </ul>
+              <ul>{item.practices.map((practice) => <li><strong>{practice.title}</strong> {practice.description}</li>)}</ul>
             )}
           </div>
         </details>
@@ -67,51 +169,93 @@ const { course } = Astro.props;
   </div>
 </section>
 
+<section class="section course-inquiry" id="course-inquiry" aria-labelledby="course-inquiry-title">
+  <div class="container course-inquiry__grid">
+    <div class="course-inquiry__copy">
+      <p class="eyebrow">Сделать первый шаг</p>
+      <h2 id="course-inquiry-title">Готовы сделать первый шаг к своей Силе?</h2>
+      <p>Если вы хотите узнать больше об авторском курсе или принять участие, оставьте заявку. Мы свяжемся с вами и расскажем подробнее.</p>
+      <div class="button-row">
+        <Button href="#course-form">Хочу участвовать в курсе</Button>
+        <Button href="#course-form" variant="ghost">Задать вопрос о курсе</Button>
+      </div>
+      <p class="course-inquiry__philosophy">{course.closingParagraphs[0]}</p>
+      <p class="course-inquiry__invitation">{course.closingParagraphs[1]}</p>
+      <p class="course-inquiry__signature">{course.closingParagraphs[2]}</p>
+    </div>
+    <div class="course-inquiry__form">
+      <CourseInquiryForm />
+    </div>
+  </div>
+</section>
+
 <style>
-  .course-overview {
-    background:
-      radial-gradient(circle at 82% 12%, rgb(84 35 47 / 24%), transparent 28rem),
-      radial-gradient(circle at 8% 76%, rgb(181 154 101 / 6%), transparent 24rem);
-  }
+  .course-hero { position: relative; overflow: hidden; padding-block: clamp(3rem, 8vw, 7rem); border-bottom: 1px solid var(--color-border); background: radial-gradient(circle at 18% 18%, rgb(84 35 47 / 34%), transparent 30rem), linear-gradient(115deg, rgb(5 5 6 / 98%), rgb(17 16 18 / 94%)); }
+  .course-hero::before { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(181 154 101 / 4%) 1px, transparent 1px), linear-gradient(rgb(181 154 101 / 3%) 1px, transparent 1px); background-size: 5rem 5rem; content: ''; mask-image: radial-gradient(circle at center, #000, transparent 78%); pointer-events: none; }
+  .course-hero__grid { position: relative; display: grid; gap: clamp(2.5rem, 6vw, 6rem); align-items: center; }
+  .course-hero__copy { z-index: 1; }
+  .course-hero h1 { max-width: 10ch; font-size: clamp(4rem, 9vw, 8.5rem); }
+  .course-hero__lead { max-width: 38rem; margin-top: 1.5rem; color: var(--color-sand); font-family: var(--font-display); font-size: clamp(1.35rem, 2.6vw, 2.1rem); line-height: 1.42; }
+  .course-hero__note { max-width: 36rem; margin-top: 1.25rem; color: var(--color-muted); line-height: 1.75; }
+  .course-hero__caption { margin-top: -0.5rem; color: var(--color-gold-muted); font-size: var(--text-xs); letter-spacing: 0.18em; text-align: center; text-transform: uppercase; }
 
-  .course-overview__inner { display: grid; gap: clamp(2.5rem, 6vw, 4.75rem); }
-  .course-overview__story { display: grid; gap: var(--space-4); }
-  .course-overview__copy { display: grid; gap: 1.25rem; color: var(--color-muted); line-height: 1.84; }
-  .course-overview__copy p { white-space: pre-line; }
+  .course-philosophy { background: radial-gradient(circle at 88% 26%, rgb(84 35 47 / 18%), transparent 28rem); }
+  .course-philosophy__grid { display: grid; gap: clamp(2.5rem, 7vw, 7rem); }
+  .course-philosophy__heading { align-self: start; }
+  .course-philosophy__heading h2 { max-width: 12ch; }
+  .course-philosophy__seal { position: relative; display: grid; width: 8rem; height: 8rem; margin-top: 3rem; place-items: center; border: 1px solid rgb(181 154 101 / 24%); border-radius: 50%; }
+  .course-philosophy__seal::before,
+  .course-philosophy__seal::after,
+  .course-philosophy__seal span { position: absolute; width: 3.1rem; height: 3.1rem; border: 1px solid var(--color-gold-muted); content: ''; transform: rotate(45deg); }
+  .course-philosophy__seal::after { transform: rotate(0); }
+  .course-philosophy__seal span { width: 0.55rem; height: 0.55rem; background: var(--color-gold); }
+  .course-philosophy__copy { display: grid; gap: 1.5rem; color: var(--color-muted); line-height: 1.86; }
+  .course-philosophy__copy p { white-space: pre-line; }
+  .course-philosophy blockquote { position: relative; margin: 1.2rem 0; padding: clamp(1.5rem, 4vw, 2.6rem); border: 1px solid var(--color-border); background: linear-gradient(140deg, rgb(5 5 6 / 96%), rgb(32 22 25 / 86%)); box-shadow: inset 0 0 3rem rgb(0 0 0 / 48%); }
+  .course-philosophy blockquote > span { position: absolute; top: -0.35rem; left: 1rem; color: rgb(216 184 108 / 24%); font-family: var(--font-display); font-size: 6rem; line-height: 1; }
+  .course-philosophy blockquote p { position: relative; color: var(--color-text); font-family: var(--font-display); font-size: clamp(1.45rem, 3vw, 2.3rem); line-height: 1.4; }
 
-  .course-outcomes {
-    position: relative;
-    overflow: hidden;
-    padding: clamp(1.5rem, 5vw, 3rem);
-    border: 1px solid var(--color-border);
-    background:
-      linear-gradient(135deg, rgb(181 154 101 / 8%), transparent 45%),
-      rgb(9 9 10 / 54%);
-  }
-
-  .course-outcomes::after {
-    position: absolute;
-    inset: 0.65rem;
-    border: 1px solid rgb(181 154 101 / 10%);
-    content: '';
-    pointer-events: none;
-  }
-
-  .course-outcomes__mark { margin-bottom: 1rem; color: var(--color-gold); font-size: 1.35rem; }
-  .course-outcomes h2 { max-width: 34rem; }
-  .course-outcomes ul { display: grid; gap: 1rem; margin: 1.75rem 0 0; padding: 0; list-style: none; }
+  .course-practices { border-block: 1px solid var(--color-border); background: rgb(5 5 6 / 34%); }
+  .course-practices__grid { display: grid; gap: clamp(2rem, 5vw, 4rem); }
+  .course-practice { display: grid; overflow: hidden; border: 1px solid var(--color-border); background: linear-gradient(145deg, rgb(29 27 28 / 94%), rgb(12 11 12 / 94%)); }
+  .course-practice__visual { position: relative; display: grid; min-height: 19rem; overflow: hidden; place-items: center; background: var(--color-black); }
+  .course-practice__visual::after { position: absolute; inset: 0.75rem; border: 1px solid rgb(181 154 101 / 18%); content: ''; pointer-events: none; }
+  .course-practice__visual :global(> img) { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.72) contrast(1.08) brightness(0.72); transition: transform 700ms ease, filter 700ms ease; }
+  .course-practice:hover .course-practice__visual :global(> img) { filter: saturate(0.9) contrast(1.06) brightness(0.84); transform: scale(1.035); }
+  .course-practice__elements { display: grid; width: 100%; height: 100%; grid-template-columns: repeat(2, 1fr); }
+  .course-practice__elements :global(img) { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.72) contrast(1.1) brightness(0.68); }
+  .course-practice__visual--sigil { background: radial-gradient(circle, rgb(84 35 47 / 35%), transparent 54%), var(--color-black); }
+  .course-practice__number { position: absolute; top: 1.25rem; left: 1.25rem; z-index: 2; color: var(--color-gold); font-size: var(--text-xs); letter-spacing: 0.14em; }
+  .course-practice__copy { display: grid; gap: 0.9rem; padding: clamp(1.5rem, 4vw, 2.5rem); }
+  .course-practice__copy p { color: var(--color-muted); line-height: 1.75; }
+  .course-outcomes { display: grid; gap: clamp(2rem, 6vw, 5rem); margin-top: var(--space-8); padding: clamp(1.5rem, 5vw, 3.5rem); border: 1px solid var(--color-border); background: linear-gradient(135deg, rgb(181 154 101 / 8%), transparent 42%), rgb(9 9 10 / 58%); }
+  .course-outcomes ul { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
   .course-outcomes li { position: relative; padding-left: 1.5rem; color: var(--color-text); line-height: 1.72; }
   .course-outcomes li::before { position: absolute; top: 0.65em; left: 0; width: 0.42rem; height: 0.42rem; border: 1px solid var(--color-gold); content: ''; transform: rotate(45deg); }
   .course-outcomes__result { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); color: var(--color-sand); font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.6; }
 
-  .course-overview__closing { display: grid; gap: 1.25rem; color: var(--color-muted); line-height: 1.8; }
-  .course-overview__invitation { color: var(--color-gold-bright); font-family: var(--font-display); font-size: var(--text-lg); }
-  .course-overview__signature { color: var(--color-sand); font-family: var(--font-display); font-size: var(--text-lg); font-style: italic; }
+  .course-audience { background: radial-gradient(circle at 15% 55%, rgb(149 90 67 / 14%), transparent 32rem), var(--color-surface-soft); }
+  .course-audience__grid { display: grid; gap: clamp(2.5rem, 7vw, 7rem); }
+  .course-audience__intro h2 { max-width: 13ch; }
+  .course-audience__themes { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 2rem; }
+  .course-audience__themes span { padding: 0.55rem 0.8rem; border: 1px solid rgb(181 154 101 / 28%); color: var(--color-sand); font-size: var(--text-xs); letter-spacing: 0.06em; }
+  .course-audience__copy { display: grid; gap: 1.35rem; align-content: center; color: var(--color-muted); line-height: 1.86; }
+  .course-audience__copy p:first-child { color: var(--color-text); font-family: var(--font-display); font-size: var(--text-lg); }
 
-  .course-faq { border-top: 1px solid var(--color-border); background: rgb(20 20 22 / 58%); }
+  .course-author { overflow: hidden; }
+  .course-author__grid { display: grid; gap: clamp(2.5rem, 7vw, 7rem); align-items: center; }
+  .course-author__emblem { position: relative; display: grid; min-height: 25rem; place-items: center; background: radial-gradient(circle, rgb(84 35 47 / 26%), transparent 60%); }
+  .course-author__orbit { position: absolute; width: min(85%, 25rem); aspect-ratio: 1; border: 1px solid rgb(181 154 101 / 20%); border-radius: 50%; }
+  .course-author__orbit::before,
+  .course-author__orbit::after { position: absolute; inset: 11%; border: 1px solid rgb(181 154 101 / 12%); content: ''; transform: rotate(45deg); }
+  .course-author__orbit::after { transform: rotate(67.5deg); }
+  .course-author__copy { display: grid; gap: 1.25rem; color: var(--color-muted); line-height: 1.82; }
+  .course-author__copy blockquote { margin: 0.75rem 0; color: var(--color-gold-bright); font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 3.2rem); line-height: 1.2; }
+
+  .course-faq { border-block: 1px solid var(--color-border); background: rgb(20 20 22 / 72%); }
   .course-faq__list { border-top: 1px solid var(--color-border); }
   .course-faq__item { border-bottom: 1px solid var(--color-border); }
-  .course-faq__item summary { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; padding-block: 1.35rem; cursor: pointer; font-family: var(--font-display); font-size: clamp(1.1rem, 2vw, 1.35rem); list-style: none; }
+  .course-faq__item summary { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; padding-block: 1.5rem; cursor: pointer; font-family: var(--font-display); font-size: clamp(1.15rem, 2vw, 1.5rem); list-style: none; }
   .course-faq__item summary::-webkit-details-marker { display: none; }
   .course-faq__number { color: var(--color-gold-muted); font-family: var(--font-body); font-size: var(--text-xs); letter-spacing: 0.14em; }
   .course-faq__icon { position: relative; width: 1rem; height: 1rem; color: var(--color-gold); }
@@ -125,17 +269,45 @@ const { course } = Astro.props;
   .course-faq__answer li { padding-left: 1rem; border-left: 1px solid var(--color-gold-muted); }
   .course-faq__answer strong { color: var(--color-gold-bright); font-weight: 600; }
 
-  @keyframes faq-reveal {
-    from { opacity: 0; transform: translateY(-0.35rem); }
-    to { opacity: 1; transform: translateY(0); }
+  .course-inquiry { background: radial-gradient(circle at 18% 12%, rgb(84 35 47 / 32%), transparent 30rem), linear-gradient(120deg, var(--color-black), var(--color-surface-soft)); }
+  .course-inquiry__grid { display: grid; gap: clamp(2.5rem, 7vw, 7rem); align-items: start; }
+  .course-inquiry__copy { display: grid; gap: 1.25rem; color: var(--color-muted); line-height: 1.8; }
+  .course-inquiry__copy h2 { max-width: 12ch; }
+  .course-inquiry__philosophy { margin-top: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); color: var(--color-sand); font-family: var(--font-display); font-size: var(--text-lg); }
+  .course-inquiry__invitation { color: var(--color-gold-bright); font-family: var(--font-display); font-size: var(--text-lg); }
+  .course-inquiry__signature { color: var(--color-gold); font-family: var(--font-display); font-size: var(--text-lg); font-style: italic; }
+  .course-inquiry__form { padding: clamp(1.25rem, 4vw, 2.5rem); border: 1px solid var(--color-border); background: rgb(9 9 10 / 68%); box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 22%); }
+
+  @keyframes faq-reveal { from { opacity: 0; transform: translateY(-0.35rem); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (min-width: 48rem) {
+    .course-practices__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .course-outcomes { grid-template-columns: 0.8fr 1.2fr; }
+  }
+
+  @media (min-width: 64rem) {
+    .course-hero__grid { grid-template-columns: minmax(0, 0.88fr) minmax(28rem, 1.12fr); }
+    .course-philosophy__grid,
+    .course-audience__grid,
+    .course-author__grid,
+    .course-inquiry__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .course-practice { grid-template-columns: 0.9fr 1.1fr; min-height: 24rem; }
+    .course-practice:nth-child(3n + 2) { grid-template-columns: 1.1fr 0.9fr; }
+    .course-practice:nth-child(3n + 2) .course-practice__visual { order: 2; }
+    .course-practice__copy { align-content: center; }
   }
 
   @media (max-width: 41.99rem) {
+    .course-hero h1 { font-size: clamp(3.7rem, 20vw, 5.4rem); }
+    .course-hero__visual { margin-inline: -0.5rem; }
+    .course-philosophy__seal { width: 6rem; height: 6rem; }
+    .course-practice__visual { min-height: 16rem; }
     .course-faq__item summary { gap: 0.7rem; }
     .course-faq__answer { padding-left: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .course-faq__answer { animation: none; }
+    .course-practice__visual :global(> img),
+    .course-faq__answer { animation: none; transition: none; }
   }
 </style>

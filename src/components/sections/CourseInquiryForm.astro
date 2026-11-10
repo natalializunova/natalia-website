@@ -1,0 +1,104 @@
+<form class="course-form" id="course-form" data-course-form aria-describedby="course-form-note">
+  <div class="course-form__grid">
+    <label>
+      <span>Имя <em aria-hidden="true">*</em></span>
+      <input name="name" type="text" autocomplete="name" required />
+    </label>
+
+    <label>
+      <span>Email <em aria-hidden="true">*</em></span>
+      <input name="email" type="email" autocomplete="email" required />
+    </label>
+
+    <label>
+      <span>Телефон</span>
+      <input name="phone" type="tel" autocomplete="tel" />
+    </label>
+
+    <label>
+      <span>Тип обращения <em aria-hidden="true">*</em></span>
+      <select name="inquiryType" required>
+        <option value="">Выберите вариант</option>
+        <option value="participate">Хочу участвовать в курсе</option>
+        <option value="details">Хочу узнать подробнее</option>
+        <option value="question">У меня есть вопрос</option>
+      </select>
+    </label>
+  </div>
+
+  <label>
+    <span>Сообщение</span>
+    <textarea name="message" rows="4"></textarea>
+  </label>
+
+  <label class="course-form__consent">
+    <input name="consent" type="checkbox" required />
+    <span>Я соглашаюсь с <a href="/consent/">условиями обработки персональных данных</a> <em aria-hidden="true">*</em></span>
+  </label>
+
+  <div class="course-form__footer">
+    <button class="button" type="submit">Отправить заявку</button>
+    <p id="course-form-note">Поля, отмеченные звёздочкой, обязательны.</p>
+  </div>
+
+  <p class="course-form__status" data-form-status aria-live="polite"></p>
+</form>
+
+<script>
+  const forms = document.querySelectorAll<HTMLFormElement>('[data-course-form]');
+
+  forms.forEach((form) => {
+    const status = form.querySelector<HTMLElement>('[data-form-status]');
+
+    form.addEventListener('invalid', (event) => {
+      const field = event.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+      field.setAttribute('aria-invalid', 'true');
+      if (status) {
+        status.dataset.state = 'error';
+        status.textContent = 'Проверьте обязательные поля и формат email.';
+      }
+    }, true);
+
+    form.addEventListener('input', (event) => {
+      const field = event.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+      if (field.validity.valid) field.removeAttribute('aria-invalid');
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      if (status) {
+        status.dataset.state = 'notice';
+        status.textContent = 'Это локальный прототип. Отправка заявок будет подключена после утверждения обработчика формы и адреса получателя.';
+      }
+    });
+  });
+</script>
+
+<style>
+  .course-form { display: grid; gap: 1.25rem; }
+  .course-form__grid { display: grid; gap: 1.25rem; }
+  .course-form label { display: grid; gap: 0.55rem; color: var(--color-text); font-size: var(--text-sm); }
+  .course-form label > span:first-child { letter-spacing: 0.04em; }
+  .course-form em { color: var(--color-gold-bright); font-style: normal; }
+  .course-form input,
+  .course-form select,
+  .course-form textarea { width: 100%; min-height: 3.1rem; padding: 0.75rem 0.9rem; border: 1px solid var(--color-border); border-radius: 0; background: rgb(5 5 6 / 58%); color: var(--color-text); transition: border-color var(--transition), box-shadow var(--transition); }
+  .course-form textarea { min-height: 7rem; resize: vertical; }
+  .course-form input:focus,
+  .course-form select:focus,
+  .course-form textarea:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px rgb(185 154 95 / 10%); outline: none; }
+  .course-form [aria-invalid='true'] { border-color: var(--color-clay); }
+  .course-form__consent { grid-template-columns: auto 1fr; align-items: start; }
+  .course-form__consent input { width: 1.1rem; min-height: 1.1rem; margin-top: 0.18rem; accent-color: var(--color-gold); }
+  .course-form__consent a { color: var(--color-gold); text-underline-offset: 0.2em; }
+  .course-form__footer { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .course-form__footer p { color: var(--color-muted); font-size: var(--text-xs); }
+  .course-form__status { min-height: 1.5rem; color: var(--color-muted); font-size: var(--text-sm); line-height: 1.6; }
+  .course-form__status[data-state='error'] { color: #d8a08c; }
+  .course-form__status[data-state='notice'] { padding: 0.8rem 1rem; border-left: 2px solid var(--color-gold); background: rgb(181 154 101 / 7%); color: var(--color-sand); }
+
+  @media (min-width: 42rem) {
+    .course-form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>

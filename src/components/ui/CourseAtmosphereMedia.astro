@@ -1,0 +1,136 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  variant?: 'mirror' | 'journey' | 'nature' | 'candle' | 'protection' | 'sanctuary';
+  eager?: boolean;
+  position?: string;
+}
+
+const {
+  src,
+  alt,
+  variant = 'nature',
+  eager = false,
+  position = 'center',
+} = Astro.props;
+---
+
+<figure class:list={['course-media', `course-media--${variant}`]} style={`--media-position: ${position};`}>
+  <Image
+    src={src}
+    alt={alt}
+    widths={[480, 720, 960, 1280]}
+    sizes="(min-width: 64rem) 48vw, 100vw"
+    format="webp"
+    loading={eager ? 'eager' : 'lazy'}
+  />
+  <span class="course-media__veil" aria-hidden="true"></span>
+  <span class="course-media__light" aria-hidden="true"></span>
+</figure>
+
+<style>
+  .course-media {
+    position: relative;
+    min-height: 100%;
+    margin: 0;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--color-black);
+  }
+
+  .course-media::after {
+    position: absolute;
+    inset: 0.75rem;
+    z-index: 3;
+    border: 1px solid rgb(216 184 108 / 24%);
+    content: '';
+    pointer-events: none;
+  }
+
+  .course-media :global(img) {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    object-fit: cover;
+    object-position: var(--media-position);
+    filter: saturate(0.82) contrast(1.06) brightness(0.82);
+    transform: scale(1.025);
+    animation: course-image-breathe 14s ease-in-out infinite alternate;
+  }
+
+  .course-media__veil,
+  .course-media__light {
+    position: absolute;
+    inset: -15%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .course-media__veil {
+    background:
+      radial-gradient(circle at 78% 24%, transparent 0 12%, rgb(181 154 101 / 11%) 22%, transparent 43%),
+      linear-gradient(120deg, rgb(7 7 8 / 46%), transparent 48%, rgb(84 35 47 / 20%));
+    mix-blend-mode: screen;
+    animation: course-veil-drift 11s ease-in-out infinite alternate;
+  }
+
+  .course-media__light {
+    background: radial-gradient(ellipse at 55% 70%, rgb(216 184 108 / 16%), transparent 38%);
+    opacity: 0.58;
+    animation: course-light-pulse 5.5s ease-in-out infinite;
+  }
+
+  .course-media--candle .course-media__light {
+    background:
+      radial-gradient(circle at 52% 34%, rgb(255 205 111 / 30%), transparent 12%),
+      radial-gradient(ellipse at 50% 54%, rgb(188 76 38 / 22%), transparent 48%);
+    animation-duration: 2.8s;
+  }
+
+  .course-media--protection .course-media__light {
+    inset: 5%;
+    border: 1px solid rgb(216 184 108 / 30%);
+    border-radius: 50%;
+    background: radial-gradient(circle, transparent 48%, rgb(216 184 108 / 13%) 58%, transparent 70%);
+    animation-duration: 7s;
+  }
+
+  .course-media--journey .course-media__veil,
+  .course-media--sanctuary .course-media__veil {
+    background:
+      linear-gradient(180deg, transparent 38%, rgb(7 7 8 / 20%)),
+      radial-gradient(ellipse at 50% 68%, rgb(214 214 204 / 13%), transparent 44%);
+    filter: blur(1.1rem);
+  }
+
+  .course-media--mirror .course-media__light {
+    background: radial-gradient(ellipse at 64% 42%, rgb(216 184 108 / 18%), transparent 28%);
+  }
+
+  @keyframes course-image-breathe {
+    from { transform: scale(1.025) translate3d(-0.25%, 0, 0); }
+    to { transform: scale(1.065) translate3d(0.4%, -0.4%, 0); }
+  }
+
+  @keyframes course-veil-drift {
+    from { opacity: 0.3; transform: translate3d(-2%, 1%, 0) scale(1); }
+    to { opacity: 0.62; transform: translate3d(2%, -1%, 0) scale(1.04); }
+  }
+
+  @keyframes course-light-pulse {
+    0%, 100% { opacity: 0.34; transform: scale(0.98); }
+    50% { opacity: 0.72; transform: scale(1.03); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .course-media :global(img),
+    .course-media__veil,
+    .course-media__light {
+      animation: none;
+    }
+  }
+</style>

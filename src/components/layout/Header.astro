@@ -41,7 +41,7 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
 <style>
   .site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid rgb(185 154 95 / 18%); background: linear-gradient(180deg, #0c0c0d 0%, #050506 72%, #090809 100%); box-shadow: inset 0 1px rgb(255 255 255 / 3%), 0 1rem 3.2rem rgb(0 0 0 / 24%); }
   .site-header::after { position: absolute; right: 0; bottom: 0; left: 0; height: 1px; background: linear-gradient(90deg, transparent, rgb(216 184 108 / 32%), transparent); content: ''; pointer-events: none; }
-  .site-header__inner { display: flex; width: min(calc(100% - 1.25rem), 90rem); min-height: 5.15rem; align-items: center; gap: 0.85rem; }
+  .site-header__inner { display: flex; min-height: 5.15rem; align-items: center; gap: 0.85rem; }
   .brand { display: flex; align-items: center; margin-right: auto; text-decoration: none; }
   .desktop-nav { display: none; }
   .desktop-nav ul, .mobile-nav ul { margin: 0; padding: 0; list-style: none; }

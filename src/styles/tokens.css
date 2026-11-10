@@ -34,8 +34,8 @@
   --space-6: 3rem;
   --space-7: 4.5rem;
   --space-8: clamp(5rem, 9vw, 9rem);
-  --container: 76rem;
-  --container-narrow: 48rem;
+  --page-gutter: 1rem;
+  --container-narrow: 54rem;
   --radius-sm: 0.25rem;
   --radius-arch: 999px 999px 0.5rem 0.5rem;
   --transition: 180ms ease;

@@ -7,6 +7,12 @@ import airImage from '../../assets/images/elements/air.avif';
 import { elements } from '../../data/elements';
 
 const images = { earth: earthImage, water: waterImage, fire: fireImage, air: airImage };
+const videos = {
+  earth: '/videos/elements/earth.m4v',
+  water: '/videos/elements/water.m4v',
+  fire: '/videos/elements/fire.m4v',
+  air: '/videos/elements/air.m4v',
+};
 const initialElement = elements[0];
 ---
 
@@ -32,6 +38,17 @@ const initialElement = elements[0];
           format="webp"
           loading="lazy"
         />
+        <video
+          class="element-card__video"
+          muted
+          loop
+          playsinline
+          preload="none"
+          tabindex="-1"
+          aria-hidden="true"
+          data-element-video
+          data-src={videos[element.key]}
+        ></video>
         <span class="element-card__atmosphere" aria-hidden="true"></span>
         <span class="element-card__shade" aria-hidden="true"></span>
         <span class="element-card__number" aria-hidden="true">{element.number}</span>
@@ -63,8 +80,44 @@ const initialElement = elements[0];
 
   if (root) {
     const tabs = [...root.querySelectorAll('[data-element-tab]')];
+    const videos = [...root.querySelectorAll('[data-element-video]')];
     const panel = root.querySelector('#element-panel');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let sectionIsVisible = false;
+
+    const syncVideoPlayback = () => {
+      const shouldPlay = sectionIsVisible && !document.hidden && !reducedMotion.matches;
+
+      videos.forEach((video) => {
+        if (!shouldPlay) {
+          video.pause();
+          return;
+        }
+
+        if (!video.src && video.dataset.src) video.src = video.dataset.src;
+        video.play().catch(() => {});
+      });
+    };
+
+    videos.forEach((video) => {
+      video.addEventListener('loadeddata', () => {
+        video.dataset.ready = 'true';
+      }, { once: true });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        sectionIsVisible = entry.isIntersecting;
+        syncVideoPlayback();
+      }, { rootMargin: '160px 0px', threshold: 0.05 });
+      observer.observe(root);
+    } else {
+      sectionIsVisible = true;
+      syncVideoPlayback();
+    }
+
+    document.addEventListener('visibilitychange', syncVideoPlayback);
+    reducedMotion.addEventListener?.('change', syncVideoPlayback);
 
     const setText = (selector, value) => {
       const target = root.querySelector(selector);
@@ -175,15 +228,23 @@ const initialElement = elements[0];
   .element-card[data-active='true']::after { border-color: rgb(var(--card-accent) / 72%); border-bottom-color: rgb(var(--card-accent) / 22%); box-shadow: inset 0 0 0 1px rgb(var(--card-accent) / 14%), inset 0 -4rem 5rem rgb(var(--card-accent) / 14%); }
   .element-card:focus-visible { z-index: 5; outline: 2px solid var(--color-gold); outline-offset: -3px; }
 
-  .element-card :global(img) {
+  .element-card :global(img), .element-card__video {
     position: absolute;
     inset: 0;
+    z-index: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     filter: saturate(0.78) contrast(1.06) brightness(0.78);
-    transform: scale(1.08);
   }
+
+  .element-card__video {
+    opacity: 0;
+    transition: opacity 700ms ease, filter 280ms ease;
+  }
+
+  .element-card__video[data-ready='true'] { opacity: 1; }
+  .element-card[data-active='true'] .element-card__video { filter: saturate(0.96) contrast(1.08) brightness(0.92); }
 
   .element-card__atmosphere, .element-card__shade { position: absolute; inset: -14%; pointer-events: none; }
   .element-card__atmosphere { z-index: 1; }
@@ -192,13 +253,9 @@ const initialElement = elements[0];
   .element-card__number { position: absolute; top: 1rem; right: 1rem; z-index: 3; color: rgb(239 230 211 / 58%); font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.12em; }
   .element-card__name { position: absolute; right: 1rem; bottom: 1rem; left: 1rem; z-index: 3; font-family: var(--font-display); font-size: clamp(1.45rem, 3vw, 2.15rem); line-height: 1; text-shadow: 0 0.65rem 1.5rem rgb(0 0 0 / 82%); }
 
-  .element-card--earth :global(img) { animation: earth-breathe 10s ease-in-out infinite alternate; }
   .element-card--earth .element-card__atmosphere { background: radial-gradient(circle at 68% 26%, rgb(216 184 108 / 26%), transparent 36%); animation: earth-light 7s ease-in-out infinite alternate; }
-  .element-card--water :global(img) { animation: water-flow 5.4s ease-in-out infinite alternate; }
   .element-card--water .element-card__atmosphere { background: linear-gradient(112deg, transparent 18%, rgb(197 221 229 / 20%) 48%, transparent 76%); mix-blend-mode: screen; animation: water-shimmer 3.8s ease-in-out infinite alternate; }
-  .element-card--fire :global(img) { animation: fire-flicker 2.8s ease-in-out infinite; }
   .element-card--fire .element-card__atmosphere { background: radial-gradient(ellipse at 50% 66%, rgb(255 143 53 / 32%), transparent 52%); mix-blend-mode: screen; animation: fire-glow 2.1s ease-in-out infinite alternate; }
-  .element-card--air :global(img) { animation: air-drift 7s ease-in-out infinite alternate; }
   .element-card--air .element-card__atmosphere { background: linear-gradient(100deg, transparent 8%, rgb(236 235 226 / 22%) 40%, transparent 68%); mix-blend-mode: screen; animation: air-mist 5.4s ease-in-out infinite alternate; }
 
   .element-panel { position: relative; min-height: 18rem; padding: clamp(2rem, 5vw, 4.75rem); overflow: hidden; background: linear-gradient(145deg, rgb(19 18 20 / 98%), rgb(8 8 9 / 100%)); }
@@ -210,16 +267,12 @@ const initialElement = elements[0];
   .element-panel__summary { max-width: 58rem; margin: 0 0 1rem; color: var(--color-ivory); font-size: clamp(1.05rem, 1.5vw, 1.22rem); line-height: 1.7; }
   .element-panel__introduction { max-width: 58rem; margin: 0; color: var(--color-muted); line-height: 1.75; }
 
-  @keyframes earth-breathe { from { filter: saturate(0.72) brightness(0.74); transform: scale(1.08); } to { filter: saturate(0.9) brightness(0.9); transform: scale(1.13) translateY(-0.6%); } }
   @keyframes earth-light { from { opacity: 0.28; transform: translate3d(-4%, 2%, 0) scale(0.96); } to { opacity: 0.74; transform: translate3d(4%, -2%, 0) scale(1.06); } }
-  @keyframes water-flow { from { filter: brightness(0.74) contrast(1.02); transform: scale(1.16) translate3d(-2.6%, 0.8%, 0); } to { filter: brightness(0.96) contrast(1.12); transform: scale(1.22) translate3d(2.6%, -0.8%, 0); } }
   @keyframes water-shimmer { from { opacity: 0.22; transform: translateX(-12%) skewX(-5deg); } to { opacity: 0.72; transform: translateX(12%) skewX(5deg); } }
-  @keyframes fire-flicker { 0%, 100% { filter: brightness(0.78) saturate(0.82); transform: scale(1.08); } 38% { filter: brightness(1.08) saturate(1.08); transform: scale(1.14) translateY(-1.2%); } 68% { filter: brightness(0.91) saturate(0.94); transform: scale(1.11) translateX(0.7%); } }
   @keyframes fire-glow { from { opacity: 0.3; transform: scale(0.92); } to { opacity: 0.84; transform: scale(1.12); } }
-  @keyframes air-drift { from { filter: brightness(0.76) contrast(0.96); transform: scale(1.16) translateX(-3.2%); } to { filter: brightness(0.98) contrast(1.04); transform: scale(1.22) translateX(3.2%); } }
   @keyframes air-mist { from { opacity: 0.2; transform: translateX(-14%); } to { opacity: 0.68; transform: translateX(14%); } }
 
   @media (min-width: 64rem) { .element-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); } .element-card { min-height: clamp(14rem, 19vw, 19rem); } }
   @media (max-width: 35rem) { .element-card { min-height: 10rem; } .element-card__number { top: 0.7rem; right: 0.7rem; } .element-card__name { right: 0.75rem; bottom: 0.75rem; left: 0.75rem; } .element-panel { min-height: 0; } }
-  @media (prefers-reduced-motion: reduce) { .element-card :global(img), .element-card__atmosphere { animation: none !important; } .element-card, .element-card::after, .element-panel__glow { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .element-card__video { display: none; } .element-card__atmosphere { animation: none !important; } .element-card, .element-card::after, .element-panel__glow { transition: none; } }
 </style>

@@ -31,19 +31,24 @@ import { site } from '../data/site';
   </section>
 
   <section class="section philosophy-section">
-    <div class="container philosophy-shell">
-      <div class="philosophy-shell__visual">
-        <Image src={mirrorImage} alt="Женщина всматривается в древнее чёрное зеркало" widths={[520, 760, 1040]} sizes="(min-width: 48rem) 44vw, 100vw" loading="lazy" />
-        <div class="philosophy-shell__title">
-          <p class="eyebrow">О курсе</p>
-          <h2>Не искать готовый образ.<br />Вспоминать свой.</h2>
-        </div>
+    <div class="container">
+      <div class="philosophy-shell__heading">
+        <p class="eyebrow">О курсе</p>
       </div>
-      <div class="stack philosophy-shell__copy">
-        <p class="lead">Путь через четыре Стихии — это базовый метод. Он подсказывает, какой вектор выбрать, но пройти по нему необходимо самостоятельно.</p>
-        <p class="muted">Используя мой Авторский курс, практики и символы, вы прикоснетесь к тайным знаниям, утерянным в эпохах веков.</p>
-        <p class="muted">Этот путь требует осознанности, и здесь нет места времени. Только вы, настоящий момент и ваша истинная суть.</p>
-        <div class="button-row"><Button href="/courses/path-to-self/" variant="ghost">Подробнее о курсе</Button></div>
+      <div class="philosophy-shell">
+        <div class="philosophy-shell__visual">
+          <Image src={mirrorImage} alt="Женщина всматривается в древнее чёрное зеркало" widths={[520, 760, 1040]} sizes="(min-width: 48rem) 44vw, 100vw" loading="lazy" />
+          <div class="philosophy-shell__mirror-copy">
+            <span aria-hidden="true"></span>
+            <h2>Не искать готовый образ,<br />а вспоминать свой</h2>
+          </div>
+        </div>
+        <div class="stack philosophy-shell__copy">
+          <p class="lead">Путь через четыре Стихии — это базовый метод. Он подсказывает, какой вектор выбрать, но пройти по нему необходимо самостоятельно.</p>
+          <p class="muted">Используя мой Авторский курс, практики и символы, вы прикоснетесь к тайным знаниям, утерянным в эпохах веков.</p>
+          <p class="muted">Этот путь требует осознанности, и здесь нет места времени. Только вы, настоящий момент и ваша истинная суть.</p>
+          <div class="button-row"><Button href="/courses/path-to-self/" variant="ghost">Подробнее о курсе</Button></div>
+        </div>
       </div>
     </div>
   </section>
@@ -97,12 +102,14 @@ import { site } from '../data/site';
   .hero__visual { position: relative; }
   .hero__line { position: absolute; right: 4%; bottom: 0; left: 4%; height: 1px; background: linear-gradient(90deg, transparent, var(--color-gold-muted), transparent); }
   .philosophy-section { padding-block: clamp(4rem, 7vw, 7rem); background: radial-gradient(circle at 20% 46%, rgb(84 35 47 / 24%), transparent 31rem); }
+  .philosophy-shell__heading { margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
   .philosophy-shell { position: relative; display: grid; gap: clamp(2.5rem, 7vw, 7rem); align-items: start; }
   .philosophy-shell__visual { position: relative; min-height: clamp(23rem, 42vw, 36rem); overflow: hidden; border-radius: 48% 48% 1.25rem 1.25rem / 18% 18% 1.25rem 1.25rem; background: #050506; box-shadow: 0 2rem 5rem rgb(0 0 0 / 34%); }
-  .philosophy-shell__visual :global(img) { width: 100%; height: 100%; min-height: inherit; object-fit: cover; object-position: center 40%; filter: saturate(0.78) brightness(0.72); }
-  .philosophy-shell__visual::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(5 5 6 / 8%), rgb(5 5 6 / 22%) 45%, rgb(5 5 6 / 92%)); content: ''; }
-  .philosophy-shell__title { position: absolute; right: clamp(1.5rem, 5vw, 3.5rem); bottom: clamp(1.5rem, 5vw, 3.5rem); left: clamp(1.5rem, 5vw, 3.5rem); z-index: 1; }
-  .philosophy-shell__title h2 { max-width: 13ch; color: var(--color-gold-bright); font-size: clamp(1.9rem, 4vw, 3.6rem); text-shadow: 0 0.8rem 2rem rgb(0 0 0 / 80%); }
+  .philosophy-shell__visual :global(img) { width: 100%; height: 100%; min-height: inherit; object-fit: cover; object-position: center 40%; filter: saturate(0.76) brightness(0.72); }
+  .philosophy-shell__visual::after { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(5 5 6 / 14%), transparent 42%, rgb(5 5 6 / 14%)); content: ''; pointer-events: none; }
+  .philosophy-shell__mirror-copy { position: absolute; right: 5%; bottom: 18%; z-index: 1; display: grid; width: 53%; min-height: 38%; place-content: center; padding: 1.25rem; border-radius: 50%; background: radial-gradient(ellipse, rgb(4 4 5 / 58%) 0%, rgb(4 4 5 / 28%) 55%, transparent 76%); text-align: center; }
+  .philosophy-shell__mirror-copy span { width: 0.5rem; height: 0.5rem; margin: 0 auto 1rem; border: 1px solid var(--color-gold-muted); transform: rotate(45deg); }
+  .philosophy-shell__mirror-copy h2 { color: var(--color-gold-bright); font-size: clamp(1.3rem, 2.65vw, 2.55rem); line-height: 1.25; text-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 90%), 0 0 1.4rem rgb(216 184 108 / 20%); }
   .philosophy-shell__copy { align-content: start; padding-top: clamp(0.25rem, 1.5vw, 1rem); }
   .philosophy-shell__copy .button-row { margin-top: 0.85rem; }
   .elements-section { padding-block: clamp(4rem, 7vw, 6.5rem); }
@@ -117,5 +124,5 @@ import { site } from '../data/site';
     .hero__content { order: 0; }
   }
   @media (min-width: 48rem) { .philosophy-shell { grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr); align-items: start; } }
-  @media (max-width: 47.99rem) { .elements-section__prompt { margin-left: 0; text-align: left; } }
+  @media (max-width: 47.99rem) { .philosophy-shell__mirror-copy { right: 4%; bottom: 17%; width: 56%; padding: 0.75rem; } .philosophy-shell__mirror-copy span { margin-bottom: 0.65rem; } .elements-section__prompt { margin-left: 0; text-align: left; } }
 </style>

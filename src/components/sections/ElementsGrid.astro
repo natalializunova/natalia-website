@@ -7,12 +7,23 @@ import airImage from '../../assets/images/elements/air.avif';
 import { elements } from '../../data/elements';
 
 const images = { earth: earthImage, water: waterImage, fire: fireImage, air: airImage };
+const initialElement = elements[0];
 ---
 
-<div class="elements-visual" aria-label="Четыре Стихии">
-  <div class="elements-visual__grid">
+<div class="elements-experience" data-elements-root data-active-element={initialElement.key}>
+  <div class="element-cards" role="tablist" aria-label="Выберите стихию">
     {elements.map((element) => (
-      <figure class:list={['element-visual', `element-visual--${element.key}`]} aria-label={element.name}>
+      <button
+        class:list={['element-card', `element-card--${element.key}`]}
+        type="button"
+        role="tab"
+        id={`element-tab-${element.key}`}
+        aria-controls="element-panel"
+        aria-selected={element.key === initialElement.key ? 'true' : 'false'}
+        tabindex={element.key === initialElement.key ? 0 : -1}
+        data-element-tab={element.key}
+        data-active={element.key === initialElement.key ? 'true' : 'false'}
+      >
         <Image
           src={images[element.key]}
           alt={element.imageAlt}
@@ -21,59 +32,152 @@ const images = { earth: earthImage, water: waterImage, fire: fireImage, air: air
           format="webp"
           loading="lazy"
         />
-        <span class="element-visual__atmosphere" aria-hidden="true"></span>
-      </figure>
+        <span class="element-card__atmosphere" aria-hidden="true"></span>
+        <span class="element-card__shade" aria-hidden="true"></span>
+        <span class="element-card__number" aria-hidden="true">{element.number}</span>
+        <span class="element-card__name">{element.name}</span>
+      </button>
     ))}
   </div>
 
-  <svg class="elements-visual__mark" viewBox="0 0 120 106" aria-hidden="true">
-    <path d="M60 7 113 99H7Z" />
-    <circle cx="60" cy="69" r="7" />
-  </svg>
+  <article
+    class="element-panel"
+    id="element-panel"
+    role="tabpanel"
+    aria-labelledby={`element-tab-${initialElement.key}`}
+    aria-live="polite"
+    data-active-element={initialElement.key}
+  >
+    <div class="element-panel__glow" aria-hidden="true"></div>
+    <div class="element-panel__copy">
+      <p class="element-panel__subtitle" data-panel-subtitle>{initialElement.subtitle}</p>
+      <h3 data-panel-title>{initialElement.title}</h3>
+      <p class="element-panel__summary" data-panel-summary>{initialElement.summary}</p>
+      <p class="element-panel__introduction" data-panel-introduction>{initialElement.introduction}</p>
+    </div>
+  </article>
 </div>
 
+<script define:vars={{ elements }}>
+  const root = document.querySelector('[data-elements-root]');
+
+  if (root) {
+    const tabs = [...root.querySelectorAll('[data-element-tab]')];
+    const panel = root.querySelector('#element-panel');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const setText = (selector, value) => {
+      const target = root.querySelector(selector);
+      if (target) target.textContent = value;
+    };
+
+    const updatePanel = (element) => {
+      panel.setAttribute('aria-labelledby', `element-tab-${element.key}`);
+      panel.dataset.activeElement = element.key;
+      root.dataset.activeElement = element.key;
+      setText('[data-panel-subtitle]', element.subtitle);
+      setText('[data-panel-title]', element.title);
+      setText('[data-panel-summary]', element.summary);
+      setText('[data-panel-introduction]', element.introduction);
+    };
+
+    const selectElement = (key) => {
+      const next = elements.find((element) => element.key === key);
+      if (!next) return;
+
+      tabs.forEach((tab) => {
+        const selected = tab.dataset.elementTab === key;
+        tab.dataset.active = String(selected);
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+
+      if (!reducedMotion.matches && panel.animate) {
+        panel.animate(
+          [{ opacity: 0.58, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }],
+          { duration: 280, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+        );
+      }
+
+      updatePanel(next);
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectElement(tab.dataset.elementTab));
+      tab.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        let nextIndex = index;
+        if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = tabs.length - 1;
+        tabs[nextIndex].focus();
+        selectElement(tabs[nextIndex].dataset.elementTab);
+      });
+    });
+  }
+</script>
+
 <style>
-  .elements-visual {
+  .elements-experience {
+    --active-accent: 181 154 101;
     position: relative;
     isolation: isolate;
     overflow: hidden;
     border: 1px solid rgb(181 154 101 / 24%);
     background: #09090a;
-    box-shadow: inset 0 0 5rem rgb(0 0 0 / 42%), 0 2rem 5rem rgb(0 0 0 / 18%);
+    box-shadow: inset 0 0 5rem rgb(0 0 0 / 38%), 0 2rem 5rem rgb(0 0 0 / 18%);
   }
 
-  .elements-visual::before {
-    position: absolute;
-    inset: 0.75rem;
-    z-index: 4;
-    border: 1px solid rgb(181 154 101 / 11%);
-    content: '';
-    pointer-events: none;
+  .elements-experience[data-active-element='water'] { --active-accent: 147 176 190; }
+  .elements-experience[data-active-element='fire'] { --active-accent: 216 119 59; }
+  .elements-experience[data-active-element='air'] { --active-accent: 202 200 192; }
+
+  .element-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: rgb(181 154 101 / 14%);
   }
 
-  .elements-visual__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
-  .element-visual {
+  .element-card {
+    --card-accent: 181 154 101;
     position: relative;
-    min-height: clamp(14rem, 42vw, 24rem);
-    margin: 0;
+    min-height: clamp(12rem, 38vw, 18rem);
+    padding: 0;
     overflow: hidden;
+    border: 0;
     background: var(--color-black);
+    color: var(--color-ivory);
+    cursor: pointer;
+    opacity: 0.72;
+    text-align: left;
+    transition: opacity 280ms ease;
   }
 
-  .element-visual:nth-child(odd) { border-right: 1px solid rgb(181 154 101 / 12%); }
-  .element-visual:nth-child(-n + 2) { border-bottom: 1px solid rgb(181 154 101 / 12%); }
+  .element-card--water { --card-accent: 147 176 190; }
+  .element-card--fire { --card-accent: 216 119 59; }
+  .element-card--air { --card-accent: 202 200 192; }
 
-  .element-visual::after {
+  .element-card::after {
     position: absolute;
     inset: 0;
-    z-index: 2;
-    background: linear-gradient(180deg, rgb(7 7 8 / 10%), transparent 44%, rgb(7 7 8 / 46%));
+    z-index: 4;
+    border: 1px solid transparent;
+    box-shadow: inset 0 0 0 1px transparent;
     content: '';
     pointer-events: none;
+    transition: border-color 280ms ease, box-shadow 280ms ease;
   }
 
-  .element-visual :global(img) {
+  .element-card[data-active='true'] { z-index: 2; opacity: 1; }
+  .element-card[data-active='true']::after { border-color: rgb(var(--card-accent) / 72%); border-bottom-color: rgb(var(--card-accent) / 22%); box-shadow: inset 0 0 0 1px rgb(var(--card-accent) / 14%), inset 0 -4rem 5rem rgb(var(--card-accent) / 14%); }
+  .element-card:focus-visible { z-index: 5; outline: 2px solid var(--color-gold); outline-offset: -3px; }
+
+  .element-card :global(img) {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -81,67 +185,41 @@ const images = { earth: earthImage, water: waterImage, fire: fireImage, air: air
     transform: scale(1.08);
   }
 
-  .element-visual__atmosphere { position: absolute; inset: -14%; z-index: 1; overflow: hidden; pointer-events: none; }
-  .element-visual__atmosphere::before, .element-visual__atmosphere::after { position: absolute; content: ''; }
+  .element-card__atmosphere, .element-card__shade { position: absolute; inset: -14%; pointer-events: none; }
+  .element-card__atmosphere { z-index: 1; }
+  .element-card__shade { inset: 0; z-index: 2; background: linear-gradient(180deg, rgb(7 7 8 / 10%), transparent 40%, rgb(7 7 8 / 84%)); }
 
-  .element-visual--earth :global(img) { animation: earth-breathe 10s ease-in-out infinite alternate; }
-  .element-visual--earth .element-visual__atmosphere { background: radial-gradient(circle at 68% 26%, rgb(216 184 108 / 26%), transparent 36%); animation: earth-light 7s ease-in-out infinite alternate; }
+  .element-card__number { position: absolute; top: 1rem; right: 1rem; z-index: 3; color: rgb(239 230 211 / 58%); font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.12em; }
+  .element-card__name { position: absolute; right: 1rem; bottom: 1rem; left: 1rem; z-index: 3; font-family: var(--font-display); font-size: clamp(1.45rem, 3vw, 2.15rem); line-height: 1; text-shadow: 0 0.65rem 1.5rem rgb(0 0 0 / 82%); }
 
-  .element-visual--water :global(img) { animation: water-flow 5.4s ease-in-out infinite alternate; }
-  .element-visual--water .element-visual__atmosphere { background: linear-gradient(112deg, transparent 18%, rgb(197 221 229 / 20%) 48%, transparent 76%); mix-blend-mode: screen; animation: water-shimmer 3.8s ease-in-out infinite alternate; }
-  .element-visual--water .element-visual__atmosphere::before,
-  .element-visual--water .element-visual__atmosphere::after { right: 4%; bottom: 12%; left: 4%; height: 36%; border: 1px solid rgb(196 222 230 / 30%); border-radius: 50%; transform: scaleX(0.44); animation: water-ripple 4.2s ease-out infinite; }
-  .element-visual--water .element-visual__atmosphere::after { animation-delay: -2.1s; }
+  .element-card--earth :global(img) { animation: earth-breathe 10s ease-in-out infinite alternate; }
+  .element-card--earth .element-card__atmosphere { background: radial-gradient(circle at 68% 26%, rgb(216 184 108 / 26%), transparent 36%); animation: earth-light 7s ease-in-out infinite alternate; }
+  .element-card--water :global(img) { animation: water-flow 5.4s ease-in-out infinite alternate; }
+  .element-card--water .element-card__atmosphere { background: linear-gradient(112deg, transparent 18%, rgb(197 221 229 / 20%) 48%, transparent 76%); mix-blend-mode: screen; animation: water-shimmer 3.8s ease-in-out infinite alternate; }
+  .element-card--fire :global(img) { animation: fire-flicker 2.8s ease-in-out infinite; }
+  .element-card--fire .element-card__atmosphere { background: radial-gradient(ellipse at 50% 66%, rgb(255 143 53 / 32%), transparent 52%); mix-blend-mode: screen; animation: fire-glow 2.1s ease-in-out infinite alternate; }
+  .element-card--air :global(img) { animation: air-drift 7s ease-in-out infinite alternate; }
+  .element-card--air .element-card__atmosphere { background: linear-gradient(100deg, transparent 8%, rgb(236 235 226 / 22%) 40%, transparent 68%); mix-blend-mode: screen; animation: air-mist 5.4s ease-in-out infinite alternate; }
 
-  .element-visual--fire :global(img) { animation: fire-flicker 2.8s ease-in-out infinite; }
-  .element-visual--fire .element-visual__atmosphere { background: radial-gradient(ellipse at 50% 66%, rgb(255 143 53 / 32%), transparent 52%); mix-blend-mode: screen; animation: fire-glow 2.1s ease-in-out infinite alternate; }
-
-  .element-visual--air :global(img) { animation: air-drift 7s ease-in-out infinite alternate; }
-  .element-visual--air .element-visual__atmosphere { background: linear-gradient(100deg, transparent 8%, rgb(236 235 226 / 22%) 40%, transparent 68%); mix-blend-mode: screen; animation: air-mist 5.4s ease-in-out infinite alternate; }
-  .element-visual--air .element-visual__atmosphere::before,
-  .element-visual--air .element-visual__atmosphere::after { right: -16%; left: -18%; height: 4rem; border-top: 1px solid rgb(238 237 229 / 36%); border-radius: 50%; filter: blur(0.12rem); animation: air-current 4.8s ease-in-out infinite alternate; }
-  .element-visual--air .element-visual__atmosphere::before { top: 28%; }
-  .element-visual--air .element-visual__atmosphere::after { top: 54%; opacity: 0.58; animation-delay: -2.2s; animation-duration: 6.4s; }
-
-  .elements-visual__mark {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 5;
-    width: clamp(4.75rem, 10vw, 7.5rem);
-    overflow: visible;
-    color: rgb(216 184 108 / 86%);
-    filter: drop-shadow(0 0 1.4rem rgb(216 184 108 / 34%));
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
-
-  .elements-visual__mark path, .elements-visual__mark circle { fill: rgb(9 9 10 / 62%); stroke: currentColor; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .element-panel { position: relative; min-height: 18rem; padding: clamp(2rem, 5vw, 4.75rem); overflow: hidden; background: linear-gradient(145deg, rgb(19 18 20 / 98%), rgb(8 8 9 / 100%)); }
+  .element-panel::before { position: absolute; top: 0; right: 0; left: 0; height: 4rem; background: linear-gradient(180deg, rgb(var(--active-accent) / 13%), transparent); content: ''; pointer-events: none; }
+  .element-panel__glow { position: absolute; top: -9rem; left: 8%; width: 34rem; height: 20rem; border-radius: 50%; background: rgb(var(--active-accent) / 12%); filter: blur(5rem); pointer-events: none; transition: background 300ms ease; }
+  .element-panel__copy { position: relative; z-index: 1; max-width: 66rem; }
+  .element-panel__subtitle { margin: 0 0 0.8rem; color: rgb(var(--active-accent) / 92%); font-family: var(--font-sans); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+  .element-panel h3 { max-width: 25ch; margin: 0 0 1.25rem; font-size: clamp(2rem, 4vw, 3.5rem); }
+  .element-panel__summary { max-width: 58rem; margin: 0 0 1rem; color: var(--color-ivory); font-size: clamp(1.05rem, 1.5vw, 1.22rem); line-height: 1.7; }
+  .element-panel__introduction { max-width: 58rem; margin: 0; color: var(--color-muted); line-height: 1.75; }
 
   @keyframes earth-breathe { from { filter: saturate(0.72) brightness(0.74); transform: scale(1.08); } to { filter: saturate(0.9) brightness(0.9); transform: scale(1.13) translateY(-0.6%); } }
   @keyframes earth-light { from { opacity: 0.28; transform: translate3d(-4%, 2%, 0) scale(0.96); } to { opacity: 0.74; transform: translate3d(4%, -2%, 0) scale(1.06); } }
   @keyframes water-flow { from { filter: brightness(0.74) contrast(1.02); transform: scale(1.16) translate3d(-2.6%, 0.8%, 0); } to { filter: brightness(0.96) contrast(1.12); transform: scale(1.22) translate3d(2.6%, -0.8%, 0); } }
   @keyframes water-shimmer { from { opacity: 0.22; transform: translateX(-12%) skewX(-5deg); } to { opacity: 0.72; transform: translateX(12%) skewX(5deg); } }
-  @keyframes water-ripple { 0% { opacity: 0; transform: scaleX(0.3) scaleY(0.52); } 38% { opacity: 0.72; } 100% { opacity: 0; transform: scaleX(1.08) scaleY(1.12); } }
   @keyframes fire-flicker { 0%, 100% { filter: brightness(0.78) saturate(0.82); transform: scale(1.08); } 38% { filter: brightness(1.08) saturate(1.08); transform: scale(1.14) translateY(-1.2%); } 68% { filter: brightness(0.91) saturate(0.94); transform: scale(1.11) translateX(0.7%); } }
   @keyframes fire-glow { from { opacity: 0.3; transform: scale(0.92); } to { opacity: 0.84; transform: scale(1.12); } }
   @keyframes air-drift { from { filter: brightness(0.76) contrast(0.96); transform: scale(1.16) translateX(-3.2%); } to { filter: brightness(0.98) contrast(1.04); transform: scale(1.22) translateX(3.2%); } }
   @keyframes air-mist { from { opacity: 0.2; transform: translateX(-14%); } to { opacity: 0.68; transform: translateX(14%); } }
-  @keyframes air-current { from { opacity: 0.16; transform: translateX(-18%) skewX(-5deg); } to { opacity: 0.76; transform: translateX(18%) skewX(5deg); } }
 
-  @media (min-width: 64rem) {
-    .elements-visual__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .element-visual { min-height: clamp(20rem, 29vw, 28rem); }
-    .element-visual:nth-child(n) { border-top: 0; border-bottom: 0; border-right: 1px solid rgb(181 154 101 / 12%); }
-    .element-visual:last-child { border-right: 0; }
-  }
-
-  @media (max-width: 35rem) { .element-visual { min-height: 13rem; } }
-
-  @media (prefers-reduced-motion: reduce) {
-    .element-visual :global(img),
-    .element-visual__atmosphere,
-    .element-visual__atmosphere::before,
-    .element-visual__atmosphere::after { animation: none !important; }
-  }
+  @media (min-width: 64rem) { .element-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); } .element-card { min-height: clamp(14rem, 19vw, 19rem); } }
+  @media (max-width: 35rem) { .element-card { min-height: 10rem; } .element-card__number { top: 0.7rem; right: 0.7rem; } .element-card__name { right: 0.75rem; bottom: 0.75rem; left: 0.75rem; } .element-panel { min-height: 0; } }
+  @media (prefers-reduced-motion: reduce) { .element-card :global(img), .element-card__atmosphere { animation: none !important; } .element-card, .element-card::after, .element-panel__glow { transition: none; } }
 </style>

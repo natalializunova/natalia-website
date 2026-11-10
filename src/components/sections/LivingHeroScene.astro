@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import heroImage from '../../assets/images/hero-arch.png';
+import heroImage from '../../assets/images/hero-window-landscape.png';
 import frameImage from '../../assets/images/hero-gothic-frame.png';
 ---
 
@@ -9,7 +9,7 @@ import frameImage from '../../assets/images/hero-gothic-frame.png';
     <div class="hero-scene__inner">
       <Image
         src={heroImage}
-        alt="Старинная каменная арка с видом на лес и спокойную воду на рассвете"
+        alt="Вид через готическое окно на туманную горную долину и реку на рассвете"
         widths={[480, 720, 900]}
         sizes="(min-width: 54rem) 48vw, calc(100vw - 2rem)"
         format="webp"
@@ -20,8 +20,6 @@ import frameImage from '../../assets/images/hero-gothic-frame.png';
       <span class="hero-scene__fog hero-scene__fog--far" aria-hidden="true"></span>
       <span class="hero-scene__fog hero-scene__fog--near" aria-hidden="true"></span>
       <span class="hero-scene__water" aria-hidden="true"></span>
-      <span class="hero-scene__candle" aria-hidden="true"></span>
-      <span class="hero-scene__fabric" aria-hidden="true"></span>
     </div>
     <Image
       class="hero-scene__frame"
@@ -33,6 +31,7 @@ import frameImage from '../../assets/images/hero-gothic-frame.png';
       loading="eager"
       aria-hidden="true"
     />
+    <p class="hero-scene__inscription">Shadow Gargoyle</p>
   </div>
   <button class="hero-scene__motion" type="button" aria-pressed="true" aria-label="Остановить движение сцены">
     <span class="hero-scene__pause" aria-hidden="true"></span>
@@ -79,17 +78,14 @@ import frameImage from '../../assets/images/hero-gothic-frame.png';
 
   .hero-scene__light,
   .hero-scene__fog,
-  .hero-scene__water,
-  .hero-scene__candle,
-  .hero-scene__fabric { position: absolute; z-index: 2; pointer-events: none; }
+  .hero-scene__water { position: absolute; z-index: 2; pointer-events: none; }
 
   .hero-scene__light { top: 9%; left: 43%; width: 48%; height: 37%; border-radius: 50%; background: radial-gradient(circle, rgb(255 222 159 / 34%), rgb(203 158 87 / 11%) 32%, transparent 70%); mix-blend-mode: screen; filter: blur(0.35rem); }
   .hero-scene__fog { right: 8%; left: 10%; height: 15%; border-radius: 50%; background: radial-gradient(ellipse, rgb(222 224 220 / 20%), rgb(192 199 196 / 8%) 48%, transparent 74%); filter: blur(0.45rem); mix-blend-mode: screen; }
   .hero-scene__fog--far { top: 31%; }
   .hero-scene__fog--near { top: 43%; opacity: 0.55; }
-  .hero-scene__water { right: 14%; bottom: 23%; left: 39%; height: 24%; background: repeating-linear-gradient(176deg, transparent 0 0.72rem, rgb(233 203 146 / 10%) 0.8rem 0.86rem, transparent 0.94rem 1.5rem); mask-image: linear-gradient(90deg, transparent, #000 20%, #000 76%, transparent); mix-blend-mode: screen; }
-  .hero-scene__candle { bottom: 27.2%; left: 29.7%; width: 10%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgb(255 232 172 / 86%) 0 4%, rgb(239 168 69 / 44%) 12%, rgb(207 113 42 / 16%) 34%, transparent 70%); filter: blur(0.08rem); mix-blend-mode: screen; transform-origin: 50% 70%; }
-  .hero-scene__fabric { bottom: 13%; left: 2%; width: 47%; height: 25%; border-radius: 50%; background: linear-gradient(125deg, transparent 12%, rgb(200 176 132 / 8%) 42%, transparent 68%); mix-blend-mode: screen; filter: blur(0.35rem); }
+  .hero-scene__water { right: 10%; bottom: 8%; left: 10%; height: 42%; background: repeating-linear-gradient(176deg, transparent 0 0.72rem, rgb(233 203 146 / 12%) 0.8rem 0.86rem, transparent 0.94rem 1.5rem); mask-image: linear-gradient(90deg, transparent, #000 20%, #000 76%, transparent); mix-blend-mode: screen; }
+  .hero-scene__inscription { position: absolute; right: 24%; bottom: 7.2%; left: 24%; z-index: 11; margin: 0; color: var(--color-gold-bright); font-family: var(--font-display); font-size: clamp(0.72rem, 1.8vw, 1.05rem); letter-spacing: 0.13em; line-height: 1; text-align: center; text-shadow: 0 0 0.8rem rgb(216 184 108 / 34%), 0 2px 0.35rem rgb(0 0 0 / 90%); }
 
   .hero-scene__motion { position: absolute; top: 25%; right: 22%; display: grid; width: 2.25rem; height: 2.25rem; z-index: 10; place-items: center; padding: 0; border: 1px solid rgb(238 231 220 / 34%); border-radius: 50%; background: rgb(9 9 10 / 58%); color: var(--color-gold); cursor: pointer; backdrop-filter: blur(8px); }
   .hero-scene__pause { width: 0.42rem; height: 0.6rem; border-inline: 1px solid currentColor; }
@@ -101,20 +97,16 @@ import frameImage from '../../assets/images/hero-gothic-frame.png';
   .hero-scene[data-motion='on'] .hero-scene__fog--far { animation: fog-drift 12s ease-in-out infinite alternate; }
   .hero-scene[data-motion='on'] .hero-scene__fog--near { animation: fog-drift 9s ease-in-out -4s infinite alternate-reverse; }
   .hero-scene[data-motion='on'] .hero-scene__water { animation: water-reflection 6s ease-in-out infinite alternate; }
-  .hero-scene[data-motion='on'] .hero-scene__candle { animation: candle-flame 1.9s ease-in-out infinite; }
-  .hero-scene[data-motion='on'] .hero-scene__fabric { animation: fabric-breathe 9s ease-in-out infinite alternate; }
   .hero-scene[data-motion='on'] .hero-scene__inner :global(img) { animation: window-view-breathe 16s ease-in-out infinite alternate; }
   .hero-scene[data-motion='on'] .hero-scene__inner::before { animation: glass-light 9s ease-in-out infinite alternate; }
 
   @keyframes morning-light { from { opacity: 0.55; transform: scale(0.94) translate(-2%, 2%); } to { opacity: 1; transform: scale(1.1) translate(2%, -2%); } }
   @keyframes fog-drift { from { opacity: 0.35; transform: translateX(-5%) scaleX(0.94); } to { opacity: 0.78; transform: translateX(5%) scaleX(1.08); } }
   @keyframes water-reflection { from { opacity: 0.28; transform: translateY(1%) skewY(-1deg); } to { opacity: 0.82; transform: translateY(-1%) skewY(1deg); } }
-  @keyframes candle-flame { 0%, 100% { opacity: 0.72; transform: scale(0.82, 1.05) rotate(-2deg); } 35% { opacity: 1; transform: scale(1.16, 1.28) rotate(2deg); } 68% { opacity: 0.84; transform: scale(0.94, 1.12) rotate(-1deg); } }
-  @keyframes fabric-breathe { from { opacity: 0.22; transform: translate3d(-1%, 1%, 0) scale(0.98); } to { opacity: 0.55; transform: translate3d(1.5%, -1%, 0) scale(1.03); } }
   @keyframes window-view-breathe { from { transform: scale(1.16) translate3d(0, 0.35%, 0); } to { transform: scale(1.2) translate3d(0, -0.35%, 0); } }
   @keyframes glass-light { from { opacity: 0.42; transform: translateX(-2%); } to { opacity: 0.76; transform: translateX(2%); } }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-scene__light, .hero-scene__fog, .hero-scene__water, .hero-scene__candle, .hero-scene__fabric, .hero-scene__inner::before, .hero-scene__inner :global(img) { animation: none !important; }
+    .hero-scene__light, .hero-scene__fog, .hero-scene__water, .hero-scene__inner::before, .hero-scene__inner :global(img) { animation: none !important; }
   }
 </style>

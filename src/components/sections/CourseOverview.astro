@@ -210,11 +210,7 @@ const practiceVisuals = [
   .course-hero h1 { max-width: 10ch; font-size: clamp(4rem, 9vw, 8.5rem); }
   .course-hero__lead { max-width: 38rem; margin-top: 1.5rem; color: var(--color-sand); font-family: var(--font-display); font-size: clamp(1.35rem, 2.6vw, 2.1rem); line-height: 1.42; }
   .course-hero__note { max-width: 36rem; margin-top: 1.25rem; color: var(--color-muted); line-height: 1.75; }
-  .course-hero__visual { position: relative; min-height: clamp(30rem, 66vw, 45rem); padding: clamp(0.5rem, 1.4vw, 0.9rem); border: 1px solid rgb(216 184 108 / 34%); background: linear-gradient(145deg, rgb(216 184 108 / 15%), rgb(84 35 47 / 20%) 38%, rgb(5 5 6 / 92%)); box-shadow: 0 2.5rem 7rem rgb(0 0 0 / 48%), inset 0 0 2rem rgb(216 184 108 / 7%); }
-  .course-hero__visual::before,
-  .course-hero__visual::after { position: absolute; z-index: 4; width: 2.6rem; height: 2.6rem; border-color: var(--color-gold-muted); content: ''; pointer-events: none; }
-  .course-hero__visual::before { top: 0.25rem; left: 0.25rem; border-top: 1px solid; border-left: 1px solid; }
-  .course-hero__visual::after { right: 0.25rem; bottom: 0.25rem; border-right: 1px solid; border-bottom: 1px solid; }
+  .course-hero__visual { position: relative; min-height: clamp(30rem, 66vw, 45rem); overflow: hidden; border-radius: 48% 48% 1rem 1rem / 16% 16% 1rem 1rem; background: rgb(5 5 6 / 92%); box-shadow: 0 2.5rem 7rem rgb(0 0 0 / 48%); }
   .course-hero__visual :global(.course-media) { height: 100%; min-height: inherit; }
 
   .course-philosophy { background: radial-gradient(circle at 88% 26%, rgb(84 35 47 / 18%), transparent 28rem); }

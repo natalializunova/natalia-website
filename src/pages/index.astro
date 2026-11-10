@@ -1,16 +1,16 @@
 ---
+import { Image } from 'astro:assets';
 import heroImage from '../assets/images/hero-window-landscape.png';
+import mirrorImage from '../assets/images/course/black-mirror-woman.png';
+import authorPortrait from '../assets/images/home/author-portrait-v1.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
 import ContentCard from '../components/ui/ContentCard.astro';
 import ElementsGrid from '../components/sections/ElementsGrid.astro';
 import LivingHeroScene from '../components/sections/LivingHeroScene.astro';
-import { courses } from '../data/courses';
 import { products } from '../data/products';
 import { services } from '../data/services';
 import { site } from '../data/site';
-
-const course = courses[0];
 ---
 <BaseLayout title={site.name} description={site.description} image={heroImage.src}>
   <section class="hero">
@@ -19,7 +19,7 @@ const course = courses[0];
         <LivingHeroScene />
       </div>
       <div class="hero__content">
-        <h1>Повернись к своему внутреннему свету</h1>
+        <h1>Вернись к своему внутреннему свету</h1>
         <p class="lead">Тысячи лет назад наши далекие предки обращались к Стихиям не просто как к природным явлениям, а как к первоосновам мироздания, поддерживаемым Божественными Силами. Магия Стихий была естественным продолжением жизни и используется по сей день.</p>
         <div class="button-row">
           <Button href="/courses/path-to-self/">О курсе</Button>
@@ -32,10 +32,10 @@ const course = courses[0];
 
   <section class="section philosophy-section">
     <div class="container philosophy-shell">
-      <div class="philosophy-shell__title">
-        <p class="eyebrow">О курсе</p>
-        <div class="philosophy-shell__mirror">
-          <span aria-hidden="true"></span>
+      <div class="philosophy-shell__visual">
+        <Image src={mirrorImage} alt="Женщина всматривается в древнее чёрное зеркало" widths={[520, 760, 1040]} sizes="(min-width: 48rem) 44vw, 100vw" loading="lazy" />
+        <div class="philosophy-shell__title">
+          <p class="eyebrow">О курсе</p>
           <h2>Не искать готовый образ.<br />Вспоминать свой.</h2>
         </div>
       </div>
@@ -58,10 +58,10 @@ const course = courses[0];
     </div>
   </section>
 
-  <section class="section">
-    <div class="container split split--reverse">
-      <div class="placeholder-frame"><img src="/images/placeholders/portrait.svg" alt="Место для будущего портрета Натальи Лизуновой" width="800" height="1000" loading="lazy" /></div>
-      <div class="stack">
+  <section class="section about-section">
+    <div class="container split split--reverse about-section__grid">
+      <div class="about-section__portrait"><Image src={authorPortrait} alt="Временный художественный портрет женщины в мистическом образе" widths={[520, 760, 1040]} sizes="(min-width: 64rem) 45vw, 100vw" loading="lazy" /></div>
+      <div class="stack about-section__copy">
         <p class="eyebrow">Обо мне</p>
         <h2>Наталья Лизунова</h2>
         <p class="lead">Автор проекта «Ведьма во мне. Путь к себе».</p>
@@ -71,28 +71,15 @@ const course = courses[0];
     </div>
   </section>
 
-  <section class="section section--surface">
+  <section class="section section--surface services-section">
     <div class="container">
       <div class="section-heading"><p class="eyebrow">Услуги и практики</p><h2>Пространство личной работы</h2><p class="lead">Ниже — редакционные заготовки будущих форматов, а не действующие коммерческие предложения.</p></div>
-      <div class="grid grid--3">{services.map((item) => <ContentCard href={`/services/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.eyebrow} />)}</div>
+      <div class="grid grid--4">{services.map((item) => <ContentCard href={`/services/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.eyebrow} />)}</div>
       <div class="button-row"><Button href="/services/" variant="ghost">Весь каталог</Button></div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container split">
-      <div class="placeholder-frame"><img src={course.image} alt={course.imageAlt} width="800" height="1000" loading="lazy" /></div>
-      <div class="stack">
-        <p class="eyebrow">Основная программа</p>
-        <h2>{course.title}</h2>
-        <p class="lead">{course.summary}</p>
-        <p class="notice">Программа находится в разработке. На сайте пока нет оплаты и сбора заявок.</p>
-        <div class="button-row"><Button href={`/courses/${course.slug}/`}>Подробнее</Button></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--surface">
+  <section class="section shop-section">
     <div class="container">
       <div class="section-heading"><p class="eyebrow">Лавка артефактов</p><h2>Предметы с историей и смыслом</h2><p class="lead">Категории будущей лавки. Ассортимент, состав и условия продаж ещё не опубликованы.</p></div>
       <div class="grid grid--4">{products.map((item) => <ContentCard href={`/shop/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.category} />)}</div>
@@ -102,32 +89,33 @@ const course = courses[0];
 </BaseLayout>
 
 <style>
-  .hero { position: relative; min-height: calc(100svh - 4.75rem); padding-block: clamp(1.5rem, 4.5vw, 4.5rem) clamp(3rem, 6vw, 6rem); overflow: hidden; }
-  .hero__grid { display: grid; align-items: center; gap: 3rem; }
-  .hero__content { position: relative; z-index: 2; order: -1; }
+  .hero { position: relative; min-height: calc(100svh - 4.75rem); padding-block: clamp(1.5rem, 3vw, 3rem) clamp(3rem, 6vw, 6rem); overflow: hidden; }
+  .hero__grid { display: grid; align-items: start; gap: 3rem; }
+  .hero__content { position: relative; z-index: 2; order: -1; padding-top: clamp(0.25rem, 1vw, 0.9rem); }
   .hero h1 { max-width: 12ch; text-shadow: 0 0.8rem 2.8rem rgb(181 154 101 / 12%); }
   .hero .lead { max-width: 39rem; margin-top: 1.75rem; }
   .hero__visual { position: relative; }
   .hero__line { position: absolute; right: 4%; bottom: 0; left: 4%; height: 1px; background: linear-gradient(90deg, transparent, var(--color-gold-muted), transparent); }
   .philosophy-section { padding-block: clamp(4rem, 7vw, 7rem); background: radial-gradient(circle at 20% 46%, rgb(84 35 47 / 24%), transparent 31rem); }
-  .philosophy-shell { position: relative; display: grid; gap: clamp(2.5rem, 7vw, 7rem); overflow: hidden; padding: clamp(2rem, 5vw, 4.5rem); border: 1px solid rgb(181 154 101 / 28%); background: linear-gradient(120deg, rgb(22 18 21 / 98%), rgb(13 13 15 / 96%)); box-shadow: inset 0 0 4rem rgb(84 35 47 / 17%), 0 2rem 5rem rgb(0 0 0 / 18%); }
-  .philosophy-shell::before { position: absolute; inset: 0.8rem; border: 1px solid rgb(181 154 101 / 10%); content: ''; pointer-events: none; }
-  .philosophy-shell::after { position: absolute; top: 0; bottom: 0; left: 48%; width: 1px; background: linear-gradient(transparent, rgb(181 154 101 / 30%), transparent); content: ''; opacity: 0.55; }
-  .philosophy-shell__title, .philosophy-shell__copy { position: relative; z-index: 1; }
-  .philosophy-shell__mirror { position: relative; display: grid; min-height: clamp(18rem, 32vw, 25rem); margin-top: 1.4rem; place-items: center; padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3.5rem); border: 1px solid rgb(216 184 108 / 46%); border-radius: 50% 50% 44% 44%; background: radial-gradient(ellipse at 55% 34%, rgb(149 90 67 / 17%), transparent 35%), linear-gradient(145deg, #141215, #020203 68%); box-shadow: inset 0 0 5rem rgb(0 0 0 / 86%), inset 0 0 1.2rem rgb(216 184 108 / 7%), 0 0 3rem rgb(84 35 47 / 18%); text-align: center; }
-  .philosophy-shell__mirror::before, .philosophy-shell__mirror::after { position: absolute; border: 1px solid rgb(181 154 101 / 19%); border-radius: inherit; content: ''; }
-  .philosophy-shell__mirror::before { inset: 0.55rem; box-shadow: inset 0 0 0 0.3rem rgb(5 5 6 / 80%); }
-  .philosophy-shell__mirror::after { inset: 1.15rem; background: radial-gradient(circle at 62% 35%, rgb(238 231 220 / 7%), transparent 28%), linear-gradient(135deg, rgb(84 35 47 / 14%), rgb(2 2 3 / 78%)); }
-  .philosophy-shell__mirror span { position: absolute; top: 1.5rem; width: 0.65rem; height: 0.65rem; z-index: 2; border: 1px solid var(--color-gold-muted); transform: rotate(45deg); }
-  .philosophy-shell__mirror h2 { position: relative; z-index: 2; max-width: 13ch; color: var(--color-gold-bright); font-size: clamp(1.75rem, 3.8vw, 3.3rem); text-shadow: 0 0 1.8rem rgb(216 184 108 / 24%); }
-  .philosophy-shell__copy { align-content: center; }
+  .philosophy-shell { position: relative; display: grid; gap: clamp(2.5rem, 7vw, 7rem); align-items: start; }
+  .philosophy-shell__visual { position: relative; min-height: clamp(23rem, 42vw, 36rem); overflow: hidden; border-radius: 48% 48% 1.25rem 1.25rem / 18% 18% 1.25rem 1.25rem; background: #050506; box-shadow: 0 2rem 5rem rgb(0 0 0 / 34%); }
+  .philosophy-shell__visual :global(img) { width: 100%; height: 100%; min-height: inherit; object-fit: cover; object-position: center 40%; filter: saturate(0.78) brightness(0.72); }
+  .philosophy-shell__visual::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(5 5 6 / 8%), rgb(5 5 6 / 22%) 45%, rgb(5 5 6 / 92%)); content: ''; }
+  .philosophy-shell__title { position: absolute; right: clamp(1.5rem, 5vw, 3.5rem); bottom: clamp(1.5rem, 5vw, 3.5rem); left: clamp(1.5rem, 5vw, 3.5rem); z-index: 1; }
+  .philosophy-shell__title h2 { max-width: 13ch; color: var(--color-gold-bright); font-size: clamp(1.9rem, 4vw, 3.6rem); text-shadow: 0 0.8rem 2rem rgb(0 0 0 / 80%); }
+  .philosophy-shell__copy { align-content: start; padding-top: clamp(0.25rem, 1.5vw, 1rem); }
   .philosophy-shell__copy .button-row { margin-top: 0.85rem; }
-  .elements-section { padding-block: clamp(4.5rem, 8vw, 7.5rem); }
+  .elements-section { padding-block: clamp(4rem, 7vw, 6.5rem); }
   .elements-section__prompt { max-width: 18rem; margin-left: auto; color: var(--color-sand); font-family: var(--font-display); font-style: italic; text-align: right; }
+  .about-section__grid { align-items: start; }
+  .about-section__portrait { min-height: clamp(30rem, 58vw, 43rem); overflow: hidden; border-radius: 48% 48% 1rem 1rem / 16% 16% 1rem 1rem; box-shadow: 0 2rem 5rem rgb(0 0 0 / 32%); }
+  .about-section__portrait :global(img) { width: 100%; height: 100%; min-height: inherit; object-fit: cover; object-position: center 20%; }
+  .about-section__copy { align-content: start; padding-top: 0.5rem; }
+  .services-section, .shop-section { padding-block: clamp(4rem, 7vw, 6.5rem); }
   @media (min-width: 54rem) {
-    .hero__grid { grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); gap: clamp(4rem, 8vw, 9rem); }
+    .hero__grid { grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); gap: clamp(3rem, 6vw, 6rem); }
     .hero__content { order: 0; }
   }
-  @media (min-width: 48rem) { .philosophy-shell { grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); align-items: center; } }
-  @media (max-width: 47.99rem) { .philosophy-shell::after { display: none; } .philosophy-shell__mirror { min-height: 19rem; margin-top: 1.5rem; } .elements-section__prompt { margin-left: 0; text-align: left; } }
+  @media (min-width: 48rem) { .philosophy-shell { grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr); align-items: start; } }
+  @media (max-width: 47.99rem) { .elements-section__prompt { margin-left: 0; text-align: left; } }
 </style>

@@ -51,7 +51,6 @@ const initialElement = elements[0];
         ></video>
         <span class="element-card__atmosphere" aria-hidden="true"></span>
         <span class="element-card__shade" aria-hidden="true"></span>
-        <span class="element-card__number" aria-hidden="true">{element.number}</span>
         <span class="element-card__name">{element.name}</span>
       </button>
     ))}
@@ -178,9 +177,7 @@ const initialElement = elements[0];
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border: 1px solid rgb(181 154 101 / 24%);
-    background: #09090a;
-    box-shadow: inset 0 0 5rem rgb(0 0 0 / 38%), 0 2rem 5rem rgb(0 0 0 / 18%);
+    background: transparent;
   }
 
   .elements-experience[data-active-element='water'] { --active-accent: 147 176 190; }
@@ -190,8 +187,8 @@ const initialElement = elements[0];
   .element-cards {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
-    background: rgb(181 154 101 / 14%);
+    gap: clamp(0.65rem, 1.4vw, 1rem);
+    background: transparent;
   }
 
   .element-card {
@@ -200,7 +197,8 @@ const initialElement = elements[0];
     min-height: clamp(12rem, 38vw, 18rem);
     padding: 0;
     overflow: hidden;
-    border: 0;
+    border: 1px solid rgb(var(--card-accent) / 18%);
+    border-radius: 48% 48% 0.85rem 0.85rem / 21% 21% 0.85rem 0.85rem;
     background: var(--color-black);
     color: var(--color-ivory);
     cursor: pointer;
@@ -250,7 +248,6 @@ const initialElement = elements[0];
   .element-card__atmosphere { z-index: 1; }
   .element-card__shade { inset: 0; z-index: 2; background: linear-gradient(180deg, rgb(7 7 8 / 10%), transparent 40%, rgb(7 7 8 / 84%)); }
 
-  .element-card__number { position: absolute; top: 1rem; right: 1rem; z-index: 3; color: rgb(239 230 211 / 58%); font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.12em; }
   .element-card__name { position: absolute; right: 1rem; bottom: 1rem; left: 1rem; z-index: 3; font-family: var(--font-display); font-size: clamp(1.45rem, 3vw, 2.15rem); line-height: 1; text-shadow: 0 0.65rem 1.5rem rgb(0 0 0 / 82%); }
 
   .element-card--earth .element-card__atmosphere { background: radial-gradient(circle at 68% 26%, rgb(216 184 108 / 26%), transparent 36%); animation: earth-light 7s ease-in-out infinite alternate; }
@@ -258,7 +255,7 @@ const initialElement = elements[0];
   .element-card--fire .element-card__atmosphere { background: radial-gradient(ellipse at 50% 66%, rgb(255 143 53 / 32%), transparent 52%); mix-blend-mode: screen; animation: fire-glow 2.1s ease-in-out infinite alternate; }
   .element-card--air .element-card__atmosphere { background: linear-gradient(100deg, transparent 8%, rgb(236 235 226 / 22%) 40%, transparent 68%); mix-blend-mode: screen; animation: air-mist 5.4s ease-in-out infinite alternate; }
 
-  .element-panel { position: relative; min-height: 18rem; padding: clamp(2rem, 5vw, 4.75rem); overflow: hidden; background: linear-gradient(145deg, rgb(19 18 20 / 98%), rgb(8 8 9 / 100%)); }
+  .element-panel { position: relative; min-height: 18rem; margin-top: clamp(0.8rem, 2vw, 1.4rem); padding: clamp(2rem, 5vw, 4.75rem); overflow: hidden; border-radius: 1rem; background: linear-gradient(145deg, rgb(19 18 20 / 98%), rgb(8 8 9 / 100%)); }
   .element-panel::before { position: absolute; top: 0; right: 0; left: 0; height: 4rem; background: linear-gradient(180deg, rgb(var(--active-accent) / 13%), transparent); content: ''; pointer-events: none; }
   .element-panel__glow { position: absolute; top: -9rem; left: 8%; width: 34rem; height: 20rem; border-radius: 50%; background: rgb(var(--active-accent) / 12%); filter: blur(5rem); pointer-events: none; transition: background 300ms ease; }
   .element-panel__copy { position: relative; z-index: 1; max-width: 66rem; }
@@ -273,6 +270,6 @@ const initialElement = elements[0];
   @keyframes air-mist { from { opacity: 0.2; transform: translateX(-14%); } to { opacity: 0.68; transform: translateX(14%); } }
 
   @media (min-width: 64rem) { .element-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); } .element-card { min-height: clamp(14rem, 19vw, 19rem); } }
-  @media (max-width: 35rem) { .element-card { min-height: 10rem; } .element-card__number { top: 0.7rem; right: 0.7rem; } .element-card__name { right: 0.75rem; bottom: 0.75rem; left: 0.75rem; } .element-panel { min-height: 0; } }
+  @media (max-width: 35rem) { .element-card { min-height: 10rem; } .element-card__name { right: 0.75rem; bottom: 0.75rem; left: 0.75rem; } .element-panel { min-height: 0; } }
   @media (prefers-reduced-motion: reduce) { .element-card__video { display: none; } .element-card__atmosphere { animation: none !important; } .element-card, .element-card::after, .element-panel__glow { transition: none; } }
 </style>

@@ -62,10 +62,11 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
   .mobile-nav a { display: block; padding: 0.9rem 0.5rem; border-bottom: 1px solid var(--color-border); color: var(--color-muted); font-family: var(--font-display); font-size: 1.05rem; text-decoration: none; }
   .mobile-nav a[aria-current='page'] { color: var(--color-gold); }
   @media (min-width: 70rem) {
-    .desktop-nav { display: block; width: 100%; min-width: 0; }
-    .desktop-nav ul { width: 100%; justify-content: space-evenly; gap: clamp(0.75rem, 1.4vw, 1.75rem); }
+    .desktop-nav { display: block; min-width: 0; }
+    .desktop-nav ul { justify-content: flex-start; gap: clamp(1.35rem, 2vw, 2.35rem); }
     .mobile-nav { display: none; }
-    .site-header__inner { display: grid; min-height: 6.15rem; grid-template-columns: auto minmax(0, 1fr) auto; gap: clamp(1rem, 2.5vw, 3.5rem); }
+    .site-header__inner { display: flex; min-height: 5.7rem; gap: clamp(1.5rem, 2.8vw, 3rem); }
     .brand { margin-right: 0; }
+    .cart-link { margin-left: auto; }
   }
 </style>

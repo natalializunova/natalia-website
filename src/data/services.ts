@@ -1,3 +1,8 @@
+import individualPracticeImage from '../assets/images/home/services/individual-practice-v1.jpg';
+import elementsRitualImage from '../assets/images/home/services/elements-ritual-v1.jpg';
+import selfKnowledgeImage from '../assets/images/home/services/self-knowledge-v1.jpg';
+import teacherMeditationImage from '../assets/images/home/services/teacher-meditation-v1.jpg';
+
 export interface Service {
   slug: string;
   title: string;
@@ -24,8 +29,8 @@ export const services: Service[] = [
     format: 'Уточняется',
     duration: 'Уточняется',
     price: 'Будет объявлена после утверждения программы',
-    image: '/images/placeholders/service.svg',
-    imageAlt: 'Декоративная арка — место для изображения индивидуальной практики',
+    image: individualPracticeImage.src,
+    imageAlt: 'Женщина в пространстве индивидуальной практики у чёрного зеркала',
     status: 'editorial',
   },
   {
@@ -38,8 +43,8 @@ export const services: Service[] = [
     format: 'Уточняется',
     duration: 'Уточняется',
     price: 'Будет объявлена после утверждения программы',
-    image: '/images/placeholders/elements.svg',
-    imageAlt: 'Четыре символа Стихий в готической арке',
+    image: elementsRitualImage.src,
+    imageAlt: 'Ритуальный алтарь Земли, Воды, Огня и Воздуха',
     status: 'editorial',
   },
   {
@@ -52,8 +57,22 @@ export const services: Service[] = [
     format: 'Уточняется',
     duration: 'Уточняется',
     price: 'Будет объявлена после утверждения программы',
-    image: '/images/placeholders/service.svg',
-    imageAlt: 'Линии и круг — место для изображения сессии',
+    image: selfKnowledgeImage.src,
+    imageAlt: 'Проводник и участница во время спокойной сессии самопознания',
+    status: 'editorial',
+  },
+  {
+    slug: 'teacher-meditation',
+    title: 'Медитации с учителями',
+    eyebrow: 'Редакционная заготовка',
+    summary: 'Будущий формат совместной практики внимания и внутренней тишины.',
+    description: 'Точная программа, состав ведущих и условия участия будут добавлены после согласования авторского формата.',
+    suitableFor: ['Для знакомства с совместной практикой', 'Для тех, кому близок мягкий групповой формат'],
+    format: 'Уточняется',
+    duration: 'Уточняется',
+    price: 'Будет объявлена после утверждения программы',
+    image: teacherMeditationImage.src,
+    imageAlt: 'Небольшая группа людей во время медитации с проводником',
     status: 'editorial',
   },
 ];

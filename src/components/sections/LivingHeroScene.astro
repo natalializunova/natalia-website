@@ -31,7 +31,6 @@ import frameImage from '../../assets/images/hero-gothic-frame.png';
       loading="eager"
       aria-hidden="true"
     />
-    <p class="hero-scene__inscription">Shadow Gargoyle</p>
   </div>
   <button class="hero-scene__motion" type="button" aria-pressed="true" aria-label="Остановить движение сцены">
     <span class="hero-scene__pause" aria-hidden="true"></span>
@@ -85,8 +84,6 @@ import frameImage from '../../assets/images/hero-gothic-frame.png';
   .hero-scene__fog--far { top: 31%; }
   .hero-scene__fog--near { top: 43%; opacity: 0.55; }
   .hero-scene__water { right: 10%; bottom: 8%; left: 10%; height: 42%; background: repeating-linear-gradient(176deg, transparent 0 0.72rem, rgb(233 203 146 / 12%) 0.8rem 0.86rem, transparent 0.94rem 1.5rem); mask-image: linear-gradient(90deg, transparent, #000 20%, #000 76%, transparent); mix-blend-mode: screen; }
-  .hero-scene__inscription { position: absolute; right: 24%; bottom: 7.2%; left: 24%; z-index: 11; margin: 0; color: var(--color-gold-bright); font-family: var(--font-display); font-size: clamp(0.72rem, 1.8vw, 1.05rem); letter-spacing: 0.13em; line-height: 1; text-align: center; text-shadow: 0 0 0.8rem rgb(216 184 108 / 34%), 0 2px 0.35rem rgb(0 0 0 / 90%); }
-
   .hero-scene__motion { position: absolute; top: 25%; right: 22%; display: grid; width: 2.25rem; height: 2.25rem; z-index: 10; place-items: center; padding: 0; border: 1px solid rgb(238 231 220 / 34%); border-radius: 50%; background: rgb(9 9 10 / 58%); color: var(--color-gold); cursor: pointer; backdrop-filter: blur(8px); }
   .hero-scene__pause { width: 0.42rem; height: 0.6rem; border-inline: 1px solid currentColor; }
   .hero-scene__play { display: none; width: 0; height: 0; margin-left: 0.1rem; border-block: 0.34rem solid transparent; border-left: 0.5rem solid currentColor; }

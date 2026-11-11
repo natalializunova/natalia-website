@@ -17,14 +17,20 @@
 
   --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --font-body: Montserrat, 'Segoe UI', Arial, sans-serif;
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: clamp(1.05rem, 1vw + 0.8rem, 1.3rem);
-  --text-xl: clamp(1.5rem, 2vw + 1rem, 2.35rem);
-  --text-2xl: clamp(2.25rem, 5.5vw, 5.75rem);
-  --leading-body: 1.72;
-  --leading-display: 1.02;
+  /* Site typography policy: one fluid, proportional scale for every page. */
+  --text-xs: clamp(0.78rem, 0.12vw + 0.75rem, 0.86rem);
+  --text-sm: clamp(0.9rem, 0.16vw + 0.86rem, 1rem);
+  --text-base: clamp(1.0625rem, 0.22vw + 1rem, 1.1875rem);
+  --text-lg: clamp(1.25rem, 0.48vw + 1.12rem, 1.55rem);
+  --text-h3: clamp(1.625rem, 1.2vw + 1.2rem, 2.25rem);
+  --text-h2: clamp(2.375rem, 2.3vw + 1.45rem, 3.5rem);
+  --text-h1: clamp(3.25rem, 3.8vw + 1.65rem, 4.75rem);
+  --text-quote: clamp(1.35rem, 1vw + 1.05rem, 1.9rem);
+  --text-xl: var(--text-h2);
+  --text-2xl: var(--text-h1);
+  --leading-body: 1.68;
+  --leading-display: 1.04;
+  --leading-heading: 1.1;
 
   --space-1: 0.5rem;
   --space-2: 0.75rem;

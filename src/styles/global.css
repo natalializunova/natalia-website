@@ -113,12 +113,11 @@ h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: -0.025em;
-  line-height: var(--leading-display);
   text-wrap: balance;
 }
-h1 { font-size: var(--text-2xl); }
-h2 { font-size: var(--text-xl); }
-h3 { font-size: clamp(1.25rem, 2vw, 1.65rem); }
+h1 { font-size: var(--text-h1); line-height: var(--leading-display); }
+h2 { font-size: var(--text-h2); line-height: var(--leading-heading); }
+h3 { font-size: var(--text-h3); line-height: var(--leading-heading); }
 
 p { margin: 0; }
 .lead { color: var(--color-muted); font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.6; }
@@ -215,7 +214,7 @@ p { margin: 0; }
 .legal-placeholder { padding: var(--space-5); border: 1px solid var(--color-border); background: var(--color-surface); }
 
 details.faq { border-bottom: 1px solid var(--color-border); }
-details.faq summary { padding-block: 1.2rem; cursor: pointer; font-family: var(--font-display); font-size: 1.15rem; }
+details.faq summary { padding-block: 1.2rem; cursor: pointer; font-family: var(--font-display); font-size: var(--text-lg); }
 details.faq p { padding: 0 0 1.2rem; color: var(--color-muted); }
 
 @media (min-width: 42rem) {

@@ -248,7 +248,7 @@ const initialElement = elements[0];
   .element-card__atmosphere { z-index: 1; }
   .element-card__shade { inset: 0; z-index: 2; background: linear-gradient(180deg, rgb(7 7 8 / 10%), transparent 40%, rgb(7 7 8 / 84%)); }
 
-  .element-card__name { position: absolute; right: 1rem; bottom: 1rem; left: 1rem; z-index: 3; font-family: var(--font-display); font-size: clamp(1.45rem, 3vw, 2.15rem); line-height: 1; text-shadow: 0 0.65rem 1.5rem rgb(0 0 0 / 82%); }
+  .element-card__name { position: absolute; right: 1rem; bottom: 1rem; left: 1rem; z-index: 3; font-family: var(--font-display); font-size: var(--text-h3); line-height: var(--leading-heading); text-shadow: 0 0.65rem 1.5rem rgb(0 0 0 / 82%); }
 
   .element-card--earth .element-card__atmosphere { background: radial-gradient(circle at 68% 26%, rgb(216 184 108 / 26%), transparent 36%); animation: earth-light 7s ease-in-out infinite alternate; }
   .element-card--water .element-card__atmosphere { background: linear-gradient(112deg, transparent 18%, rgb(197 221 229 / 20%) 48%, transparent 76%); mix-blend-mode: screen; animation: water-shimmer 3.8s ease-in-out infinite alternate; }
@@ -260,8 +260,8 @@ const initialElement = elements[0];
   .element-panel__glow { position: absolute; top: -9rem; left: 8%; width: 34rem; height: 20rem; border-radius: 50%; background: rgb(var(--active-accent) / 12%); filter: blur(5rem); pointer-events: none; transition: background 300ms ease; }
   .element-panel__copy { position: relative; z-index: 1; max-width: 66rem; }
   .element-panel__subtitle { margin: 0 0 0.8rem; color: rgb(var(--active-accent) / 92%); font-family: var(--font-sans); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
-  .element-panel h3 { max-width: 25ch; margin: 0 0 1.25rem; font-size: clamp(2rem, 4vw, 3.5rem); }
-  .element-panel__summary { max-width: 58rem; margin: 0 0 1rem; color: var(--color-ivory); font-size: clamp(1.05rem, 1.5vw, 1.22rem); line-height: 1.7; }
+  .element-panel h3 { max-width: 25ch; margin: 0 0 1.25rem; font-size: var(--text-h3); }
+  .element-panel__summary { max-width: 58rem; margin: 0 0 1rem; color: var(--color-ivory); font-size: var(--text-base); line-height: var(--leading-body); }
   .element-panel__introduction { max-width: 58rem; margin: 0; color: var(--color-muted); line-height: 1.75; }
 
   @keyframes earth-light { from { opacity: 0.28; transform: translate3d(-4%, 2%, 0) scale(0.96); } to { opacity: 0.74; transform: translate3d(4%, -2%, 0) scale(1.06); } }

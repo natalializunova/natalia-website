@@ -203,43 +203,50 @@ const practiceVisuals = [
 </section>
 
 <style>
-  .course-hero { position: relative; overflow: hidden; padding-block: clamp(3rem, 8vw, 7rem); border-bottom: 1px solid var(--color-border); background: radial-gradient(circle at 18% 18%, rgb(84 35 47 / 34%), transparent 30rem), linear-gradient(115deg, rgb(5 5 6 / 98%), rgb(17 16 18 / 94%)); }
-  .course-hero::before { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(181 154 101 / 4%) 1px, transparent 1px), linear-gradient(rgb(181 154 101 / 3%) 1px, transparent 1px); background-size: 5rem 5rem; content: ''; mask-image: radial-gradient(circle at center, #000, transparent 78%); pointer-events: none; }
+  .course-hero { position: relative; overflow: hidden; padding-block: clamp(3.5rem, 7vw, 6.5rem); background: radial-gradient(circle at 18% 18%, rgb(84 35 47 / 30%), transparent 30rem), radial-gradient(circle at 82% 48%, rgb(181 154 101 / 7%), transparent 32rem), linear-gradient(115deg, rgb(7 6 8 / 98%), rgb(17 14 17 / 94%)); }
+  .course-hero::before { position: absolute; right: var(--page-gutter); bottom: 0; left: var(--page-gutter); height: 1px; background: linear-gradient(90deg, transparent, rgb(181 154 101 / 42%), transparent); content: ''; pointer-events: none; }
   .course-hero__grid { position: relative; display: grid; gap: clamp(2.5rem, 6vw, 6rem); align-items: center; }
   .course-hero__copy { z-index: 1; }
-  .course-hero h1 { max-width: 10ch; font-size: clamp(4rem, 9vw, 8.5rem); }
+  .course-hero h1 { max-width: 10ch; font-size: clamp(4rem, 7.5vw, 7rem); }
   .course-hero__lead { max-width: 38rem; margin-top: 1.5rem; color: var(--color-sand); font-family: var(--font-display); font-size: clamp(1.35rem, 2.6vw, 2.1rem); line-height: 1.42; }
   .course-hero__note { max-width: 36rem; margin-top: 1.25rem; color: var(--color-muted); line-height: 1.75; }
-  .course-hero__visual { position: relative; min-height: clamp(30rem, 66vw, 45rem); overflow: hidden; border-radius: 48% 48% 1rem 1rem / 16% 16% 1rem 1rem; background: rgb(5 5 6 / 92%); box-shadow: 0 2.5rem 7rem rgb(0 0 0 / 48%); }
+  .course-hero__visual { position: relative; min-height: clamp(30rem, 66vw, 45rem); overflow: hidden; border: 1px solid rgb(181 154 101 / 18%); border-radius: 48% 48% 1rem 1rem / 16% 16% 1rem 1rem; background: rgb(5 5 6 / 92%); box-shadow: 0 2.5rem 7rem rgb(0 0 0 / 48%), 0 0 3rem rgb(84 35 47 / 12%); }
   .course-hero__visual :global(.course-media) { height: 100%; min-height: inherit; }
 
-  .course-philosophy { background: radial-gradient(circle at 88% 26%, rgb(84 35 47 / 18%), transparent 28rem); }
+  .course-philosophy,
+  .course-practices,
+  .course-audience,
+  .course-author,
+  .course-faq,
+  .course-inquiry { border: 0; }
+  .course-philosophy { background: radial-gradient(circle at 88% 26%, rgb(84 35 47 / 18%), transparent 28rem), linear-gradient(180deg, transparent, rgb(24 20 22 / 40%), transparent); }
   .course-philosophy__grid { display: grid; gap: clamp(2.5rem, 7vw, 7rem); }
   .course-philosophy__heading { align-self: start; }
   .course-philosophy__heading h2 { max-width: 12ch; }
-  .course-philosophy__visual { min-height: clamp(17rem, 33vw, 25rem); margin-top: 2.5rem; border: 1px solid rgb(181 154 101 / 22%); box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 26%); }
+  .course-philosophy__visual { min-height: clamp(20rem, 36vw, 28rem); margin-top: 2.5rem; overflow: hidden; border: 1px solid rgb(181 154 101 / 22%); border-radius: 48% 48% 0.8rem 0.8rem / 18% 18% 0.8rem 0.8rem; box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 26%); }
   .course-philosophy__visual :global(.course-media) { min-height: inherit; }
   .course-philosophy__copy { display: grid; gap: 1.5rem; color: var(--color-muted); line-height: 1.86; }
   .course-philosophy__copy p { white-space: pre-line; }
-  .course-philosophy blockquote { position: relative; margin: 1.2rem 0; padding: clamp(1.5rem, 4vw, 2.6rem); border: 1px solid var(--color-border); background: linear-gradient(140deg, rgb(5 5 6 / 96%), rgb(32 22 25 / 86%)); box-shadow: inset 0 0 3rem rgb(0 0 0 / 48%); }
-  .course-philosophy blockquote > span { position: absolute; top: -0.35rem; left: 1rem; color: rgb(216 184 108 / 24%); font-family: var(--font-display); font-size: 6rem; line-height: 1; }
-  .course-philosophy blockquote p { position: relative; color: var(--color-text); font-family: var(--font-display); font-size: clamp(1.45rem, 3vw, 2.3rem); line-height: 1.4; }
+  .course-philosophy blockquote { position: relative; margin: 1.2rem 0; padding: clamp(1.5rem, 4vw, 2.6rem) 0 clamp(1.5rem, 4vw, 2.6rem) clamp(3rem, 6vw, 5rem); border: 0; background: transparent; }
+  .course-philosophy blockquote::before { position: absolute; top: 50%; left: 0; width: clamp(2rem, 4vw, 3.75rem); height: 1px; background: linear-gradient(90deg, var(--color-gold-muted), transparent); content: ''; }
+  .course-philosophy blockquote > span { display: none; }
+  .course-philosophy blockquote p { position: relative; color: var(--color-sand); font-family: var(--font-display); font-size: clamp(1.45rem, 3vw, 2.3rem); font-style: italic; line-height: 1.4; }
 
-  .course-practices { border-block: 1px solid var(--color-border); background: rgb(5 5 6 / 34%); }
+  .course-practices { background: radial-gradient(circle at 70% 24%, rgb(181 154 101 / 6%), transparent 34rem), linear-gradient(180deg, rgb(17 15 17 / 48%), rgb(28 25 27 / 64%) 50%, rgb(16 15 17 / 46%)); }
   .course-practices__grid { display: grid; gap: clamp(2rem, 5vw, 4rem); }
-  .course-practice { display: grid; overflow: hidden; border: 1px solid var(--color-border); background: linear-gradient(145deg, rgb(29 27 28 / 94%), rgb(12 11 12 / 94%)); }
-  .course-practice__visual { position: relative; min-height: 19rem; overflow: hidden; background: var(--color-black); }
+  .course-practice { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border: 1px solid rgb(181 154 101 / 16%); border-radius: 1rem; background: linear-gradient(155deg, rgb(31 27 29 / 94%), rgb(14 13 15 / 98%)); box-shadow: 0 1.5rem 3.5rem rgb(0 0 0 / 16%); }
+  .course-practice__visual { position: relative; min-height: 19rem; margin: 0.65rem 0.65rem 0; overflow: hidden; border-radius: 48% 48% 0.35rem 0.35rem / 18% 18% 0.35rem 0.35rem; background: var(--color-black); }
   .course-practice__visual :global(.course-media) { min-height: inherit; }
   .course-practice__number { position: absolute; top: 1.25rem; left: 1.25rem; z-index: 2; color: var(--color-gold); font-size: var(--text-xs); letter-spacing: 0.14em; }
-  .course-practice__copy { display: grid; gap: 0.9rem; padding: clamp(1.5rem, 4vw, 2.5rem); }
+  .course-practice__copy { display: grid; gap: 0.9rem; align-content: start; padding: clamp(1.5rem, 4vw, 2.5rem); }
   .course-practice__copy p { color: var(--color-muted); line-height: 1.75; }
-  .course-outcomes { display: grid; gap: clamp(2rem, 6vw, 5rem); margin-top: var(--space-8); padding: clamp(1.5rem, 5vw, 3.5rem); border: 1px solid var(--color-border); background: linear-gradient(135deg, rgb(181 154 101 / 8%), transparent 42%), rgb(9 9 10 / 58%); }
+  .course-outcomes { display: grid; gap: clamp(2rem, 6vw, 5rem); margin-top: var(--section-space); padding: clamp(1.5rem, 5vw, 3.5rem); border: 1px solid rgb(181 154 101 / 18%); border-radius: 1rem; background: linear-gradient(135deg, rgb(181 154 101 / 8%), transparent 42%), rgb(9 9 10 / 58%); box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 18%); }
   .course-outcomes ul { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
   .course-outcomes li { position: relative; padding-left: 1.5rem; color: var(--color-text); line-height: 1.72; }
   .course-outcomes li::before { position: absolute; top: 0.65em; left: 0; width: 0.42rem; height: 0.42rem; border: 1px solid var(--color-gold); content: ''; transform: rotate(45deg); }
   .course-outcomes__result { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); color: var(--color-sand); font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.6; }
 
-  .course-audience { background: radial-gradient(circle at 15% 55%, rgb(149 90 67 / 14%), transparent 32rem), var(--color-surface-soft); }
+  .course-audience { background: radial-gradient(circle at 15% 55%, rgb(149 90 67 / 14%), transparent 32rem), linear-gradient(180deg, rgb(20 18 20 / 40%), rgb(28 25 27 / 58%), rgb(17 15 17 / 42%)); }
   .course-audience__grid { display: grid; gap: clamp(2.5rem, 7vw, 7rem); }
   .course-audience__intro h2 { max-width: 13ch; }
   .course-audience__themes { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 2rem; }
@@ -247,7 +254,7 @@ const practiceVisuals = [
   .course-audience__copy { display: grid; gap: 1.35rem; align-content: center; color: var(--color-muted); line-height: 1.86; }
   .course-audience__copy p:first-child { color: var(--color-text); font-family: var(--font-display); font-size: var(--text-lg); }
 
-  .course-author { overflow: hidden; }
+  .course-author { overflow: hidden; background: radial-gradient(circle at 25% 48%, rgb(84 35 47 / 14%), transparent 30rem); }
   .course-author__grid { display: grid; gap: clamp(2.5rem, 7vw, 7rem); align-items: center; }
   .course-author__emblem { position: relative; display: grid; min-height: 25rem; place-items: center; background: radial-gradient(circle, rgb(84 35 47 / 26%), transparent 60%); }
   .course-author__orbit { position: absolute; width: min(85%, 25rem); aspect-ratio: 1; border: 1px solid rgb(181 154 101 / 20%); border-radius: 50%; }
@@ -257,7 +264,7 @@ const practiceVisuals = [
   .course-author__copy { display: grid; gap: 1.25rem; color: var(--color-muted); line-height: 1.82; }
   .course-author__copy blockquote { margin: 0.75rem 0; color: var(--color-gold-bright); font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 3.2rem); line-height: 1.2; }
 
-  .course-faq { border-block: 1px solid var(--color-border); background: rgb(20 20 22 / 72%); }
+  .course-faq { background: linear-gradient(180deg, rgb(18 16 18 / 44%), rgb(29 27 28 / 66%), rgb(17 15 17 / 44%)); }
   .course-faq__list { border-top: 1px solid var(--color-border); }
   .course-faq__item { border-bottom: 1px solid var(--color-border); }
   .course-faq__item summary { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; padding-block: 1.5rem; cursor: pointer; font-family: var(--font-display); font-size: clamp(1.15rem, 2vw, 1.5rem); list-style: none; }
@@ -281,7 +288,7 @@ const practiceVisuals = [
   .course-inquiry__philosophy { margin-top: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); color: var(--color-sand); font-family: var(--font-display); font-size: var(--text-lg); }
   .course-inquiry__invitation { color: var(--color-gold-bright); font-family: var(--font-display); font-size: var(--text-lg); }
   .course-inquiry__signature { color: var(--color-gold); font-family: var(--font-display); font-size: var(--text-lg); font-style: italic; }
-  .course-inquiry__form { padding: clamp(1.25rem, 4vw, 2.5rem); border: 1px solid var(--color-border); background: rgb(9 9 10 / 68%); box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 22%); }
+  .course-inquiry__form { padding: clamp(1.25rem, 4vw, 2.5rem); border: 1px solid rgb(181 154 101 / 18%); border-radius: 1rem; background: linear-gradient(155deg, rgb(22 19 21 / 82%), rgb(8 8 9 / 78%)); box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 22%); }
 
   @keyframes faq-reveal { from { opacity: 0; transform: translateY(-0.35rem); } to { opacity: 1; transform: translateY(0); } }
 
@@ -296,10 +303,7 @@ const practiceVisuals = [
     .course-audience__grid,
     .course-author__grid,
     .course-inquiry__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .course-practice { grid-template-columns: 0.9fr 1.1fr; min-height: 24rem; }
-    .course-practice:nth-child(3n + 2) { grid-template-columns: 1.1fr 0.9fr; }
-    .course-practice:nth-child(3n + 2) .course-practice__visual { order: 2; }
-    .course-practice__copy { align-content: center; }
+    .course-practice { min-height: 100%; }
   }
 
   @media (max-width: 41.99rem) {

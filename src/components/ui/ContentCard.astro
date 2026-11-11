@@ -9,8 +9,10 @@ interface Props {
 }
 const { href, title, summary, image, imageAlt, meta } = Astro.props;
 ---
-<article class="card">
-  <img class="card__image" src={image} alt={imageAlt} width="800" height="600" loading="lazy" decoding="async" />
+<article class="card content-card">
+  <div class="content-card__visual">
+    <img class="card__image" src={image} alt={imageAlt} width="800" height="600" loading="lazy" decoding="async" />
+  </div>
   <div class="card__body">
     {meta && <p class="card__meta">{meta}</p>}
     <h3>{title}</h3>
@@ -18,4 +20,11 @@ const { href, title, summary, image, imageAlt, meta } = Astro.props;
     <a class="text-link" href={href}>Подробнее<span class="visually-hidden">: {title}</span></a>
   </div>
 </article>
-<style>.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }</style>
+<style>
+  .content-card { display: grid; grid-template-rows: auto 1fr; }
+  .content-card__visual { position: relative; margin: 0.65rem 0.65rem 0; overflow: hidden; border-radius: 48% 48% 0.35rem 0.35rem / 20% 20% 0.35rem 0.35rem; }
+  .content-card__visual::after { position: absolute; inset: 0; border: 1px solid rgb(216 184 108 / 18%); border-radius: inherit; box-shadow: inset 0 -3rem 4rem rgb(5 5 6 / 20%); content: ''; pointer-events: none; }
+  .content-card .card__body { align-content: start; }
+  .content-card .text-link { margin-top: auto; padding-top: 0.35rem; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+</style>

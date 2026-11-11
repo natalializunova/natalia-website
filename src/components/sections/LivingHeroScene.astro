@@ -4,7 +4,7 @@ import heroImage from '../../assets/images/hero-window-forest-mystic-v2.png';
 import frameImage from '../../assets/images/hero-gothic-frame-gargoyles.png';
 ---
 
-<div class="hero-scene" data-hero-scene data-motion="on">
+<div class="hero-scene" data-motion="on">
   <div class="hero-scene__arch">
     <div class="hero-scene__inner">
       <Image
@@ -19,7 +19,6 @@ import frameImage from '../../assets/images/hero-gothic-frame-gargoyles.png';
       <span class="hero-scene__light" aria-hidden="true"></span>
       <span class="hero-scene__fog hero-scene__fog--far" aria-hidden="true"></span>
       <span class="hero-scene__fog hero-scene__fog--near" aria-hidden="true"></span>
-      <span class="hero-scene__water" aria-hidden="true"></span>
     </div>
     <Image
       class="hero-scene__frame"
@@ -32,32 +31,7 @@ import frameImage from '../../assets/images/hero-gothic-frame-gargoyles.png';
       aria-hidden="true"
     />
   </div>
-  <button class="hero-scene__motion" type="button" aria-pressed="true" aria-label="Остановить движение сцены">
-    <span class="hero-scene__pause" aria-hidden="true"></span>
-    <span class="hero-scene__play" aria-hidden="true"></span>
-  </button>
 </div>
-
-<script>
-  const scene = document.querySelector<HTMLElement>('[data-hero-scene]');
-  const motionToggle = scene?.querySelector<HTMLButtonElement>('.hero-scene__motion');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  if (scene && motionToggle) {
-    const setMotion = (enabled: boolean) => {
-      scene.dataset.motion = enabled ? 'on' : 'off';
-      motionToggle.setAttribute('aria-pressed', String(enabled));
-      motionToggle.setAttribute('aria-label', enabled ? 'Остановить движение сцены' : 'Включить движение сцены');
-    };
-
-    if (reducedMotion.matches) {
-      setMotion(false);
-      motionToggle.disabled = true;
-    } else {
-      motionToggle.addEventListener('click', () => setMotion(scene.dataset.motion !== 'on'));
-    }
-  }
-</script>
 
 <style>
   .hero-scene { position: relative; width: min(100%, 42rem); margin-inline: auto; }
@@ -76,34 +50,25 @@ import frameImage from '../../assets/images/hero-gothic-frame-gargoyles.png';
   .hero-scene :global(.hero-scene__frame) { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 9; object-fit: contain; pointer-events: none; }
 
   .hero-scene__light,
-  .hero-scene__fog,
-  .hero-scene__water { position: absolute; z-index: 2; pointer-events: none; }
+  .hero-scene__fog { position: absolute; z-index: 2; pointer-events: none; }
 
   .hero-scene__light { top: 9%; left: 43%; width: 48%; height: 37%; border-radius: 50%; background: radial-gradient(circle, rgb(255 222 159 / 34%), rgb(203 158 87 / 11%) 32%, transparent 70%); mix-blend-mode: screen; filter: blur(0.35rem); }
   .hero-scene__fog { right: 8%; left: 10%; height: 15%; border-radius: 50%; background: radial-gradient(ellipse, rgb(222 224 220 / 20%), rgb(192 199 196 / 8%) 48%, transparent 74%); filter: blur(0.45rem); mix-blend-mode: screen; }
   .hero-scene__fog--far { top: 31%; }
   .hero-scene__fog--near { top: 43%; opacity: 0.55; }
-  .hero-scene__water { right: 10%; bottom: 8%; left: 10%; height: 42%; background: repeating-linear-gradient(176deg, transparent 0 0.72rem, rgb(233 203 146 / 12%) 0.8rem 0.86rem, transparent 0.94rem 1.5rem); mask-image: linear-gradient(90deg, transparent, #000 20%, #000 76%, transparent); mix-blend-mode: screen; }
-  .hero-scene__motion { position: absolute; top: 25%; right: 22%; display: grid; width: 2.25rem; height: 2.25rem; z-index: 10; place-items: center; padding: 0; border: 1px solid rgb(238 231 220 / 34%); border-radius: 50%; background: rgb(9 9 10 / 58%); color: var(--color-gold); cursor: pointer; backdrop-filter: blur(8px); }
-  .hero-scene__pause { width: 0.42rem; height: 0.6rem; border-inline: 1px solid currentColor; }
-  .hero-scene__play { display: none; width: 0; height: 0; margin-left: 0.1rem; border-block: 0.34rem solid transparent; border-left: 0.5rem solid currentColor; }
-  .hero-scene[data-motion='off'] .hero-scene__pause { display: none; }
-  .hero-scene[data-motion='off'] .hero-scene__play { display: block; }
 
   .hero-scene[data-motion='on'] .hero-scene__light { animation: morning-light 8s ease-in-out infinite alternate; }
   .hero-scene[data-motion='on'] .hero-scene__fog--far { animation: fog-drift 12s ease-in-out infinite alternate; }
   .hero-scene[data-motion='on'] .hero-scene__fog--near { animation: fog-drift 9s ease-in-out -4s infinite alternate-reverse; }
-  .hero-scene[data-motion='on'] .hero-scene__water { animation: water-reflection 6s ease-in-out infinite alternate; }
   .hero-scene[data-motion='on'] .hero-scene__inner :global(img) { animation: window-view-breathe 16s ease-in-out infinite alternate; }
   .hero-scene[data-motion='on'] .hero-scene__inner::before { animation: glass-light 9s ease-in-out infinite alternate; }
 
   @keyframes morning-light { from { opacity: 0.55; transform: scale(0.94) translate(-2%, 2%); } to { opacity: 1; transform: scale(1.1) translate(2%, -2%); } }
   @keyframes fog-drift { from { opacity: 0.35; transform: translateX(-5%) scaleX(0.94); } to { opacity: 0.78; transform: translateX(5%) scaleX(1.08); } }
-  @keyframes water-reflection { from { opacity: 0.28; transform: translateY(1%) skewY(-1deg); } to { opacity: 0.82; transform: translateY(-1%) skewY(1deg); } }
   @keyframes window-view-breathe { from { transform: scale(1.16) translate3d(0, 0.35%, 0); } to { transform: scale(1.2) translate3d(0, -0.35%, 0); } }
   @keyframes glass-light { from { opacity: 0.42; transform: translateX(-2%); } to { opacity: 0.76; transform: translateX(2%); } }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-scene__light, .hero-scene__fog, .hero-scene__water, .hero-scene__inner::before, .hero-scene__inner :global(img) { animation: none !important; }
+    .hero-scene__light, .hero-scene__fog, .hero-scene__inner::before, .hero-scene__inner :global(img) { animation: none !important; }
   }
 </style>

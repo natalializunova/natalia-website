@@ -34,7 +34,7 @@
   --space-6: 3rem;
   --space-7: 4.5rem;
   --space-8: clamp(5rem, 9vw, 9rem);
-  --page-gutter: 1rem;
+  --page-gutter: clamp(1.25rem, 3vw, 3rem);
   --container-narrow: 54rem;
   --radius-sm: 0.25rem;
   --radius-arch: 999px 999px 0.5rem 0.5rem;

@@ -35,6 +35,7 @@
   --space-7: 4.5rem;
   --space-8: clamp(5rem, 9vw, 9rem);
   --page-gutter: clamp(1.25rem, 3vw, 3rem);
+  --hero-top-space: clamp(1.5rem, 3vw, 3rem);
   --section-space: clamp(5rem, 8vw, 7.5rem);
   --container-narrow: 54rem;
   --radius-sm: 0.25rem;

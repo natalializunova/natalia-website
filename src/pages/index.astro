@@ -93,7 +93,7 @@ import { site } from '../data/site';
 </BaseLayout>
 
 <style>
-  .hero { position: relative; min-height: calc(100svh - 5.5rem); padding-block: clamp(1.5rem, 3vw, 3rem) clamp(4rem, 7vw, 6.5rem); overflow: hidden; background: radial-gradient(circle at 78% 35%, rgb(84 35 47 / 12%), transparent 34rem); }
+  .hero { position: relative; min-height: calc(100svh - 5.5rem); padding-block: var(--hero-top-space) clamp(4rem, 7vw, 6.5rem); overflow: hidden; background: radial-gradient(circle at 78% 35%, rgb(84 35 47 / 12%), transparent 34rem); }
   .hero__grid { display: grid; align-items: start; gap: 3rem; }
   .hero__content { position: relative; z-index: 2; order: -1; padding-top: clamp(0.25rem, 1vw, 0.9rem); }
   .hero h1 { max-width: 12ch; text-shadow: 0 0.8rem 2.8rem rgb(181 154 101 / 12%); }

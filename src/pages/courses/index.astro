@@ -1,13 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CourseOverview from '../../components/sections/CourseOverview.astro';
-import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
 import { courses } from '../../data/courses';
 
 const course = courses[0];
 ---
 <BaseLayout title="О курсе" description="Авторская образовательная программа проекта «Ведьма во мне. Путь к себе»." noindex>
-  <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'О курсе' }]} />
   <div id={course.slug}>
     <CourseOverview course={course} />
   </div>

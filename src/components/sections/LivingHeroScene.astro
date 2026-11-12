@@ -1,74 +1,65 @@
 ---
-import { Image } from 'astro:assets';
-import heroImage from '../../assets/images/hero-window-forest-mystic-v2.png';
-import frameImage from '../../assets/images/hero-gothic-frame-gargoyles.png';
+import forestImage from '../../assets/images/hero-forest-original-v1.png';
+import frameImage from '../../assets/images/hero-portal-frame-transparent-v1.png';
 ---
 
 <div class="hero-scene" data-motion="on">
-  <div class="hero-scene__arch">
-    <div class="hero-scene__inner">
-      <Image
-        src={heroImage}
-        alt="Вид через готическое окно на туманный хвойный лес и тёмное озеро на рассвете"
-        widths={[480, 720, 900]}
-        sizes="(min-width: 54rem) 48vw, calc(100vw - 2rem)"
-        format="webp"
+  <div class="hero-scene__portal">
+    <div class="hero-scene__view">
+      <img
+        src={forestImage.src}
+        alt="Туманный лес, освещённый тёплым внутренним светом"
+        width={forestImage.width}
+        height={forestImage.height}
         loading="eager"
         fetchpriority="high"
       />
-      <span class="hero-scene__light" aria-hidden="true"></span>
-      <span class="hero-scene__fog hero-scene__fog--far" aria-hidden="true"></span>
-      <span class="hero-scene__fog hero-scene__fog--near" aria-hidden="true"></span>
+      <span class="hero-scene__forest-glow" aria-hidden="true"></span>
     </div>
-    <Image
+    <img
       class="hero-scene__frame"
-      src={frameImage}
+      src={frameImage.src}
       alt=""
-      widths={[480, 720, 1086]}
-      sizes="(min-width: 54rem) 42rem, calc(100vw - 1rem)"
-      format="webp"
+      width={frameImage.width}
+      height={frameImage.height}
       loading="eager"
       aria-hidden="true"
     />
+    <span class="hero-scene__sun-glow" aria-hidden="true"></span>
   </div>
 </div>
 
 <style>
-  .hero-scene { position: relative; width: min(100%, 42rem); margin-inline: auto; }
+  .hero-scene { position: relative; width: min(100%, 46rem); margin-inline: auto; aspect-ratio: 1295 / 1215; }
 
-  .hero-scene__arch {
+  .hero-scene__portal {
     position: relative;
+    width: 100%;
+    height: 100%;
     isolation: isolate;
-    aspect-ratio: 3 / 4;
-    filter: drop-shadow(0 1.8rem 2.4rem rgb(0 0 0 / 38%)) drop-shadow(0 0 1.9rem rgb(181 154 101 / 10%));
+    filter: drop-shadow(0 2rem 2.8rem rgb(0 0 0 / 40%)) drop-shadow(0 0 2.4rem rgb(216 184 108 / 16%));
   }
 
-  .hero-scene__inner { position: absolute; top: 19.4%; right: 18.7%; bottom: 13.3%; left: 18.7%; z-index: 1; overflow: hidden; clip-path: polygon(50% 0, 66% 5%, 81% 17%, 92% 32%, 100% 50%, 100% 100%, 0 100%, 0 50%, 8% 32%, 19% 17%, 34% 5%); background: var(--color-black); box-shadow: inset 0 0 3.5rem rgb(0 0 0 / 68%); }
-  .hero-scene__inner::before { position: absolute; inset: 0; z-index: 7; background: linear-gradient(118deg, rgb(255 244 218 / 13%) 0%, transparent 18%, transparent 42%, rgb(255 244 218 / 5%) 49%, transparent 59%), linear-gradient(180deg, rgb(9 9 10 / 7%), transparent 42%, rgb(9 9 10 / 17%)); content: ''; mix-blend-mode: screen; opacity: 0.7; pointer-events: none; }
-  .hero-scene__inner::after { position: absolute; inset: 0; z-index: 8; border: 1px solid rgb(205 176 113 / 12%); box-shadow: inset 0 0 1.2rem rgb(0 0 0 / 74%), inset 0 0 4.2rem rgb(0 0 0 / 48%), inset 0 -2.5rem 2.8rem rgb(7 6 7 / 34%); content: ''; pointer-events: none; }
-  .hero-scene__inner :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; filter: saturate(0.9) contrast(1.06) brightness(0.92); transform: scale(1.16); transform-origin: 50% 68%; }
-  .hero-scene :global(.hero-scene__frame) { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 9; object-fit: contain; pointer-events: none; }
+  .hero-scene__view { position: absolute; top: 27.7%; right: 33.1%; bottom: 9.2%; left: 32.8%; z-index: 1; overflow: hidden; background: #071017; box-shadow: inset 0 0 2rem rgb(0 0 0 / 72%); }
+  .hero-scene__view::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(6 12 19 / 4%), transparent 45%, rgb(3 5 7 / 24%)), radial-gradient(circle at 66% 40%, rgb(255 215 151 / 14%), transparent 40%); content: ''; pointer-events: none; }
+  .hero-scene__view :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; filter: saturate(0.96) contrast(1.04) brightness(0.98); transform: scale(1.025); }
+  .hero-scene :global(.hero-scene__frame) { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+  .hero-scene__forest-glow { position: absolute; top: 20%; right: 3%; z-index: 2; width: 62%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgb(255 226 171 / 32%), rgb(203 158 87 / 9%) 44%, transparent 72%); filter: blur(0.4rem); mix-blend-mode: screen; pointer-events: none; }
+  .hero-scene__sun-glow { position: absolute; top: 7%; left: 39%; z-index: 4; width: 22%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgb(255 238 187 / 24%), rgb(216 184 108 / 7%) 45%, transparent 72%); filter: blur(0.3rem); mix-blend-mode: screen; pointer-events: none; }
 
-  .hero-scene__light,
-  .hero-scene__fog { position: absolute; z-index: 2; pointer-events: none; }
+  .hero-scene[data-motion='on'] .hero-scene__view :global(img) { animation: forest-breathe 16s ease-in-out infinite alternate; }
+  .hero-scene[data-motion='on'] .hero-scene__forest-glow { animation: forest-light 8s ease-in-out infinite alternate; }
+  .hero-scene[data-motion='on'] .hero-scene__sun-glow { animation: sun-breathe 7s ease-in-out infinite alternate; }
 
-  .hero-scene__light { top: 9%; left: 43%; width: 48%; height: 37%; border-radius: 50%; background: radial-gradient(circle, rgb(255 222 159 / 34%), rgb(203 158 87 / 11%) 32%, transparent 70%); mix-blend-mode: screen; filter: blur(0.35rem); }
-  .hero-scene__fog { right: 8%; left: 10%; height: 15%; border-radius: 50%; background: radial-gradient(ellipse, rgb(222 224 220 / 20%), rgb(192 199 196 / 8%) 48%, transparent 74%); filter: blur(0.45rem); mix-blend-mode: screen; }
-  .hero-scene__fog--far { top: 31%; }
-  .hero-scene__fog--near { top: 43%; opacity: 0.55; }
+  @keyframes forest-breathe { from { transform: scale(1.025) translateY(0.2%); } to { transform: scale(1.055) translateY(-0.2%); } }
+  @keyframes forest-light { from { opacity: 0.48; transform: scale(0.94); } to { opacity: 1; transform: scale(1.08); } }
+  @keyframes sun-breathe { from { opacity: 0.48; transform: scale(0.92); } to { opacity: 1; transform: scale(1.12); } }
 
-  .hero-scene[data-motion='on'] .hero-scene__light { animation: morning-light 8s ease-in-out infinite alternate; }
-  .hero-scene[data-motion='on'] .hero-scene__fog--far { animation: fog-drift 12s ease-in-out infinite alternate; }
-  .hero-scene[data-motion='on'] .hero-scene__fog--near { animation: fog-drift 9s ease-in-out -4s infinite alternate-reverse; }
-  .hero-scene[data-motion='on'] .hero-scene__inner :global(img) { animation: window-view-breathe 16s ease-in-out infinite alternate; }
-  .hero-scene[data-motion='on'] .hero-scene__inner::before { animation: glass-light 9s ease-in-out infinite alternate; }
-
-  @keyframes morning-light { from { opacity: 0.55; transform: scale(0.94) translate(-2%, 2%); } to { opacity: 1; transform: scale(1.1) translate(2%, -2%); } }
-  @keyframes fog-drift { from { opacity: 0.35; transform: translateX(-5%) scaleX(0.94); } to { opacity: 0.78; transform: translateX(5%) scaleX(1.08); } }
-  @keyframes window-view-breathe { from { transform: scale(1.16) translate3d(0, 0.35%, 0); } to { transform: scale(1.2) translate3d(0, -0.35%, 0); } }
-  @keyframes glass-light { from { opacity: 0.42; transform: translateX(-2%); } to { opacity: 0.76; transform: translateX(2%); } }
+  @media (min-width: 96rem) {
+    .hero-scene { width: auto; max-width: none; height: 100%; margin-right: 0; aspect-ratio: 1295 / 1215; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-scene__light, .hero-scene__fog, .hero-scene__inner::before, .hero-scene__inner :global(img) { animation: none !important; }
+    .hero-scene__view :global(img), .hero-scene__forest-glow, .hero-scene__sun-glow { animation: none !important; }
   }
 </style>

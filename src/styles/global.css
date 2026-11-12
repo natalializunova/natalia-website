@@ -14,11 +14,14 @@ body {
   margin: 0;
   min-width: 20rem;
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 92% 4%, rgb(84 35 47 / 18%), transparent 34rem),
-    radial-gradient(circle at 4% 42%, rgb(181 154 101 / 6%), transparent 30rem),
-    linear-gradient(180deg, #0c0b0d 0%, var(--color-bg) 24rem, #0f0d0f 100%),
-    var(--color-bg);
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(180deg, rgb(7 8 12 / 62%), rgb(10 8 8 / 68%) 42%, rgb(9 8 9 / 78%)),
+    url('/images/site-background-desert-v1.png');
+  background-position: center, center 32%;
+  background-size: cover, cover;
+  background-attachment: fixed, fixed;
+  background-repeat: no-repeat, no-repeat;
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: var(--text-base);

@@ -68,7 +68,7 @@ import { site } from '../data/site';
       <div class="stack about-section__copy">
         <p class="eyebrow">Обо мне</p>
         <h2>Наталья Лизунова</h2>
-        <p class="lead">Автор проекта «Ведьма во мне. Путь к себе».</p>
+        <p class="lead">Автор проекта Light Inside «Ведьма во мне».</p>
         <p class="muted">Личная история, образование, квалификации и профессиональный подход будут добавлены после согласования с автором. Мы намеренно не заменяем факты красивыми догадками.</p>
         <div class="button-row"><Button href="/about/" variant="ghost">Мой путь</Button></div>
       </div>
@@ -96,8 +96,8 @@ import { site } from '../data/site';
   .hero { position: relative; min-height: calc(100svh - 5.5rem); padding-block: var(--hero-top-space) clamp(4rem, 7vw, 6.5rem); overflow: hidden; background: radial-gradient(circle at 78% 35%, rgb(84 35 47 / 12%), transparent 34rem); }
   .hero__grid { display: grid; align-items: start; gap: 3rem; }
   .hero__content { position: relative; z-index: 2; order: -1; padding-top: clamp(0.25rem, 1vw, 0.9rem); }
-  .hero h1 { max-width: 12ch; text-shadow: 0 0.8rem 2.8rem rgb(181 154 101 / 12%); }
-  .hero .lead { max-width: 39rem; margin-top: 1.75rem; }
+  .hero h1 { max-width: 12ch; font-size: clamp(3.65rem, 5.15vw, 6.35rem); line-height: 0.98; text-shadow: 0 0.8rem 2.8rem rgb(181 154 101 / 12%); }
+  .hero .lead { max-width: 43rem; margin-top: clamp(1.75rem, 2.4vw, 2.5rem); font-size: clamp(1.38rem, 0.72vw + 1.08rem, 1.88rem); line-height: 1.62; }
   .hero__visual { position: relative; }
   .hero__line { position: absolute; right: var(--page-gutter); bottom: 0; left: var(--page-gutter); height: 1px; background: linear-gradient(90deg, transparent, var(--color-gold-muted), transparent); opacity: 0.5; }
   .story-section { border: 0; }
@@ -127,6 +127,10 @@ import { site } from '../data/site';
   }
   @media (min-width: 64rem) {
     .hero__content { transform: translateX(calc(-1 * clamp(2.5rem, 4vw, 5rem))); }
+  }
+  @media (max-width: 53.99rem) {
+    .hero h1 { font-size: clamp(3.35rem, 12vw, 4.85rem); line-height: 1; }
+    .hero .lead { font-size: clamp(1.25rem, 2.2vw + 0.82rem, 1.58rem); }
   }
   @media (min-width: 48rem) { .philosophy-shell { grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr); align-items: start; } }
   @media (max-width: 47.99rem) { .philosophy-shell__copy { min-height: auto; } .philosophy-shell__quote { margin-top: 1.5rem; padding-top: 1.5rem; } .elements-section__prompt { margin-left: 0; text-align: left; } }

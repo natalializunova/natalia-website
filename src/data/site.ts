@@ -1,6 +1,6 @@
 export const site = {
-  name: 'Ведьма во мне. Путь к себе',
-  shortName: 'Ведьма во мне',
+  name: 'Light Inside «Ведьма во мне»',
+  shortName: 'Light Inside «Ведьма во мне»',
   author: 'Наталья Лизунова',
   sigil: {
     width: 'clamp(3.65rem, 5.5vw, 4.8rem)',

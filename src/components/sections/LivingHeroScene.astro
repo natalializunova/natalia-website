@@ -55,8 +55,9 @@ import frameImage from '../../assets/images/hero-portal-frame-transparent-v1.png
   @keyframes forest-light { from { opacity: 0.48; transform: scale(0.94); } to { opacity: 1; transform: scale(1.08); } }
   @keyframes sun-breathe { from { opacity: 0.48; transform: scale(0.92); } to { opacity: 1; transform: scale(1.12); } }
 
-  @media (min-width: 54rem) {
+  @media (min-width: 80rem) {
     .hero-scene { width: auto; max-width: none; height: 100%; margin-right: 0; aspect-ratio: 1295 / 1215; }
+    .hero-scene__portal { transform: scale(1.035); transform-origin: top center; }
   }
 
   @media (prefers-reduced-motion: reduce) {

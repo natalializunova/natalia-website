@@ -9,5 +9,14 @@ import { products } from '../../data/products';
 <BaseLayout title="Лавка артефактов" description="Будущий каталог свечей, календарей, ритуальных наборов и других авторских артефактов." noindex>
   <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Лавка артефактов' }]} />
   <PageHero eyebrow="Каталог" title="Лавка артефактов" description="Основа будущего магазина без фиктивной оплаты, наличия и неподтверждённых цен." />
-  <section class="section"><div class="container"><div class="grid grid--4">{products.map((item) => <ContentCard href={`/shop/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.category} />)}</div><div class="button-row"><Button href="/cart/" variant="ghost">О будущей корзине</Button></div></div></section>
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Предметы с историей и смыслом</h2>
+        <p class="lead">Категории будущей лавки. Ассортимент, состав и условия продаж ещё не опубликованы.</p>
+      </div>
+      <div class="grid grid--4">{products.map((item) => <ContentCard href={`/shop/${item.slug}/`} title={item.title} summary={item.summary} image={item.image} imageAlt={item.imageAlt} meta={item.category} />)}</div>
+      <div class="button-row"><Button href="/cart/" variant="ghost">О будущей корзине</Button></div>
+    </div>
+  </section>
 </BaseLayout>
